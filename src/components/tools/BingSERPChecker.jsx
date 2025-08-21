@@ -158,7 +158,7 @@ export default function BingSERPChecker() {
               <div>
                 <h3 className="font-medium mb-4">Top Bing Search Results</h3>
                 <div className="space-y-3">
-                  {result.results.map((item, index) => (
+                  {result.results?.map((item, index) => (
                     <div key={index} className="border border-gray-200 p-4 hover:bg-gray-50 transition-colors">
                       <div className="flex items-start gap-4">
                         <div className={`text-lg font-bold px-3 py-1 rounded ${getRankingColor(item.position)}`}>
@@ -196,10 +196,64 @@ export default function BingSERPChecker() {
                 </ul>
               </div>
             </div>
+          ) : result.educational ? (
+            <div className="p-6">
+              <div className="mb-6 p-4 bg-blue-50 border border-blue-200">
+                <h3 className="font-medium text-blue-800 mb-3">📚 {result.message}</h3>
+                <p className="text-blue-700 mb-4">{result.info.explanation}</p>
+              </div>
+
+              <div className="mb-6">
+                <h3 className="font-medium mb-3">🆓 Free Alternatives</h3>
+                <ul className="space-y-2">
+                  {result.info.alternatives.map((alternative, index) => (
+                    <li key={index} className="flex items-start gap-2 text-sm">
+                      <span className="text-green-600 mt-1">✓</span>
+                      <span>{alternative}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="mb-6">
+                <h3 className="font-medium mb-3">🔧 Professional Tools</h3>
+                <ul className="space-y-2">
+                  <li className="flex items-start gap-2 text-sm">
+                    <span className="text-blue-600 mt-1">•</span>
+                    <span>SEMrush API - Comprehensive Bing tracking and competitor analysis</span>
+                  </li>
+                  <li className="flex items-start gap-2 text-sm">
+                    <span className="text-blue-600 mt-1">•</span>
+                    <span>DataForSEO API - Multi-engine SERP data including Bing</span>
+                  </li>
+                  <li className="flex items-start gap-2 text-sm">
+                    <span className="text-blue-600 mt-1">•</span>
+                    <span>SerpApi - Search engine results API supporting Bing</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div className="mb-6">
+                <h3 className="font-medium mb-3">📊 Bing-Specific Insights</h3>
+                <ul className="space-y-2">
+                  {result.info.bingSpecific.map((insight, index) => (
+                    <li key={index} className="flex items-start gap-2 text-sm">
+                      <span className="text-purple-600 mt-1">💡</span>
+                      <span>{insight}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="p-4 bg-gray-50 border border-gray-200">
+                <h4 className="font-medium mb-2">🚀 Implementation Guide</h4>
+                <p className="text-sm text-gray-700">{result.info.implementation}</p>
+              </div>
+            </div>
           ) : (
             <div className="p-6">
               <div className="text-red-600 mb-4">
-                <span className="font-medium">Error:</span> {result.error}
+                <span className="font-medium">Error:</span> {result.error || 'An unknown error occurred'}
               </div>
             </div>
           )}
