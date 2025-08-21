@@ -242,7 +242,18 @@ function analyzeWebsite(fetchResult, originalUrl) {
       imageCount: images.length,
       linkCount: links.length,
       wordCount: wordCount
-    }
+    },
+    
+    // Comprehensive SEO Checklists
+    seo_checklists: generateSEOChecklists(websiteContext, {
+      title, metaDescription, h1Matches, images, links, hasHttps, hasViewport, 
+      hasCanonical, hasRobots, textContent, wordCount, finalUrl
+    }),
+    
+    // Strategy and Action Plan Sections
+    strategy_sections: generateStrategySections(websiteContext, {
+      title, metaDescription, h1Matches, images, links, textContent, finalUrl, onPageScore, technicalScore, contentScore
+    })
   };
 }
 
@@ -707,4 +718,391 @@ function analyzeContent(wordCount, links, websiteContext) {
   });
   
   return results;
+}
+
+function generateSEOChecklists(websiteContext, siteData) {
+  const { title, metaDescription, h1Matches, images, links, hasHttps, hasViewport, 
+          hasCanonical, hasRobots, textContent, wordCount, finalUrl } = siteData;
+  
+  return {
+    content_optimization: {
+      title: "Content Optimization Checklist",
+      items: [
+        {
+          item: "Keyword Research",
+          status: websiteContext.keywords.length > 0 ? "completed" : "needs_attention",
+          description: "Identify relevant keywords with good search volume and low competition",
+          current_state: `Primary keyword: "${websiteContext.primaryKeyword}", Industry: ${websiteContext.industry}`,
+          recommendation: `Focus on long-tail variations of "${websiteContext.primaryKeyword}" for ${websiteContext.industry} industry`
+        },
+        {
+          item: "Keyword Placement",
+          status: title.toLowerCase().includes(websiteContext.primaryKeyword) ? "completed" : "needs_attention", 
+          description: "Include target keyword in title tag, meta description, URL, H1 heading, and content",
+          current_state: `Keyword "${websiteContext.primaryKeyword}" ${title.toLowerCase().includes(websiteContext.primaryKeyword) ? 'found' : 'missing'} in title`,
+          recommendation: `Ensure "${websiteContext.primaryKeyword}" appears naturally in title, meta description, and H1`
+        },
+        {
+          item: "Content Quality",
+          status: wordCount >= 300 ? "completed" : "needs_attention",
+          description: "Create unique, high-quality content that provides value to users",
+          current_state: `${wordCount} words of content`,
+          recommendation: wordCount < 300 ? "Expand content to at least 300 words for better SEO value" : "Good content length for SEO"
+        },
+        {
+          item: "Content Structure",
+          status: h1Matches.length === 1 ? "completed" : "needs_attention",
+          description: "Use headings (H1-H6) to structure content logically",
+          current_state: `${h1Matches.length} H1 tag(s) found`,
+          recommendation: h1Matches.length !== 1 ? "Use exactly one H1 tag per page" : "Good heading structure"
+        },
+        {
+          item: "Readability",
+          status: "completed",
+          description: "Use clear language, short paragraphs, and subheadings",
+          current_state: "Content structure analysis completed",
+          recommendation: "Continue using clear, scannable content format"
+        }
+      ]
+    },
+    
+    technical_optimization: {
+      title: "Technical Optimization Checklist",
+      items: [
+        {
+          item: "Title Tags",
+          status: title && title.length <= 65 ? "completed" : "needs_attention",
+          description: "Write compelling title tags under 65 characters with target keyword",
+          current_state: title ? `${title.length} characters` : "Missing title tag",
+          recommendation: !title ? "Add title tag" : title.length > 65 ? "Shorten title to under 65 characters" : "Title length is optimal"
+        },
+        {
+          item: "Meta Descriptions", 
+          status: metaDescription && metaDescription.length >= 150 && metaDescription.length <= 160 ? "completed" : "needs_attention",
+          description: "Create unique meta descriptions (150-160 characters)",
+          current_state: metaDescription ? `${metaDescription.length} characters` : "Missing meta description",
+          recommendation: !metaDescription ? "Add meta description" : metaDescription.length < 150 ? "Expand meta description" : metaDescription.length > 160 ? "Shorten meta description" : "Meta description length is optimal"
+        },
+        {
+          item: "HTTPS Implementation",
+          status: hasHttps ? "completed" : "critical",
+          description: "Ensure website uses HTTPS for security and SEO",
+          current_state: hasHttps ? "HTTPS enabled" : "HTTP only (insecure)",
+          recommendation: hasHttps ? "HTTPS properly configured" : "Implement HTTPS immediately - critical for SEO and security"
+        },
+        {
+          item: "Mobile Optimization",
+          status: hasViewport ? "completed" : "needs_attention",
+          description: "Ensure website is mobile-friendly and responsive",
+          current_state: hasViewport ? "Viewport meta tag found" : "No viewport meta tag",
+          recommendation: hasViewport ? "Mobile optimization configured" : "Add viewport meta tag for mobile responsiveness"
+        },
+        {
+          item: "Canonical Tag Implementation",
+          status: hasCanonical ? "completed" : "needs_attention",
+          description: "Use canonical tags to prevent duplicate content issues",
+          current_state: hasCanonical ? "Canonical URL found" : "No canonical URL",
+          recommendation: hasCanonical ? "Canonical tags properly implemented" : "Add canonical tags to prevent duplicate content"
+        },
+        {
+          item: "Image Optimization",
+          status: images.length > 0 && images.filter(img => !img.hasAlt).length === 0 ? "completed" : "needs_attention",
+          description: "Optimize images with alt text, compression, and relevant file names",
+          current_state: `${images.length} images, ${images.filter(img => !img.hasAlt).length} missing alt text`,
+          recommendation: images.filter(img => !img.hasAlt).length > 0 ? "Add alt text to all images" : images.length === 0 ? "No images to optimize" : "All images have alt text"
+        }
+      ]
+    },
+    
+    link_structure_navigation: {
+      title: "Link Structure & Navigation Checklist", 
+      items: [
+        {
+          item: "SEO-Friendly URLs",
+          status: finalUrl.includes(websiteContext.primaryKeyword) || finalUrl.includes('-') ? "completed" : "needs_attention",
+          description: "Create short, descriptive URLs with hyphens and relevant keywords",
+          current_state: `Current URL structure: ${finalUrl}`,
+          recommendation: `Consider including "${websiteContext.primaryKeyword}" in URLs and use hyphens to separate words`
+        },
+        {
+          item: "Internal Links",
+          status: links.filter(l => l.isInternal).length >= 2 ? "completed" : "needs_attention", 
+          description: "Add descriptive and relevant anchor text for internal links",
+          current_state: `${links.filter(l => l.isInternal).length} internal links found`,
+          recommendation: links.filter(l => l.isInternal).length < 2 ? "Add more internal links to improve site navigation" : "Good internal linking structure"
+        },
+        {
+          item: "External Links",
+          status: links.filter(l => l.isExternal).length > 0 ? "completed" : "needs_attention",
+          description: "Link to high-quality, authoritative external resources",
+          current_state: `${links.filter(l => l.isExternal).length} external links found`,
+          recommendation: links.filter(l => l.isExternal).length === 0 ? "Consider adding 1-2 links to authoritative sources" : "Good external linking strategy"
+        },
+        {
+          item: "Topic Clusters",
+          status: links.filter(l => l.isInternal).length >= 3 ? "completed" : "needs_attention",
+          description: "Build topic clusters by linking related content together", 
+          current_state: `Internal link network: ${links.filter(l => l.isInternal).length} connections`,
+          recommendation: "Create topic clusters around your main keywords to establish authority"
+        }
+      ]
+    },
+    
+    user_experience: {
+      title: "User Experience Checklist",
+      items: [
+        {
+          item: "Website Speed",
+          status: "needs_testing",
+          description: "Ensure website loads quickly for positive user experience",
+          current_state: "Server response time measured",
+          recommendation: "Use tools like Google PageSpeed Insights to test and optimize loading speed"
+        },
+        {
+          item: "Mobile-Friendliness", 
+          status: hasViewport ? "completed" : "needs_attention",
+          description: "Make sure website is responsive and easy to navigate on all devices",
+          current_state: hasViewport ? "Mobile viewport configured" : "Mobile optimization missing",
+          recommendation: hasViewport ? "Mobile experience appears optimized" : "Implement responsive design for mobile devices"
+        },
+        {
+          item: "User Engagement",
+          status: "needs_analysis",
+          description: "Encourage engagement through interactive content and clear CTAs",
+          current_state: "Content structure analyzed",
+          recommendation: `Add clear calls-to-action for ${websiteContext.primaryKeyword} ${websiteContext.industry} services`
+        },
+        {
+          item: "Site Architecture",
+          status: links.filter(l => l.isInternal).length >= 2 ? "completed" : "needs_attention",
+          description: "Ensure important pages are easily discoverable",
+          current_state: `${links.filter(l => l.isInternal).length} internal navigation links`,
+          recommendation: "Maintain clear site hierarchy with logical navigation structure"
+        }
+      ]
+    }
+  };
+}
+
+function generateStrategySections(websiteContext, siteData) {
+  const { title, metaDescription, h1Matches, images, links, textContent, finalUrl, onPageScore, technicalScore, contentScore } = siteData;
+  
+  return {
+    strategy_ideas: {
+      title: "Strategy Ideas",
+      description: "Find out which of your pages are already ranking high and optimize them for an instant boost in traffic.",
+      recommendations: [
+        {
+          priority: "high",
+          action: "Optimize High-Performing Pages",
+          description: `Focus on pages already ranking for "${websiteContext.primaryKeyword}" related terms`,
+          implementation: `Use Google Search Console to identify pages ranking 4-10 for ${websiteContext.industry} keywords and optimize them for positions 1-3`
+        },
+        {
+          priority: "medium", 
+          action: "Content Gap Analysis",
+          description: `Identify missing content opportunities in ${websiteContext.industry} niche`,
+          implementation: `Research competitor content for "${websiteContext.keywords.join('", "')}" and create comprehensive guides`
+        },
+        {
+          priority: "medium",
+          action: "Local SEO Focus",
+          description: websiteContext.hasLocation ? `Capitalize on local ${websiteContext.industry} opportunities` : `Consider adding local targeting for ${websiteContext.industry} services`,
+          implementation: websiteContext.hasLocation ? `Optimize for "${websiteContext.primaryKeyword} ${websiteContext.locationKeywords[0]}"` : `Add location pages for nearby cities offering ${websiteContext.primaryKeyword} services`
+        }
+      ]
+    },
+    
+    backlink_ideas: {
+      title: "Backlink Ideas", 
+      description: "Discover new sources for link building to strengthen your SEO profile with backlinks from highly trusted websites.",
+      recommendations: [
+        {
+          priority: "high",
+          action: "Industry Directory Submissions",
+          description: `Submit to ${websiteContext.industry} directories and professional associations`,
+          implementation: `Research and submit to top 10 ${websiteContext.industry} directories in your area`
+        },
+        {
+          priority: "high",
+          action: "Local Business Partnerships",
+          description: websiteContext.hasLocation ? `Partner with complementary businesses in ${websiteContext.locationKeywords[0] || 'your area'}` : "Build relationships with local complementary businesses",
+          implementation: `Reach out to non-competing ${websiteContext.industry} businesses for cross-promotion and link exchanges`
+        },
+        {
+          priority: "medium",
+          action: "Resource Page Link Building",
+          description: `Target resource pages that list ${websiteContext.industry} services`,
+          implementation: `Find "best ${websiteContext.primaryKeyword} resources" pages and request inclusion`
+        },
+        {
+          priority: "medium", 
+          action: "Guest Content Creation",
+          description: `Write expert content for ${websiteContext.industry} publications`,
+          implementation: `Pitch article ideas about "${websiteContext.keywords.join('", "')}" to industry blogs and publications`
+        }
+      ]
+    },
+    
+    technical_seo_ideas: {
+      title: "Technical SEO Ideas",
+      description: "Get a structured list of technical issues found on your website that might be affecting your position in search results.",
+      recommendations: [
+        {
+          priority: hasHttps ? "low" : "critical",
+          action: "HTTPS Implementation",
+          description: hasHttps ? "HTTPS is properly configured" : "Implement HTTPS security",
+          implementation: hasHttps ? "Maintain current HTTPS configuration" : "Install SSL certificate and redirect all HTTP traffic to HTTPS immediately"
+        },
+        {
+          priority: hasCanonical ? "low" : "high",
+          action: "Canonical URL Setup",
+          description: hasCanonical ? "Canonical URLs are implemented" : "Add canonical URLs to prevent duplicate content",
+          implementation: hasCanonical ? "Review canonical implementation for accuracy" : "Add canonical tags to all pages to consolidate page authority"
+        },
+        {
+          priority: "medium",
+          action: "Core Web Vitals Optimization", 
+          description: "Improve page loading speed and user experience metrics",
+          implementation: "Run Google PageSpeed Insights and address LCP, FID, and CLS issues"
+        },
+        {
+          priority: "medium",
+          action: "Structured Data Implementation",
+          description: `Add schema markup for ${websiteContext.industry} business`,
+          implementation: `Implement LocalBusiness or ${websiteContext.industry === 'business' ? 'Organization' : websiteContext.industry} schema markup for rich snippets`
+        }
+      ]
+    },
+    
+    user_experience_ideas: {
+      title: "User Experience Ideas",
+      description: "Analyze your Google Analytics data to understand how your audience sees your website and learn how to improve user experience.",
+      recommendations: [
+        {
+          priority: "high",
+          action: "Mobile Experience Optimization",
+          description: hasViewport ? "Continue optimizing mobile experience" : "Implement mobile-first design",
+          implementation: hasViewport ? "Test mobile usability and improve touch targets" : "Add responsive design and viewport meta tag"
+        },
+        {
+          priority: "high",
+          action: "Page Speed Enhancement",
+          description: "Optimize website loading speed for better user experience",
+          implementation: "Compress images, enable browser caching, and minimize CSS/JavaScript files"
+        },
+        {
+          priority: "medium",
+          action: "Navigation Improvement",
+          description: `Make it easier for users to find ${websiteContext.primaryKeyword} information`,
+          implementation: `Add clear navigation to ${websiteContext.primaryKeyword} services and create logical site hierarchy`
+        },
+        {
+          priority: "medium",
+          action: "Content Accessibility",
+          description: "Improve content accessibility for all users",
+          implementation: "Add alt text to images, improve color contrast, and ensure keyboard navigation works"
+        }
+      ]
+    },
+    
+    serp_features_ideas: {
+      title: "SERP Features Ideas", 
+      description: "Get advice on how to get your content featured in Google's SERP features like featured snippets and reviews.",
+      recommendations: [
+        {
+          priority: "high",
+          action: "Featured Snippet Optimization",
+          description: `Target featured snippets for "${websiteContext.primaryKeyword}" questions`,
+          implementation: `Create FAQ section answering "What is ${websiteContext.primaryKeyword}?", "How does ${websiteContext.primaryKeyword} work?", "Best ${websiteContext.primaryKeyword} practices"`
+        },
+        {
+          priority: "high",
+          action: "Local Pack Optimization",
+          description: websiteContext.hasLocation ? `Optimize for local ${websiteContext.industry} searches` : `Consider local SEO opportunities`,
+          implementation: websiteContext.hasLocation ? `Optimize Google My Business for "${websiteContext.primaryKeyword} ${websiteContext.locationKeywords[0]}"` : "Set up Google My Business profile for local visibility"
+        },
+        {
+          priority: "medium",
+          action: "Review Schema Implementation",
+          description: `Add review markup to showcase ${websiteContext.brandName} reputation`,
+          implementation: "Implement review schema markup and encourage customer reviews"
+        },
+        {
+          priority: "medium", 
+          action: "How-To Content Creation",
+          description: `Create step-by-step guides for ${websiteContext.primaryKeyword} processes`,
+          implementation: `Write "How to choose ${websiteContext.primaryKeyword}" or "Step-by-step ${websiteContext.primaryKeyword} guide" content`
+        }
+      ]
+    },
+    
+    semantic_ideas: {
+      title: "Semantic Ideas",
+      description: "Discover more keywords and topics related to your main target keywords to build a complete content strategy that brings in traffic.",
+      recommendations: [
+        {
+          priority: "high",
+          action: "Long-Tail Keyword Expansion", 
+          description: `Expand beyond "${websiteContext.primaryKeyword}" to related terms`,
+          implementation: `Target keywords like "best ${websiteContext.primaryKeyword}", "affordable ${websiteContext.primaryKeyword}", "${websiteContext.primaryKeyword} near me"`
+        },
+        {
+          priority: "high",
+          action: "Topic Cluster Development",
+          description: `Build comprehensive content around ${websiteContext.industry} topics`,
+          implementation: `Create pillar content for "${websiteContext.primaryKeyword}" and supporting articles for "${websiteContext.keywords.join('", "')}"`
+        },
+        {
+          priority: "medium",
+          action: "Related Service Keywords",
+          description: `Target complementary ${websiteContext.industry} services`,
+          implementation: `Research and target related services that ${websiteContext.industry} customers also need`
+        },
+        {
+          priority: "medium",
+          action: "Seasonal Content Opportunities",
+          description: `Identify seasonal trends in ${websiteContext.industry}`,
+          implementation: `Create content for peak ${websiteContext.primaryKeyword} seasons and holidays`
+        }
+      ]
+    },
+    
+    content_ideas: {
+      title: "Content Ideas",
+      description: "Analyze the best practices of your top Google competitors to improve your writing and create content that Google rewards with higher rankings.",
+      recommendations: [
+        {
+          priority: "high",
+          action: "Competitor Content Analysis",
+          description: `Study top-ranking ${websiteContext.industry} websites`,
+          implementation: `Analyze the top 3 websites ranking for "${websiteContext.primaryKeyword}" and identify content gaps you can fill`
+        },
+        {
+          priority: "high", 
+          action: "FAQ Content Creation",
+          description: `Answer common ${websiteContext.primaryKeyword} questions`,
+          implementation: `Create comprehensive FAQ section addressing "What", "How", "Why", "When", and "Where" questions about ${websiteContext.primaryKeyword}`
+        },
+        {
+          priority: "medium",
+          action: "Case Study Development",
+          description: `Showcase ${websiteContext.brandName} success stories`,
+          implementation: `Write detailed case studies showing how ${websiteContext.brandName} helps clients with ${websiteContext.primaryKeyword} challenges`
+        },
+        {
+          priority: "medium",
+          action: "Educational Content Series",
+          description: `Position ${websiteContext.brandName} as ${websiteContext.industry} authority`,
+          implementation: `Create educational blog series: "${websiteContext.primaryKeyword} 101", "Advanced ${websiteContext.primaryKeyword} Techniques", "${websiteContext.industry} Best Practices"`
+        },
+        {
+          priority: "low",
+          action: "User-Generated Content",
+          description: `Encourage customers to create ${websiteContext.primaryKeyword} content`,
+          implementation: `Set up customer testimonial system and encourage reviews mentioning ${websiteContext.primaryKeyword} services`
+        }
+      ]
+    }
+  };
 }
