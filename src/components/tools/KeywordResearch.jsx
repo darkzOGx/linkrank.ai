@@ -83,24 +83,24 @@ export default function KeywordResearch() {
                 <h3 className="font-medium mb-3">Primary Keyword Analysis</h3>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                   <div className="text-center">
-                    <div className="text-2xl font-bold">{result.mainKeyword.volume?.toLocaleString()}</div>
+                    <div className="text-2xl font-bold">{result.mainKeyword?.volume?.toLocaleString()}</div>
                     <div className="text-sm text-gray-600">Monthly Volume</div>
                   </div>
                   <div className="text-center">
-                    <div className={`text-2xl font-bold ${getDifficultyColor(result.mainKeyword.difficulty)}`}>
-                      {result.mainKeyword.difficulty}%
+                    <div className={`text-2xl font-bold ${getDifficultyColor(result.mainKeyword?.difficulty)}`}>
+                      {result.mainKeyword?.difficulty}%
                     </div>
                     <div className="text-sm text-gray-600">Difficulty</div>
                   </div>
                   <div className="text-center">
-                    <div className={`text-2xl font-bold ${getCPCValue(result.mainKeyword.cpc)}`}>
-                      ${result.mainKeyword.cpc}
+                    <div className={`text-2xl font-bold ${getCPCValue(result.mainKeyword?.cpc)}`}>
+                      ${result.mainKeyword?.cpc}
                     </div>
                     <div className="text-sm text-gray-600">Avg. CPC</div>
                   </div>
                   <div className="text-center">
                     <div className="text-2xl font-bold text-purple-600">
-                      {result.mainKeyword.competition}
+                      {result.mainKeyword?.competition}
                     </div>
                     <div className="text-sm text-gray-600">Competition</div>
                   </div>
@@ -125,7 +125,7 @@ export default function KeywordResearch() {
                       </tr>
                     </thead>
                     <tbody>
-                      {result.relatedKeywords.map((kw, index) => (
+                      {result.relatedKeywords?.map((kw, index) => (
                         <tr key={index} className="border-b border-gray-200 hover:bg-gray-50">
                           <td className="p-3 text-sm">{kw.keyword}</td>
                           <td className="p-3 text-sm text-center font-medium">
@@ -153,7 +153,7 @@ export default function KeywordResearch() {
               <div className="mb-8">
                 <h3 className="font-medium mb-4">Long-tail Keywords</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {result.longtailKeywords.map((kw, index) => (
+                  {result.longtailKeywords?.map((kw, index) => (
                     <div key={index} className="p-3 bg-gray-50 border border-gray-200">
                       <div className="font-medium text-sm mb-1">{kw.keyword}</div>
                       <div className="flex justify-between text-xs text-gray-600">
@@ -171,7 +171,7 @@ export default function KeywordResearch() {
               <div className="mb-8">
                 <h3 className="font-medium mb-4">People Also Ask</h3>
                 <div className="space-y-2">
-                  {result.questions.map((question, index) => (
+                  {result.questions?.map((question, index) => (
                     <div key={index} className="p-3 bg-blue-50 border border-blue-200">
                       <span className="text-sm text-blue-800">{question}</span>
                     </div>
@@ -192,10 +192,82 @@ export default function KeywordResearch() {
                 </ul>
               </div>
             </div>
+          ) : result.educational ? (
+            <div className="p-6">
+              <div className="mb-6 p-4 bg-blue-50 border border-blue-200">
+                <h3 className="font-medium text-blue-800 mb-3">📚 {result.message}</h3>
+                <p className="text-blue-700 mb-4">{result.info.explanation}</p>
+              </div>
+
+              <div className="mb-6">
+                <h3 className="font-medium mb-3">🆓 Free Keyword Research Tools</h3>
+                <ul className="space-y-2">
+                  {result.info.freeAlternatives.map((alternative, index) => (
+                    <li key={index} className="flex items-start gap-2 text-sm">
+                      <span className="text-green-600 mt-1">✓</span>
+                      <span>{alternative}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="mb-6">
+                <h3 className="font-medium mb-3">🔧 Professional Keyword Tools</h3>
+                <ul className="space-y-2">
+                  {result.info.professionalTools.map((tool, index) => (
+                    <li key={index} className="flex items-start gap-2 text-sm">
+                      <span className="text-blue-600 mt-1">•</span>
+                      <span>{tool}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="mb-6">
+                <h3 className="font-medium mb-3">📊 Key Keyword Metrics to Track</h3>
+                <ul className="space-y-2">
+                  {result.info.keywordMetrics.map((metric, index) => (
+                    <li key={index} className="flex items-start gap-2 text-sm">
+                      <span className="text-purple-600 mt-1">📈</span>
+                      <span>{metric}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="mb-6">
+                <h3 className="font-medium mb-3">🎯 Keyword Research Process</h3>
+                <ul className="space-y-2">
+                  {result.info.researchProcess.map((step, index) => (
+                    <li key={index} className="flex items-start gap-2 text-sm">
+                      <span className="text-green-600 mt-1 font-medium">{index + 1}.</span>
+                      <span>{step}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="p-4 bg-gray-50 border border-gray-200">
+                <h4 className="font-medium mb-2">🚀 Implementation Guide</h4>
+                <p className="text-sm text-gray-700">{result.info.implementation}</p>
+              </div>
+            </div>
           ) : (
             <div className="p-6">
               <div className="text-red-600 mb-4">
-                <span className="font-medium">Error:</span> {result.error}
+                <span className="font-medium">Error:</span> {result.error || 'An unknown error occurred'}
+              </div>
+              
+              <div className="mt-6 p-4 bg-blue-50 border border-blue-200">
+                <h3 className="font-medium text-blue-800 mb-3">🔍 Manual Keyword Research Tips</h3>
+                <ul className="text-sm text-blue-700 space-y-2">
+                  <li>• Use Google Autocomplete to find popular search suggestions</li>
+                  <li>• Check "People also ask" and "Related searches" sections in Google</li>
+                  <li>• Analyze competitor websites to identify target keywords</li>
+                  <li>• Use Google Keyword Planner for basic search volume data</li>
+                  <li>• Look at Google Trends for seasonal keyword patterns</li>
+                  <li>• Consider user intent: informational, commercial, or navigational</li>
+                </ul>
               </div>
             </div>
           )}
