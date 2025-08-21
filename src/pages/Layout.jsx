@@ -26,7 +26,7 @@ export default function Layout({ children }) {
       </main>
       <footer className="border-t border-black mt-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center text-xs text-gray-500">
-          <p>&copy; {new Date().getFullYear()} linkrank.ai. Professional SEO analysis and optimization tools.</p>
+          <p>&copy; {new Date().getFullYear()} linkrank.ai // All-in-One SEO Suite</p>
         </div>
       </footer>
     </div>
