@@ -440,7 +440,7 @@ function generateTechnicalResults(data, websiteContext) {
     structuredDataTypes, urlHasHyphens, urlHasUnderscores, urlIsReadable,
     hasNavigation, responseTime, hasGzip, hasLazyLoading, hasPreconnect,
     hasDNSPrefetch, hasAmp, hasServiceWorker, hasWebP, hasXMLSitemap,
-    hasRobotsTxt, hasHttp2, hasContentSecurity, hasHsts
+    hasRobotsTxt, hasHttp2, hasContentSecurity, hasHsts, hasRobots
   } = data;
   return [
     {
