@@ -1,6 +1,6 @@
 /**
- * Simplified Server-side SEO Analysis API
- * Provides comprehensive mock data that demonstrates all features
+ * Real Server-side SEO Analysis API
+ * Fetches and analyzes actual websites
  */
 
 export default async function handler(req, res) {
@@ -30,289 +30,44 @@ export default async function handler(req, res) {
       normalizedUrl = 'https://' + normalizedUrl;
     }
     
-    // Generate comprehensive mock analysis that demonstrates all features
-    const analysis = {
-      url: normalizedUrl,
-      original_url: url,
-      timestamp: new Date().toISOString(),
-      response_time: Math.floor(Math.random() * 1000) + 500, // 500-1500ms
-      overall_score: 78,
-      
-      // Legacy compatibility for existing components
-      title_tag: {
-        value: "Professional SEO Services | Digital Marketing Agency | YourCompany",
-        score: 85
-      },
-      meta_description: {
-        value: "Transform your online presence with our expert SEO services. We help businesses increase organic traffic, improve search rankings, and drive qualified leads.",
-        score: 92
-      },
-      headings: {
-        h1_count: 1,
-        score: 95
-      },
-      images: {
-        total_images: 8,
-        missing_alt: 2,
-        score: 75
-      },
-      page_speed: {
-        load_time: 1.8,
-        score: 82
-      },
-      mobile_friendly: {
-        is_mobile_friendly: true,
-        score: 100
-      },
-      https: {
-        is_https: true,
-        score: 100
-      },
-      content: {
-        word_count: 1250,
-        score: 88
-      },
-      links: {
-        internal_count: 12,
-        external_count: 3,
-        internal_score: 90,
-        external_score: 85
-      },
-      
-      // Enhanced analysis results
-      onpage_score: 84,
-      technical_score: 89,
-      content_score: 72,
-      
-      // Detailed analysis breakdown with comprehensive examples
-      analysis: {
-        on_page: {
-          score: 84,
-          results: [
-            {
-              label: 'Title Tag',
-              description: 'The HTML title tag is the most critical on-page SEO element, appearing as the clickable headline in search results.',
-              current: 'Professional SEO Services | Digital Marketing Agency | YourCompany',
-              path: 'Line 8',
-              score: 85,
-              issues: ['Title could include more specific keywords'],
-              recommendations: ['Consider adding location-based keywords if targeting local search'],
-              practicalExample: '<title>SEO Services Los Angeles | Digital Marketing Agency | YourCompany</title>',
-              details: ['Title length: 67 characters (optimal range)', 'Includes primary keyword and brand name']
-            },
-            {
-              label: 'Meta Description',
-              description: 'Meta descriptions provide page summaries in search results and significantly influence click-through rates.',
-              current: 'Transform your online presence with our expert SEO services. We help businesses increase organic traffic, improve search rankings, and drive qualified leads.',
-              path: 'Line 12',
-              score: 92,
-              issues: [],
-              recommendations: ['Meta description is well optimized'],
-              practicalExample: 'Current meta description is excellent and includes compelling call-to-action',
-              details: ['Length: 156 characters (optimal)', 'Includes action words and benefits']
-            },
-            {
-              label: 'Heading Structure (H1-H6)',
-              description: 'Proper heading hierarchy helps search engines understand content structure and improves accessibility.',
-              current: 'H1: 1, H2: 4, H3: 6, H4: 2, H5: 0, H6: 0',
-              path: 'Throughout page content',
-              score: 95,
-              issues: [],
-              recommendations: ['Excellent heading structure with proper hierarchy'],
-              practicalExample: '<h1>Main Topic</h1>\n<h2>Primary Subtopic</h2>\n<h3>Supporting Details</h3>',
-              details: [
-                'H1 #1: "Professional SEO Services for Business Growth" at Line 45',
-                'H2 #1: "Our SEO Process" at Line 78',
-                'H2 #2: "Why Choose Our Agency" at Line 125',
-                'Perfect hierarchy with no level skipping'
-              ]
-            },
-            {
-              label: 'Image Optimization',
-              description: 'Proper image optimization improves accessibility, SEO, and page loading performance.',
-              current: '8 total images, 2 missing alt text, 0 missing dimensions',
-              path: 'Throughout page content',
-              score: 75,
-              issues: ['2 images missing alt attributes'],
-              recommendations: ['Add descriptive alt text to all images for accessibility and SEO'],
-              practicalExample: '<img src="team-photo.jpg" alt="SEO team collaborating on client strategy" width="400" height="300">',
-              details: [
-                'Image #3 missing alt text: hero-image.jpg at Line 67',
-                'Image #7 missing alt text: testimonial-bg.jpg at Line 234',
-                'Remaining 6 images properly optimized with alt text and dimensions'
-              ]
-            },
-            {
-              label: 'Link Structure',
-              description: 'Internal and external links distribute authority and provide navigation paths for users and search engines.',
-              current: '12 internal, 3 external, 0 with empty text',
-              path: 'Throughout page content',
-              score: 88,
-              issues: ['1 external link missing rel attribute'],
-              recommendations: ['Add rel="noopener" to external links for security'],
-              practicalExample: '<a href="/services/local-seo" title="Learn about local SEO">Local SEO Services</a>',
-              details: [
-                'Internal link #1: "About Our Process" → /seo-process at Line 89',
-                'Internal link #2: "Case Studies" → /case-studies at Line 156',
-                'External link #1: "Google Guidelines" → https://developers.google.com at Line 201',
-                'Good distribution of contextual internal links'
-              ]
-            }
-          ]
+    // Fetch website with timeout and proper headers
+    const startTime = Date.now();
+    let fetchResult;
+    
+    try {
+      const response = await fetch(normalizedUrl, {
+        method: 'GET',
+        headers: {
+          'User-Agent': 'LinkRank.ai SEO Bot/2.0 (+https://linkrank.ai)',
+          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+          'Accept-Language': 'en-US,en;q=0.5',
+          'Accept-Encoding': 'gzip, deflate',
+          'Connection': 'keep-alive'
         },
-        technical: {
-          score: 89,
-          results: [
-            {
-              label: 'Server Response Time',
-              description: 'Fast server response times are crucial for user experience and search engine crawling efficiency.',
-              current: '850ms',
-              path: 'Server-level metric',
-              score: 82,
-              issues: [],
-              recommendations: ['Response time is good, consider optimizing for sub-500ms'],
-              practicalExample: 'Implement server-side caching: Cache-Control: public, max-age=31536000'
-            },
-            {
-              label: 'HTTPS Security',
-              description: 'HTTPS encryption protects user data and is a confirmed Google ranking factor.',
-              current: 'Secure HTTPS connection',
-              path: 'URL protocol',
-              score: 100,
-              issues: [],
-              recommendations: ['HTTPS properly configured'],
-              practicalExample: 'Current implementation is secure and optimal'
-            },
-            {
-              label: 'Mobile Viewport',
-              description: 'Proper viewport configuration is essential for mobile-first indexing and responsive design.',
-              current: 'Viewport meta tag found',
-              path: 'HTML head section',
-              score: 100,
-              issues: [],
-              recommendations: ['Viewport is properly configured'],
-              practicalExample: 'Current: <meta name="viewport" content="width=device-width, initial-scale=1.0">'
-            },
-            {
-              label: 'Canonical URL',
-              description: 'Canonical URLs prevent duplicate content issues and consolidate page authority.',
-              current: 'Canonical URL found',
-              path: 'HTML head section',
-              score: 100,
-              issues: [],
-              recommendations: ['Canonical URL properly set'],
-              practicalExample: `Current: <link rel="canonical" href="${normalizedUrl}">`
-            },
-            {
-              label: 'Structured Data',
-              description: 'Structured data helps search engines understand your content and can enable rich snippets.',
-              current: 'JSON-LD: 1, Microdata: 0',
-              path: 'JSON-LD script found',
-              score: 90,
-              issues: [],
-              recommendations: ['Consider expanding structured data for additional content types'],
-              practicalExample: `<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "LocalBusiness",
-  "name": "Your SEO Agency",
-  "url": "${normalizedUrl}",
-  "address": {...}
-}
-</script>`
-            }
-          ]
-        },
-        content: {
-          score: 72,
-          results: [
-            {
-              label: 'Content Length & Quality',
-              description: 'Sufficient, high-quality content helps search engines understand your page topic and provides user value.',
-              current: '1250 words',
-              path: 'Page body content',
-              score: 88,
-              issues: [],
-              recommendations: ['Content length is excellent for SEO'],
-              practicalExample: 'Current content provides comprehensive coverage of SEO services'
-            },
-            {
-              label: 'Internal Link Structure',
-              description: 'Internal links distribute page authority and help users navigate to related content.',
-              current: '12 internal links',
-              path: 'Throughout page content',
-              score: 90,
-              issues: [],
-              recommendations: ['Excellent internal linking strategy'],
-              practicalExample: 'Well-distributed contextual links to related services and resources',
-              details: [
-                'Internal link #1: "SEO Process" → /process at Line 89',
-                'Internal link #2: "Local SEO" → /local-seo at Line 134',
-                'Internal link #3: "Case Studies" → /case-studies at Line 167',
-                'Internal link #4: "Blog" → /blog at Line 198',
-                'Internal link #5: "Contact Us" → /contact at Line 245'
-              ]
-            },
-            {
-              label: 'External Link Strategy',
-              description: 'Quality external links to authoritative sources enhance content credibility and user experience.',
-              current: '3 external links',
-              path: 'Throughout page content',
-              score: 85,
-              issues: ['1 external link missing rel attribute'],
-              recommendations: ['Add rel="noopener" to external links for security'],
-              practicalExample: '<a href="https://moz.com/beginners-guide-to-seo" rel="noopener" target="_blank">SEO Guide</a>',
-              details: [
-                'External link #1: "Google Search Guidelines" → https://developers.google.com at Line 156',
-                'External link #2: "Moz SEO Guide" → https://moz.com at Line 189',
-                'External link #3: "Search Engine Journal" → https://searchenginejournal.com at Line 223'
-              ]
-            },
-            {
-              label: 'Form Accessibility',
-              description: 'Proper form labeling improves accessibility and user experience.',
-              current: '2 forms, 8 inputs, 8 labels',
-              path: 'Contact and newsletter forms',
-              score: 100,
-              issues: [],
-              recommendations: ['All forms properly labeled for accessibility'],
-              practicalExample: 'Current form implementation follows accessibility best practices'
-            }
-          ]
-        }
-      },
+        signal: AbortSignal.timeout(15000) // 15 second timeout
+      });
       
-      metadata: {
-        title: 'Professional SEO Services | Digital Marketing Agency | YourCompany',
-        description: 'Transform your online presence with our expert SEO services. We help businesses increase organic traffic, improve search rankings, and drive qualified leads.',
-        h1Count: 1,
-        imageCount: 8,
-        linkCount: 15,
-        wordCount: 1250
-      },
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
       
-      // Action items summary
-      recommendations: [
-        {
-          category: 'Image Optimization',
-          priority: 'medium',
-          description: 'Add alt text to 2 images that are missing descriptive text',
-          how_to_fix: 'Review images at lines 67 and 234, add descriptive alt attributes'
-        },
-        {
-          category: 'External Links',
-          priority: 'low', 
-          description: 'Add rel="noopener" to 1 external link for security',
-          how_to_fix: 'Add rel="noopener" attribute to external link at line 201'
-        },
-        {
-          category: 'Performance',
-          priority: 'low',
-          description: 'Server response time could be optimized further',
-          how_to_fix: 'Implement additional caching layers or CDN optimization'
-        }
-      ]
-    };
+      const html = await response.text();
+      const responseTime = Date.now() - startTime;
+      
+      fetchResult = {
+        html,
+        status: response.status,
+        url: response.url,
+        responseTime,
+        redirected: normalizedUrl !== response.url
+      };
+      
+    } catch (error) {
+      throw new Error(`Failed to fetch website: ${error.message}`);
+    }
+    
+    // Parse HTML and extract elements
+    const analysis = analyzeWebsite(fetchResult, normalizedUrl);
     
     return res.status(200).json(analysis);
     
@@ -323,4 +78,527 @@ export default async function handler(req, res) {
       message: error.message 
     });
   }
+}
+
+function analyzeWebsite(fetchResult, originalUrl) {
+  const { html, responseTime, url: finalUrl } = fetchResult;
+  
+  // Extract title
+  const titleMatch = html.match(/<title[^>]*>([^<]*)<\/title>/i);
+  const title = titleMatch ? titleMatch[1].trim() : '';
+  const titleLine = titleMatch ? getLineNumber(html, titleMatch.index) : 'Not found';
+  
+  // Extract meta description
+  const metaDescMatch = html.match(/<meta[^>]*name=["']description["'][^>]*content=["']([^"']*)["']/i);
+  const metaDescription = metaDescMatch ? metaDescMatch[1] : '';
+  const metaDescLine = metaDescMatch ? getLineNumber(html, metaDescMatch.index) : 'Not found';
+  
+  // Extract headings
+  const h1Matches = [...html.matchAll(/<h1[^>]*>([^<]*)<\/h1>/gi)];
+  const h2Matches = [...html.matchAll(/<h2[^>]*>([^<]*)<\/h2>/gi)];
+  const h3Matches = [...html.matchAll(/<h3[^>]*>([^<]*)<\/h3>/gi)];
+  const h4Matches = [...html.matchAll(/<h4[^>]*>([^<]*)<\/h4>/gi)];
+  const h5Matches = [...html.matchAll(/<h5[^>]*>([^<]*)<\/h5>/gi)];
+  const h6Matches = [...html.matchAll(/<h6[^>]*>([^<]*)<\/h6>/gi)];
+  
+  // Extract images
+  const imgMatches = [...html.matchAll(/<img[^>]*>/gi)];
+  const images = imgMatches.map(match => {
+    const img = match[0];
+    const altMatch = img.match(/alt=["']([^"']*)["']/i);
+    const srcMatch = img.match(/src=["']([^"']*)["']/i);
+    return {
+      hasAlt: !!altMatch,
+      hasSrc: !!srcMatch,
+      src: srcMatch ? srcMatch[1] : '',
+      alt: altMatch ? altMatch[1] : '',
+      line: getLineNumber(html, match.index)
+    };
+  });
+  
+  // Extract links
+  const linkMatches = [...html.matchAll(/<a[^>]*href=["']([^"']*)["'][^>]*>([^<]*)<\/a>/gi)];
+  const links = linkMatches.map(match => {
+    const href = match[1];
+    const text = match[2].trim();
+    const isExternal = href.startsWith('http') || href.startsWith('//');
+    const isInternal = href.startsWith('/') || href.startsWith('#') || (!isExternal && href.includes('.'));
+    return {
+      href,
+      text,
+      isExternal,
+      isInternal,
+      line: getLineNumber(html, match.index)
+    };
+  });
+  
+  // Check technical elements
+  const hasViewport = html.includes('name="viewport"');
+  const hasCanonical = html.includes('rel="canonical"');
+  const hasRobots = html.includes('name="robots"');
+  const hasHttps = finalUrl.startsWith('https://');
+  
+  // Extract content for word count
+  const textContent = html
+    .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
+    .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+  
+  const wordCount = textContent.split(/\s+/).filter(word => word.length > 0).length;
+  
+  // Analyze and score each element
+  const titleAnalysis = analyzeTitleTag(title, titleLine);
+  const metaAnalysis = analyzeMetaDescription(metaDescription, metaDescLine);
+  const headingAnalysis = analyzeHeadings(h1Matches, h2Matches, h3Matches, h4Matches, h5Matches, h6Matches, html);
+  const imageAnalysis = analyzeImages(images);
+  const linkAnalysis = analyzeLinks(links);
+  const technicalAnalysis = analyzeTechnical(hasHttps, hasViewport, hasCanonical, hasRobots, responseTime);
+  const contentAnalysis = analyzeContent(wordCount, links);
+  
+  // Calculate scores
+  const onPageScore = Math.round((titleAnalysis.score + metaAnalysis.score + headingAnalysis.score + imageAnalysis.score + linkAnalysis.score) / 5);
+  const technicalScore = Math.round(technicalAnalysis.reduce((sum, item) => sum + item.score, 0) / technicalAnalysis.length);
+  const contentScore = Math.round(contentAnalysis.reduce((sum, item) => sum + item.score, 0) / contentAnalysis.length);
+  const overallScore = Math.round((onPageScore + technicalScore + contentScore) / 3);
+  
+  return {
+    url: finalUrl,
+    original_url: originalUrl,
+    timestamp: new Date().toISOString(),
+    response_time: responseTime,
+    overall_score: overallScore,
+    
+    // Legacy compatibility
+    title_tag: {
+      value: title,
+      score: titleAnalysis.score
+    },
+    meta_description: {
+      value: metaDescription,
+      score: metaAnalysis.score
+    },
+    headings: {
+      h1_count: h1Matches.length,
+      score: headingAnalysis.score
+    },
+    images: {
+      total_images: images.length,
+      missing_alt: images.filter(img => !img.hasAlt).length,
+      score: imageAnalysis.score
+    },
+    page_speed: {
+      load_time: responseTime / 1000,
+      score: technicalAnalysis.find(t => t.label === 'Server Response Time')?.score || 0
+    },
+    mobile_friendly: {
+      is_mobile_friendly: hasViewport,
+      score: technicalAnalysis.find(t => t.label === 'Mobile Viewport')?.score || 0
+    },
+    https: {
+      is_https: hasHttps,
+      score: technicalAnalysis.find(t => t.label === 'HTTPS Security')?.score || 0
+    },
+    content: {
+      word_count: wordCount,
+      score: contentAnalysis.find(c => c.label === 'Content Length & Quality')?.score || 0
+    },
+    links: {
+      internal_count: links.filter(l => l.isInternal).length,
+      external_count: links.filter(l => l.isExternal).length,
+      internal_score: contentAnalysis.find(c => c.label === 'Internal Link Structure')?.score || 0,
+      external_score: contentAnalysis.find(c => c.label === 'External Link Strategy')?.score || 0
+    },
+    
+    // Enhanced analysis results
+    onpage_score: onPageScore,
+    technical_score: technicalScore,
+    content_score: contentScore,
+    
+    // Detailed analysis breakdown
+    analysis: {
+      on_page: {
+        score: onPageScore,
+        results: [titleAnalysis, metaAnalysis, headingAnalysis, imageAnalysis, linkAnalysis]
+      },
+      technical: {
+        score: technicalScore,
+        results: technicalAnalysis
+      },
+      content: {
+        score: contentScore,
+        results: contentAnalysis
+      }
+    },
+    
+    metadata: {
+      title: title,
+      description: metaDescription,
+      h1Count: h1Matches.length,
+      imageCount: images.length,
+      linkCount: links.length,
+      wordCount: wordCount
+    }
+  };
+}
+
+function getLineNumber(html, index) {
+  return html.substring(0, index).split('\n').length;
+}
+
+function analyzeTitleTag(title, line) {
+  const length = title.length;
+  let score = 100;
+  let issues = [];
+  let recommendations = [];
+  let practicalExample = '';
+  
+  if (!title) {
+    score = 0;
+    issues.push('Missing title tag');
+    recommendations.push('Add a unique, descriptive title tag between 50-60 characters');
+    practicalExample = '<title>Your Primary Keyword | Brand Name</title>';
+  } else if (length < 30) {
+    score = 60;
+    issues.push(`Title too short (${length} characters)`);
+    recommendations.push('Expand title to 30-60 characters for optimal SEO impact');
+    practicalExample = `<title>${title} - Additional Keywords | Brand</title>`;
+  } else if (length > 60) {
+    score = 75;
+    issues.push(`Title may be truncated (${length} characters)`);
+    recommendations.push('Shorten title to under 60 characters to prevent truncation in search results');
+    practicalExample = `<title>${title.substring(0, 50)}...</title>`;
+  } else {
+    recommendations.push('Title length is optimal');
+    practicalExample = `Current title is well-optimized: "${title}"`;
+  }
+  
+  return {
+    label: 'Title Tag',
+    description: 'The HTML title tag is the most critical on-page SEO element, appearing as the clickable headline in search results.',
+    current: title || 'No title tag found',
+    path: `Line ${line}`,
+    score,
+    issues,
+    recommendations,
+    practicalExample,
+    details: [`Title length: ${length} characters`]
+  };
+}
+
+function analyzeMetaDescription(metaDescription, line) {
+  const length = metaDescription.length;
+  let score = 100;
+  let issues = [];
+  let recommendations = [];
+  let practicalExample = '';
+  
+  if (!metaDescription) {
+    score = 0;
+    issues.push('Missing meta description');
+    recommendations.push('Add a compelling meta description between 150-160 characters');
+    practicalExample = '<meta name="description" content="Discover how our services help you achieve your goals. Get started today with our expert team and proven solutions.">';
+  } else if (length < 120) {
+    score = 70;
+    issues.push(`Meta description too short (${length} characters)`);
+    recommendations.push('Expand to 150-160 characters for better search result display');
+    practicalExample = `<meta name="description" content="${metaDescription} Learn more about our comprehensive solutions and expert support.">`;
+  } else if (length > 160) {
+    score = 80;
+    issues.push(`Meta description may be truncated (${length} characters)`);
+    recommendations.push('Shorten to 150-160 characters to prevent truncation');
+    practicalExample = `<meta name="description" content="${metaDescription.substring(0, 150)}...">`;
+  } else {
+    recommendations.push('Meta description length is optimal');
+    practicalExample = `Current meta description is well-optimized: "${metaDescription}"`;
+  }
+  
+  return {
+    label: 'Meta Description',
+    description: 'Meta descriptions provide page summaries in search results and significantly influence click-through rates.',
+    current: metaDescription || 'No meta description found',
+    path: `Line ${line}`,
+    score,
+    issues,
+    recommendations,
+    practicalExample,
+    details: [`Length: ${length} characters`]
+  };
+}
+
+function analyzeHeadings(h1s, h2s, h3s, h4s, h5s, h6s, html) {
+  let score = 100;
+  let issues = [];
+  let recommendations = [];
+  let details = [];
+  
+  if (h1s.length === 0) {
+    score = 40;
+    issues.push('Missing H1 tag');
+    recommendations.push('Add exactly one H1 tag that describes the main topic');
+  } else if (h1s.length > 1) {
+    score = 70;
+    issues.push(`Multiple H1 tags found (${h1s.length})`);
+    recommendations.push('Use only one H1 tag per page; convert others to H2-H6');
+    h1s.forEach((h1, index) => {
+      details.push(`H1 #${index + 1}: "${h1[1]}" at Line ${getLineNumber(html, h1.index)}`);
+    });
+  } else {
+    details.push(`H1: "${h1s[0][1]}" at Line ${getLineNumber(html, h1s[0].index)}`);
+  }
+  
+  return {
+    label: 'Heading Structure (H1-H6)',
+    description: 'Proper heading hierarchy helps search engines understand content structure and improves accessibility.',
+    current: `H1: ${h1s.length}, H2: ${h2s.length}, H3: ${h3s.length}, H4: ${h4s.length}, H5: ${h5s.length}, H6: ${h6s.length}`,
+    path: 'Throughout page content',
+    score,
+    issues,
+    recommendations,
+    practicalExample: '<h1>Main Topic</h1>\n<h2>Primary Subtopic</h2>\n<h3>Supporting Details</h3>',
+    details
+  };
+}
+
+function analyzeImages(images) {
+  let score = 100;
+  let issues = [];
+  let recommendations = [];
+  let details = [];
+  
+  if (images.length === 0) {
+    return {
+      label: 'Image Optimization',
+      description: 'Proper image optimization improves accessibility, SEO, and page loading performance.',
+      current: 'No images found',
+      path: 'No images found',
+      score: 100,
+      issues: [],
+      recommendations: ['No images to optimize'],
+      practicalExample: 'Add images with proper alt text when adding visual content',
+      details: []
+    };
+  }
+  
+  const missingAlt = images.filter(img => !img.hasAlt);
+  
+  if (missingAlt.length > 0) {
+    score -= Math.min(30, (missingAlt.length / images.length) * 50);
+    issues.push(`${missingAlt.length} images missing alt attributes`);
+    recommendations.push('Add descriptive alt text to all images for accessibility and SEO');
+    
+    missingAlt.slice(0, 3).forEach((img, index) => {
+      details.push(`Image missing alt text: ${img.src || 'unknown source'} at Line ${img.line}`);
+    });
+  } else {
+    recommendations.push('All images have alt text - excellent for accessibility');
+  }
+  
+  return {
+    label: 'Image Optimization',
+    description: 'Proper image optimization improves accessibility, SEO, and page loading performance.',
+    current: `${images.length} total images, ${missingAlt.length} missing alt text`,
+    path: 'Throughout page content',
+    score: Math.max(0, score),
+    issues,
+    recommendations,
+    practicalExample: '<img src="product.jpg" alt="Blue wireless headphones with noise cancellation" width="300" height="200">',
+    details
+  };
+}
+
+function analyzeLinks(links) {
+  let score = 100;
+  let issues = [];
+  let recommendations = [];
+  let details = [];
+  
+  const internalLinks = links.filter(link => link.isInternal);
+  const externalLinks = links.filter(link => link.isExternal);
+  const emptyLinks = links.filter(link => !link.text.trim());
+  
+  if (internalLinks.length === 0) {
+    score -= 15;
+    issues.push('No internal links found');
+    recommendations.push('Add 2-5 contextual internal links to related pages');
+  } else {
+    details.push(`${internalLinks.length} internal links found`);
+  }
+  
+  if (emptyLinks.length > 0) {
+    score -= 10;
+    issues.push(`${emptyLinks.length} links with empty anchor text`);
+    recommendations.push('Provide descriptive anchor text for all links');
+  }
+  
+  return {
+    label: 'Link Structure',
+    description: 'Internal and external links distribute authority and provide navigation paths for users and search engines.',
+    current: `${internalLinks.length} internal, ${externalLinks.length} external, ${emptyLinks.length} with empty text`,
+    path: 'Throughout page content',
+    score: Math.max(0, score),
+    issues,
+    recommendations,
+    practicalExample: '<a href="/related-page" title="Learn more about our services">Our comprehensive services</a>',
+    details
+  };
+}
+
+function analyzeTechnical(hasHttps, hasViewport, hasCanonical, hasRobots, responseTime) {
+  const results = [];
+  
+  // HTTPS Analysis
+  results.push({
+    label: 'HTTPS Security',
+    description: 'HTTPS encryption protects user data and is a confirmed Google ranking factor.',
+    current: hasHttps ? 'Secure HTTPS connection' : 'Insecure HTTP connection',
+    path: 'URL protocol',
+    score: hasHttps ? 100 : 0,
+    issues: hasHttps ? [] : ['Site not using HTTPS encryption'],
+    recommendations: hasHttps ? ['HTTPS properly configured'] : ['Install SSL certificate and redirect all HTTP traffic to HTTPS'],
+    practicalExample: hasHttps ? 'Current implementation is secure and optimal' : 'Redirect rule: RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]'
+  });
+  
+  // Response Time Analysis
+  let responseScore = 100;
+  let responseIssues = [];
+  let responseRecs = [];
+  
+  if (responseTime > 3000) {
+    responseScore = 40;
+    responseIssues.push('Very slow response time (>3 seconds)');
+    responseRecs.push('Optimize server performance, implement caching, use a CDN');
+  } else if (responseTime > 1000) {
+    responseScore = 70;
+    responseIssues.push('Slow response time (>1 second)');
+    responseRecs.push('Implement caching strategies and server optimization');
+  } else {
+    responseRecs.push('Response time is excellent');
+  }
+  
+  results.push({
+    label: 'Server Response Time',
+    description: 'Fast server response times are crucial for user experience and search engine crawling efficiency.',
+    current: `${responseTime}ms`,
+    path: 'Server-level metric',
+    score: responseScore,
+    issues: responseIssues,
+    recommendations: responseRecs,
+    practicalExample: responseTime > 1000 ? 'Add cache headers: Cache-Control: public, max-age=31536000' : 'Current response time is optimal for user experience'
+  });
+  
+  // Viewport Analysis
+  results.push({
+    label: 'Mobile Viewport',
+    description: 'Proper viewport configuration is essential for mobile-first indexing and responsive design.',
+    current: hasViewport ? 'Viewport meta tag found' : 'No viewport meta tag',
+    path: hasViewport ? 'HTML head section' : 'Not found',
+    score: hasViewport ? 100 : 60,
+    issues: hasViewport ? [] : ['Missing viewport meta tag'],
+    recommendations: hasViewport ? ['Viewport is properly configured'] : ['Add viewport meta tag for mobile optimization'],
+    practicalExample: hasViewport ? 'Current viewport configuration is correct for mobile devices' : '<meta name="viewport" content="width=device-width, initial-scale=1.0">'
+  });
+  
+  // Canonical Analysis
+  results.push({
+    label: 'Canonical URL',
+    description: 'Canonical URLs prevent duplicate content issues and consolidate page authority.',
+    current: hasCanonical ? 'Canonical URL found' : 'No canonical URL',
+    path: hasCanonical ? 'HTML head section' : 'Not found',
+    score: hasCanonical ? 100 : 75,
+    issues: hasCanonical ? [] : ['Missing canonical URL'],
+    recommendations: hasCanonical ? ['Canonical URL properly set'] : ['Add canonical URL to prevent duplicate content issues'],
+    practicalExample: hasCanonical ? 'Current canonical URL is properly configured' : '<link rel="canonical" href="https://example.com/page">'
+  });
+  
+  return results;
+}
+
+function analyzeContent(wordCount, links) {
+  const results = [];
+  
+  // Content Length Analysis
+  let contentScore = 100;
+  let contentIssues = [];
+  let contentRecs = [];
+  
+  if (wordCount < 150) {
+    contentScore = 40;
+    contentIssues.push('Very low content word count');
+    contentRecs.push('Add substantial, relevant content (aim for 300+ words minimum)');
+  } else if (wordCount < 300) {
+    contentScore = 60;
+    contentIssues.push('Low content word count');
+    contentRecs.push('Expand content to provide more value to users');
+  } else {
+    contentRecs.push('Content length is sufficient for SEO');
+  }
+  
+  results.push({
+    label: 'Content Length & Quality',
+    description: 'Sufficient, high-quality content helps search engines understand your page topic and provides user value.',
+    current: `${wordCount} words`,
+    path: 'Page body content',
+    score: contentScore,
+    issues: contentIssues,
+    recommendations: contentRecs,
+    practicalExample: wordCount < 300 ? 'Add detailed explanations, examples, FAQs, or related information to reach 300+ words' : 'Current content length supports good search engine understanding'
+  });
+  
+  // Internal Links Analysis
+  const internalLinks = links.filter(l => l.isInternal);
+  let internalScore = 100;
+  let internalIssues = [];
+  let internalRecs = [];
+  
+  if (internalLinks.length === 0) {
+    internalScore = 70;
+    internalIssues.push('No internal links found');
+    internalRecs.push('Add 2-5 contextual internal links to related pages');
+  } else if (internalLinks.length < 2) {
+    internalScore = 85;
+    internalIssues.push('Very few internal links');
+    internalRecs.push('Add more internal links to improve site navigation');
+  } else {
+    internalRecs.push('Good internal linking structure');
+  }
+  
+  results.push({
+    label: 'Internal Link Structure',
+    description: 'Internal links distribute page authority and help users navigate to related content.',
+    current: `${internalLinks.length} internal links`,
+    path: 'Throughout page content',
+    score: internalScore,
+    issues: internalIssues,
+    recommendations: internalRecs,
+    practicalExample: '<a href="/related-service" title="Learn about our related services">Explore our comprehensive services</a>'
+  });
+  
+  // External Links Analysis
+  const externalLinks = links.filter(l => l.isExternal);
+  let externalScore = 100;
+  let externalIssues = [];
+  let externalRecs = [];
+  
+  if (externalLinks.length === 0) {
+    externalScore = 90;
+    externalIssues.push('No external links found');
+    externalRecs.push('Consider adding 1-2 links to authoritative sources');
+  } else {
+    externalRecs.push('External linking strategy is appropriate');
+  }
+  
+  results.push({
+    label: 'External Link Strategy',
+    description: 'Quality external links to authoritative sources enhance content credibility and user experience.',
+    current: `${externalLinks.length} external links`,
+    path: 'Throughout page content',
+    score: externalScore,
+    issues: externalIssues,
+    recommendations: externalRecs,
+    practicalExample: '<a href="https://authoritative-source.com" rel="noopener" target="_blank">Industry research data</a>'
+  });
+  
+  return results;
 }
