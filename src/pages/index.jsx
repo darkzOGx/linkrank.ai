@@ -2,6 +2,7 @@ import Layout from "./Layout.jsx";
 
 import SEOAudit from "./SEOAudit";
 import SEOTools from "./SEOTools";
+import GEOTools from "./GEOTools";
 import ToolPage from "./ToolPage";
 
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
@@ -10,6 +11,7 @@ const PAGES = {
     
     SEOAudit: SEOAudit,
     SEOTools: SEOTools,
+    GEOTools: GEOTools,
     
 }
 
@@ -41,6 +43,8 @@ function PagesContent() {
                 <Route path="/SEOAudit" element={<SEOAudit />} />
                 <Route path="/tools" element={<SEOTools />} />
                 <Route path="/tools/:toolId" element={<ToolPage />} />
+                <Route path="/geo-tools" element={<GEOTools />} />
+                <Route path="/geo-tools/:toolId" element={<ToolPage />} />
                 
             </Routes>
         </Layout>

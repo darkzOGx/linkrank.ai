@@ -18,6 +18,9 @@ export default function Layout({ children }) {
             <a href="/tools" className="text-sm font-medium hover:text-gray-600 transition-colors">
               Free SEO Tools
             </a>
+            <a href="/geo-tools" className="text-sm font-medium hover:text-gray-600 transition-colors">
+              Free GEO Tools
+            </a>
           </nav>
         </div>
       </header>
