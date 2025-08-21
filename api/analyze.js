@@ -104,10 +104,62 @@ function analyzeWebsite(fetchResult, originalUrl) {
   const metaDescription = metaDescMatch ? metaDescMatch[1] : '';
   const metaDescLine = metaDescMatch ? getLineNumber(html, metaDescMatch.index) : 'Not found';
   
-  // Extract headings
+  // Extract headings with comprehensive analysis
   const h1Matches = [...html.matchAll(/<h1[^>]*>([^<]*)<\/h1>/gi)];
   const h2Matches = [...html.matchAll(/<h2[^>]*>([^<]*)<\/h2>/gi)];
   const h3Matches = [...html.matchAll(/<h3[^>]*>([^<]*)<\/h3>/gi)];
+  const h4Matches = [...html.matchAll(/<h4[^>]*>([^<]*)<\/h4>/gi)];
+  const h5Matches = [...html.matchAll(/<h5[^>]*>([^<]*)<\/h5>/gi)];
+  const h6Matches = [...html.matchAll(/<h6[^>]*>([^<]*)<\/h6>/gi)];
+  
+  // Extract additional on-page elements
+  const metaKeywordsMatch = html.match(/<meta[^>]*name=["']keywords["'][^>]*content=["']([^"']*)["']/i);
+  const metaKeywords = metaKeywordsMatch ? metaKeywordsMatch[1] : '';
+  
+  const metaAuthorMatch = html.match(/<meta[^>]*name=["']author["'][^>]*content=["']([^"']*)["']/i);
+  const metaAuthor = metaAuthorMatch ? metaAuthorMatch[1] : '';
+  
+  const metaLanguageMatch = html.match(/<html[^>]*lang=["']([^"']*)["']/i);
+  const pageLanguage = metaLanguageMatch ? metaLanguageMatch[1] : '';
+  
+  // Extract bold and italic text for keyword emphasis
+  const strongMatches = [...html.matchAll(/<strong[^>]*>([^<]*)<\/strong>/gi)];
+  const bMatches = [...html.matchAll(/<b[^>]*>([^<]*)<\/b>/gi)];
+  const emMatches = [...html.matchAll(/<em[^>]*>([^<]*)<\/em>/gi)];
+  const iMatches = [...html.matchAll(/<i[^>]*>([^<]*)<\/i>/gi)];
+  
+  // Extract links first 
+  const linkMatches = [...html.matchAll(/<a[^>]*href=["']([^"']*)["'][^>]*>([^<]*)<\/a>/gi)];
+  
+  // Extract anchor text for internal links
+  const anchorTexts = linkMatches.map(match => match[2].trim()).filter(text => text.length > 0);
+  
+  // Check for semantic HTML5 elements
+  const hasMainTag = html.includes('<main');
+  const hasArticleTag = html.includes('<article');
+  const hasSectionTag = html.includes('<section');
+  const hasAsideTag = html.includes('<aside');
+  const hasHeaderTag = html.includes('<header');
+  
+  // Check for multimedia elements
+  const videoMatches = [...html.matchAll(/<video[^>]*>/gi)];
+  const audioMatches = [...html.matchAll(/<audio[^>]*>/gi)];
+  const iframeMatches = [...html.matchAll(/<iframe[^>]*>/gi)];
+  
+  // Check for accessibility features
+  const hasSkipLinks = html.includes('skip to content') || html.includes('skip-link');
+  const ariaLabelsCount = (html.match(/aria-label=/gi) || []).length;
+  const altAttributesCount = (html.match(/alt=/gi) || []).length;
+  
+  // Extract page performance hints
+  const hasPreloadLinks = html.includes('rel="preload"');
+  const hasPrefetchLinks = html.includes('rel="prefetch"');
+  const hasModuleScript = html.includes('type="module"');
+  
+  // Check content structure indicators
+  const listMatches = [...html.matchAll(/<[uo]l[^>]*>/gi)];
+  const tableMatches = [...html.matchAll(/<table[^>]*>/gi)];
+  const formMatches = [...html.matchAll(/<form[^>]*>/gi)];
   
   // Extract images
   const imgMatches = [...html.matchAll(/<img[^>]*>/gi)];
@@ -124,8 +176,7 @@ function analyzeWebsite(fetchResult, originalUrl) {
     };
   });
   
-  // Extract links
-  const linkMatches = [...html.matchAll(/<a[^>]*href=["']([^"']*)["'][^>]*>([^<]*)<\/a>/gi)];
+  // Process links to extract detailed information
   const links = linkMatches.map(match => {
     const href = match[1];
     const text = match[2].trim();
@@ -263,9 +314,24 @@ function analyzeWebsite(fetchResult, originalUrl) {
     hasDNSPrefetch, hasAmp, hasServiceWorker, hasWebP, hasXMLSitemap, 
     hasRobotsTxt, hasHttp2, hasContentSecurity, hasHsts, hasRobots
   };
+  
+  const onPageData = {
+    title, titleLine, metaDescription, metaDescLine, metaKeywords, metaAuthor, pageLanguage,
+    h1Matches, h2Matches, h3Matches, h4Matches, h5Matches, h6Matches,
+    strongMatches, bMatches, emMatches, iMatches, images, anchorTexts,
+    hasMainTag, hasArticleTag, hasSectionTag, hasAsideTag, hasHeaderTag,
+    hasSkipLinks, ariaLabelsCount, altAttributesCount, hasPreloadLinks, hasPrefetchLinks
+  };
+  
+  const contentData = {
+    wordCount, textContent, listMatches, tableMatches, formMatches,
+    videoMatches, audioMatches, iframeMatches, hasModuleScript, links
+  };
+  
   const technicalResults = generateTechnicalResults(technicalData, websiteContext);
+  const onPageResults = generateEnhancedOnPageResults(onPageData, websiteContext);
+  const contentResults = generateEnhancedContentResults(contentData, websiteContext);
   const linkResults = generateLinkResults(links, websiteContext);
-  const contentResults = generateContentResults(wordCount, textContent, websiteContext);
   
   return {
     url: finalUrl,
@@ -305,13 +371,8 @@ function analyzeWebsite(fetchResult, originalUrl) {
     // Comprehensive SEO Analysis
     analysis: {
       on_page: {
-        score: onPageScore,
-        results: [
-          { ...titleAnalysis, label: 'Title Tag', description: 'The HTML title tag is the most important on-page SEO element, appearing as the clickable headline in search results.' },
-          { ...metaAnalysis, label: 'Meta Description', description: 'Meta descriptions provide page summaries in search results and significantly influence click-through rates.' },
-          { ...headingAnalysis, label: 'Heading Structure (H1-H6)', description: 'Proper heading hierarchy helps search engines understand content structure and improves accessibility.' },
-          { ...imageAnalysis, label: 'Image Optimization', description: 'Proper image optimization improves accessibility, SEO, and page loading performance.' }
-        ]
+        score: Math.round(onPageResults.reduce((sum, item) => sum + item.score, 0) / onPageResults.length),
+        results: onPageResults
       },
       technical: {
         score: Math.round(technicalResults.reduce((sum, item) => sum + item.score, 0) / technicalResults.length),
@@ -320,10 +381,6 @@ function analyzeWebsite(fetchResult, originalUrl) {
       content: {
         score: Math.round(contentResults.reduce((sum, item) => sum + item.score, 0) / contentResults.length),
         results: contentResults
-      },
-      link_structure: {
-        score: Math.round(linkResults.reduce((sum, item) => sum + item.score, 0) / linkResults.length),
-        results: linkResults
       }
     },
     
@@ -905,4 +962,305 @@ function generateAllStrategySections(websiteContext, siteData) {
       ]
     }
   };
+}
+
+function generateEnhancedOnPageResults(data, websiteContext) {
+  const {
+    title, titleLine, metaDescription, metaDescLine, metaKeywords, metaAuthor, pageLanguage,
+    h1Matches, h2Matches, h3Matches, h4Matches, h5Matches, h6Matches,
+    strongMatches, bMatches, emMatches, iMatches, images, anchorTexts,
+    hasMainTag, hasArticleTag, hasSectionTag, hasAsideTag, hasHeaderTag,
+    hasSkipLinks, ariaLabelsCount, altAttributesCount, hasPreloadLinks, hasPrefetchLinks
+  } = data;
+
+  return [
+    {
+      label: 'Title Tag Optimization',
+      description: 'Page title is crucial for search rankings and click-through rates from search results.',
+      score: title ? (title.length >= 30 && title.length <= 60 ? 100 : title.length >= 20 ? 85 : 60) : 0,
+      current: title || 'Missing title tag',
+      path: titleLine !== 'Not found' ? `Line ${titleLine}` : 'Not found',
+      issues: !title ? ['Missing title tag'] : title.length < 30 ? [`Title too short (${title.length} characters)`] : title.length > 60 ? [`Title may be truncated (${title.length} characters)`] : [],
+      recommendations: !title ? ['Add a unique, descriptive title tag between 30-60 characters'] : title.length < 30 ? ['Expand title to 30-60 characters for optimal SEO impact'] : title.length > 60 ? ['Shorten title to under 60 characters to prevent truncation'] : [],
+      practicalExample: !title ? `<title>${capitalizeFirst(websiteContext.brandName)} - Professional ${websiteContext.industry} Services</title>` : title.length < 30 ? `<title>${title} - ${capitalizeFirst(websiteContext.brandName)} Services</title>` : title.length > 60 ? `<title>${title.substring(0, 50)}... | ${capitalizeFirst(websiteContext.brandName)}</title>` : null
+    },
+    {
+      label: 'Meta Description Optimization',
+      description: 'Meta descriptions influence click-through rates and provide context about page content to search engines.',
+      score: metaDescription ? (metaDescription.length >= 150 && metaDescription.length <= 160 ? 100 : metaDescription.length >= 120 ? 85 : 60) : 0,
+      current: metaDescription || 'Missing meta description',
+      path: metaDescLine !== 'Not found' ? `Line ${metaDescLine}` : 'Not found',
+      issues: !metaDescription ? ['Missing meta description'] : metaDescription.length < 120 ? [`Meta description too short (${metaDescription.length} characters)`] : metaDescription.length > 160 ? [`Meta description may be truncated (${metaDescription.length} characters)`] : [],
+      recommendations: !metaDescription ? ['Add a compelling meta description between 150-160 characters'] : metaDescription.length < 120 ? ['Expand meta description to 150-160 characters'] : metaDescription.length > 160 ? ['Shorten meta description to prevent truncation'] : [],
+      practicalExample: !metaDescription ? `<meta name="description" content="Professional ${websiteContext.industry} services from ${capitalizeFirst(websiteContext.brandName)}. Get expert solutions and quality results. Contact us today for a free consultation.">` : metaDescription.length < 120 ? `<meta name="description" content="${metaDescription} Get expert solutions from ${capitalizeFirst(websiteContext.brandName)}. Contact us today for professional service.">` : null
+    },
+    {
+      label: 'Heading Structure (H1-H6)',
+      description: 'Proper heading hierarchy helps search engines understand content structure and improves accessibility.',
+      score: h1Matches.length === 1 ? (h2Matches.length > 0 ? 100 : 85) : (h1Matches.length === 0 ? 40 : 70),
+      current: `H1: ${h1Matches.length}, H2: ${h2Matches.length}, H3: ${h3Matches.length}, H4: ${h4Matches.length}, H5: ${h5Matches.length}, H6: ${h6Matches.length}`,
+      path: 'Throughout page content',
+      issues: h1Matches.length === 0 ? ['Missing H1 tag'] : h1Matches.length > 1 ? [`Multiple H1 tags found (${h1Matches.length})`] : h2Matches.length === 0 ? ['No H2 tags found - missing content structure'] : [],
+      recommendations: h1Matches.length === 0 ? ['Add exactly one H1 tag that describes the main topic'] : h1Matches.length > 1 ? ['Use only one H1 tag per page; convert others to H2-H6'] : h2Matches.length === 0 ? ['Add H2 tags to structure your content properly'] : [],
+      practicalExample: h1Matches.length === 0 ? `<h1>Professional ${websiteContext.industry} Services - ${capitalizeFirst(websiteContext.brandName)}</h1>\n<h2>Our Services</h2>\n<h3>Why Choose Us</h3>` : h1Matches.length > 1 ? `<h1>${h1Matches[0][1]}</h1>\n<h2>${h1Matches[1][1]}</h2>\n<h3>Supporting Information</h3>` : null
+    },
+    {
+      label: 'Meta Keywords Tag',
+      description: 'While not directly used for rankings, meta keywords can help with content organization and internal analysis.',
+      score: metaKeywords ? 100 : 80,
+      current: metaKeywords || 'No meta keywords tag',
+      path: metaKeywords ? 'HTML head section' : 'Not found',
+      issues: [],
+      recommendations: metaKeywords ? ['Meta keywords are present'] : ['Consider adding meta keywords for content organization'],
+      practicalExample: !metaKeywords ? `<meta name="keywords" content="${websiteContext.keywords.slice(0, 5).join(', ')}, ${websiteContext.industry}, ${websiteContext.brandName}">` : null
+    },
+    {
+      label: 'Page Language Declaration',
+      description: 'Language declaration helps search engines understand content language and improves international SEO.',
+      score: pageLanguage ? 100 : 70,
+      current: pageLanguage || 'No language specified',
+      path: pageLanguage ? 'HTML tag' : 'Not found',
+      issues: !pageLanguage ? ['Missing language declaration'] : [],
+      recommendations: !pageLanguage ? ['Add lang attribute to HTML tag'] : ['Language declaration is properly set'],
+      practicalExample: !pageLanguage ? '<html lang="en">' : null
+    },
+    {
+      label: 'Author Information',
+      description: 'Author meta tag helps establish content authority and can support E-A-T (Expertise, Authoritativeness, Trustworthiness).',
+      score: metaAuthor ? 100 : 75,
+      current: metaAuthor || 'No author specified',
+      path: metaAuthor ? 'HTML head section' : 'Not found',
+      issues: [],
+      recommendations: metaAuthor ? ['Author information is present'] : ['Consider adding author meta tag for content authority'],
+      practicalExample: !metaAuthor ? `<meta name="author" content="${capitalizeFirst(websiteContext.brandName)} Team">` : null
+    },
+    {
+      label: 'Text Emphasis & Keywords',
+      description: 'Proper use of bold and italic text helps emphasize important keywords and improves content readability.',
+      score: (strongMatches.length + bMatches.length + emMatches.length + iMatches.length) > 0 ? 100 : 70,
+      current: `Strong: ${strongMatches.length}, Bold: ${bMatches.length}, Em: ${emMatches.length}, Italic: ${iMatches.length}`,
+      path: 'Throughout page content',
+      issues: (strongMatches.length + bMatches.length + emMatches.length + iMatches.length) === 0 ? ['No text emphasis found'] : [],
+      recommendations: (strongMatches.length + bMatches.length + emMatches.length + iMatches.length) === 0 ? ['Add emphasis to important keywords using <strong> or <em> tags'] : ['Good use of text emphasis'],
+      practicalExample: (strongMatches.length + bMatches.length + emMatches.length + iMatches.length) === 0 ? `<p>We provide <strong>${websiteContext.primaryKeyword}</strong> services with <em>professional expertise</em>.</p>` : null
+    },
+    {
+      label: 'Image SEO Optimization',
+      description: 'Proper image optimization with alt tags improves accessibility and helps search engines understand visual content.',
+      score: images.length === 0 ? 100 : Math.max(0, 100 - (images.filter(img => !img.hasAlt).length / images.length) * 50),
+      current: `${images.length} images, ${images.filter(img => img.hasAlt).length} with alt tags`,
+      path: 'Throughout page content',
+      issues: images.filter(img => !img.hasAlt).length > 0 ? [`${images.filter(img => !img.hasAlt).length} images missing alt attributes`] : images.length === 0 ? ['No images found'] : [],
+      recommendations: images.length === 0 ? ['Consider adding relevant images with proper alt text'] : images.filter(img => !img.hasAlt).length === 0 ? ['All images have alt text - excellent for accessibility'] : ['Add descriptive alt text to all images for accessibility and SEO'],
+      practicalExample: images.length === 0 ? `<img src="${websiteContext.industry}-services.jpg" alt="Professional ${websiteContext.industry} services by ${capitalizeFirst(websiteContext.brandName)}" width="400" height="300">` : images.filter(img => !img.hasAlt).length > 0 ? `<img src="${images.find(img => !img.hasAlt)?.src || 'image.jpg'}" alt="Professional ${websiteContext.industry} services provided by ${capitalizeFirst(websiteContext.brandName)}" width="400" height="300">` : null
+    },
+    {
+      label: 'Semantic HTML5 Elements',
+      description: 'Modern HTML5 semantic elements help search engines better understand page structure and content organization.',
+      score: [hasMainTag, hasArticleTag, hasSectionTag, hasAsideTag, hasHeaderTag].filter(Boolean).length * 20,
+      current: `Main: ${hasMainTag ? 'Yes' : 'No'}, Article: ${hasArticleTag ? 'Yes' : 'No'}, Section: ${hasSectionTag ? 'Yes' : 'No'}, Aside: ${hasAsideTag ? 'Yes' : 'No'}, Header: ${hasHeaderTag ? 'Yes' : 'No'}`,
+      path: 'Throughout page structure',
+      issues: [hasMainTag, hasArticleTag, hasSectionTag, hasAsideTag, hasHeaderTag].filter(Boolean).length < 2 ? ['Limited use of semantic HTML5 elements'] : [],
+      recommendations: [hasMainTag, hasArticleTag, hasSectionTag, hasAsideTag, hasHeaderTag].filter(Boolean).length < 2 ? ['Use more semantic HTML5 elements like <main>, <article>, <section>, <aside>, <header>'] : ['Good use of semantic HTML5 elements'],
+      practicalExample: !hasMainTag ? '<main>\n  <article>\n    <header>\n      <h1>Page Title</h1>\n    </header>\n    <section>\n      <h2>Content Section</h2>\n    </section>\n  </article>\n</main>' : null
+    },
+    {
+      label: 'Accessibility Features',
+      description: 'Accessibility features improve user experience for all users and are considered by search engines for rankings.',
+      score: hasSkipLinks ? 100 : ariaLabelsCount > 0 ? 85 : altAttributesCount > 0 ? 70 : 50,
+      current: `Skip links: ${hasSkipLinks ? 'Yes' : 'No'}, ARIA labels: ${ariaLabelsCount}, Alt attributes: ${altAttributesCount}`,
+      path: 'Throughout page content',
+      issues: !hasSkipLinks && ariaLabelsCount === 0 ? ['Limited accessibility features'] : [],
+      recommendations: !hasSkipLinks ? ['Add skip navigation links for keyboard users'] : ariaLabelsCount === 0 ? ['Consider adding ARIA labels for better accessibility'] : ['Good accessibility implementation'],
+      practicalExample: !hasSkipLinks ? '<a href="#main-content" class="skip-link">Skip to main content</a>\n<div id="main-content">' : ariaLabelsCount === 0 ? '<button aria-label="Open navigation menu">Menu</button>' : null
+    },
+    {
+      label: 'Performance Hints & Preloading',
+      description: 'Resource hints like preload and prefetch improve page loading performance, which is a ranking factor.',
+      score: hasPreloadLinks && hasPrefetchLinks ? 100 : hasPreloadLinks || hasPrefetchLinks ? 80 : 60,
+      current: `Preload links: ${hasPreloadLinks ? 'Yes' : 'No'}, Prefetch links: ${hasPrefetchLinks ? 'Yes' : 'No'}`,
+      path: 'HTML head section',
+      issues: !hasPreloadLinks && !hasPrefetchLinks ? ['No performance optimization hints found'] : [],
+      recommendations: !hasPreloadLinks && !hasPrefetchLinks ? ['Add preload and prefetch hints for critical resources'] : ['Performance hints are configured'],
+      practicalExample: !hasPreloadLinks && !hasPrefetchLinks ? '<link rel="preload" href="critical-font.woff2" as="font" type="font/woff2" crossorigin>\n<link rel="prefetch" href="next-page.html">' : null
+    }
+  ];
+}
+
+function generateEnhancedContentResults(data, websiteContext) {
+  const {
+    wordCount, textContent, listMatches, tableMatches, formMatches,
+    videoMatches, audioMatches, iframeMatches, hasModuleScript, links
+  } = data;
+
+  const internalLinks = links.filter(l => l.isInternal);
+  const externalLinks = links.filter(l => l.isExternal);
+  const readingTime = Math.ceil(wordCount / 200); // Average reading speed
+
+  return [
+    {
+      label: 'Content Length & Quality',
+      description: 'Comprehensive content with adequate word count performs better in search results and provides more value to users.',
+      score: wordCount >= 1000 ? 100 : wordCount >= 500 ? 85 : wordCount >= 300 ? 70 : wordCount >= 150 ? 50 : 30,
+      current: `${wordCount} words (${readingTime} min read)`,
+      path: 'Page content analysis',
+      issues: wordCount < 300 ? ['Content is too short for effective SEO'] : wordCount < 500 ? ['Content could be more comprehensive'] : [],
+      recommendations: wordCount < 300 ? ['Expand content to at least 300 words for better SEO performance'] : wordCount < 500 ? ['Consider adding more detailed information to reach 500+ words'] : wordCount < 1000 ? ['Content length is good, consider expanding to 1000+ words for competitive topics'] : ['Excellent content length'],
+      practicalExample: wordCount < 300 ? `Add sections like:\n- Benefits of ${websiteContext.primaryKeyword}\n- How ${websiteContext.primaryKeyword} works\n- Why choose ${websiteContext.brandName}\n- Frequently asked questions\n- Customer testimonials` : null
+    },
+    {
+      label: 'Content Structure Elements',
+      description: 'Lists, tables, and forms provide structured content that enhances user experience and search engine understanding.',
+      score: (listMatches.length > 0 ? 30 : 0) + (tableMatches.length > 0 ? 35 : 0) + (formMatches.length > 0 ? 35 : 0),
+      current: `Lists: ${listMatches.length}, Tables: ${tableMatches.length}, Forms: ${formMatches.length}`,
+      path: 'Throughout page content',
+      issues: listMatches.length === 0 && tableMatches.length === 0 ? ['Limited content structure elements'] : [],
+      recommendations: listMatches.length === 0 ? ['Add bulleted or numbered lists to improve content structure'] : tableMatches.length === 0 && formMatches.length === 0 ? ['Consider adding tables or forms where appropriate'] : ['Good use of content structure elements'],
+      practicalExample: listMatches.length === 0 ? `<h3>Benefits of ${websiteContext.primaryKeyword}:</h3>\n<ul>\n  <li>Professional expertise</li>\n  <li>Quality results</li>\n  <li>Competitive pricing</li>\n  <li>Excellent customer service</li>\n</ul>` : null
+    },
+    {
+      label: 'Multimedia Content Integration',
+      description: 'Videos, audio, and embedded content enhance user engagement and can improve dwell time, a positive ranking signal.',
+      score: (videoMatches.length > 0 ? 40 : 0) + (audioMatches.length > 0 ? 30 : 0) + (iframeMatches.length > 0 ? 30 : 0),
+      current: `Videos: ${videoMatches.length}, Audio: ${audioMatches.length}, Embedded content: ${iframeMatches.length}`,
+      path: 'Throughout page content',
+      issues: videoMatches.length === 0 && audioMatches.length === 0 && iframeMatches.length === 0 ? ['No multimedia content found'] : [],
+      recommendations: videoMatches.length === 0 && audioMatches.length === 0 && iframeMatches.length === 0 ? ['Consider adding videos or other multimedia content to enhance user engagement'] : ['Good multimedia integration'],
+      practicalExample: videoMatches.length === 0 && audioMatches.length === 0 ? `<video width="560" height="315" controls>\n  <source src="${websiteContext.primaryKeyword}-demo.mp4" type="video/mp4">\n  Your browser does not support the video tag.\n</video>` : null
+    },
+    {
+      label: 'Internal Linking Structure',
+      description: 'Strong internal linking helps distribute page authority and improves site navigation for users and search engines.',
+      score: internalLinks.length >= 5 ? 100 : internalLinks.length >= 3 ? 80 : internalLinks.length >= 1 ? 60 : 20,
+      current: `${internalLinks.length} internal links`,
+      path: 'Throughout page content',
+      issues: internalLinks.length < 3 ? ['Insufficient internal linking'] : [],
+      recommendations: internalLinks.length < 3 ? ['Add more internal links to related pages and services'] : internalLinks.length < 5 ? ['Good internal linking, consider adding 1-2 more relevant links'] : ['Excellent internal linking structure'],
+      practicalExample: internalLinks.length < 3 ? `<p>Learn more about our <a href="/about">company background</a> and explore our <a href="/services">${websiteContext.industry} services</a>. Contact us through our <a href="/contact">contact page</a> for a consultation.</p>` : null
+    },
+    {
+      label: 'External Link Authority',
+      description: 'Quality external links to authoritative sources can enhance content credibility and provide additional value to users.',
+      score: externalLinks.length >= 2 ? 100 : externalLinks.length >= 1 ? 80 : 60,
+      current: `${externalLinks.length} external links`,
+      path: 'Throughout page content',
+      issues: externalLinks.length === 0 ? ['No external links found'] : [],
+      recommendations: externalLinks.length === 0 ? ['Consider adding 1-2 links to authoritative external sources'] : externalLinks.length < 2 ? ['Good external linking, consider adding one more authoritative link'] : ['Good external link profile'],
+      practicalExample: externalLinks.length === 0 ? `<p>According to <a href="https://www.industry-authority.com" target="_blank" rel="noopener">Industry Authority</a>, ${websiteContext.primaryKeyword} best practices include...</p>` : null
+    },
+    {
+      label: 'Keyword Density & Distribution',
+      description: 'Proper keyword usage throughout content helps search engines understand topic relevance without over-optimization.',
+      score: calculateKeywordScore(textContent, websiteContext.primaryKeyword),
+      current: `Primary keyword appears ${countKeywordOccurrences(textContent, websiteContext.primaryKeyword)} times`,
+      path: 'Content analysis',
+      issues: countKeywordOccurrences(textContent, websiteContext.primaryKeyword) === 0 ? ['Primary keyword not found in content'] : countKeywordOccurrences(textContent, websiteContext.primaryKeyword) < 2 ? ['Primary keyword used too rarely'] : [],
+      recommendations: countKeywordOccurrences(textContent, websiteContext.primaryKeyword) === 0 ? [`Include "${websiteContext.primaryKeyword}" naturally throughout the content`] : countKeywordOccurrences(textContent, websiteContext.primaryKeyword) < 2 ? [`Use "${websiteContext.primaryKeyword}" 2-5 times naturally in the content`] : ['Good keyword usage'],
+      practicalExample: countKeywordOccurrences(textContent, websiteContext.primaryKeyword) < 2 ? `<h2>Why Choose Our ${websiteContext.primaryKeyword} Services?</h2>\n<p>Our ${websiteContext.primaryKeyword} expertise ensures quality results for every project.</p>` : null
+    },
+    {
+      label: 'Content Freshness & Updates',
+      description: 'Fresh, updated content signals to search engines that the site is actively maintained and provides current information.',
+      score: 75, // Default score since we can't detect last modified date from HTML alone
+      current: 'Content freshness not detectable from HTML',
+      path: 'Content analysis',
+      issues: [],
+      recommendations: ['Regularly update content with fresh information', 'Add publication or last modified dates to content'],
+      practicalExample: '<p><small>Last updated: <time datetime="2024-01-15">January 15, 2024</time></small></p>'
+    },
+    {
+      label: 'Call-to-Action Elements',
+      description: 'Clear calls-to-action improve user engagement and conversion rates, which can indirectly benefit SEO through user signals.',
+      score: formMatches.length > 0 ? 100 : textContent.toLowerCase().includes('contact') || textContent.toLowerCase().includes('call') ? 80 : 60,
+      current: formMatches.length > 0 ? `${formMatches.length} forms found` : 'CTAs detected in text',
+      path: 'Throughout page content',
+      issues: formMatches.length === 0 && !textContent.toLowerCase().includes('contact') ? ['No clear call-to-action elements found'] : [],
+      recommendations: formMatches.length === 0 ? ['Add contact forms or clear call-to-action buttons'] : ['Good call-to-action implementation'],
+      practicalExample: formMatches.length === 0 ? `<div class="cta-section">\n  <h3>Ready to get started?</h3>\n  <p>Contact ${websiteContext.brandName} today for professional ${websiteContext.industry} services.</p>\n  <a href="/contact" class="cta-button">Get Free Quote</a>\n</div>` : null
+    },
+    {
+      label: 'Topic Authority & Expertise',
+      description: 'Demonstrating expertise in your field helps establish E-A-T (Expertise, Authoritativeness, Trustworthiness) for better rankings.',
+      score: calculateExpertiseScore(textContent, websiteContext.industry),
+      current: 'Topic authority analysis based on content',
+      path: 'Content analysis',
+      issues: calculateExpertiseScore(textContent, websiteContext.industry) < 70 ? ['Content could demonstrate more expertise'] : [],
+      recommendations: calculateExpertiseScore(textContent, websiteContext.industry) < 70 ? ['Add more detailed explanations, case studies, or technical information to demonstrate expertise'] : ['Good demonstration of topic expertise'],
+      practicalExample: calculateExpertiseScore(textContent, websiteContext.industry) < 70 ? `<section>\n  <h3>Our ${websiteContext.industry} Methodology</h3>\n  <p>With over X years of experience, ${websiteContext.brandName} follows industry best practices...</p>\n</section>` : null
+    },
+    {
+      label: 'Content Readability & Structure',
+      description: 'Well-structured, readable content improves user experience and helps search engines understand content hierarchy.',
+      score: calculateReadabilityScore(wordCount, textContent),
+      current: `Estimated readability based on ${wordCount} words`,
+      path: 'Content analysis',
+      issues: calculateReadabilityScore(wordCount, textContent) < 70 ? ['Content structure could be improved for better readability'] : [],
+      recommendations: calculateReadabilityScore(wordCount, textContent) < 70 ? ['Break up long paragraphs, use more subheadings, and simplify complex sentences'] : ['Good content readability'],
+      practicalExample: calculateReadabilityScore(wordCount, textContent) < 70 ? `<h3>What is ${websiteContext.primaryKeyword}?</h3>\n<p>Short, clear paragraph explaining the concept.</p>\n\n<h3>How does it work?</h3>\n<p>Another concise paragraph with actionable information.</p>` : null
+    }
+  ];
+}
+
+// Helper functions for enhanced content analysis
+function countKeywordOccurrences(text, keyword) {
+  if (!keyword || !text) return 0;
+  const regex = new RegExp(keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+  return (text.match(regex) || []).length;
+}
+
+function calculateKeywordScore(text, keyword) {
+  const occurrences = countKeywordOccurrences(text, keyword);
+  const wordCount = text.split(/\s+/).length;
+  const density = (occurrences / wordCount) * 100;
+  
+  if (density === 0) return 0;
+  if (density > 0.5 && density <= 2) return 100;
+  if (density > 2 && density <= 3) return 85;
+  if (density > 3) return 60; // Over-optimization penalty
+  if (density > 0 && density <= 0.5) return 70;
+  return 50;
+}
+
+function calculateExpertiseScore(text, industry) {
+  const expertiseWords = ['experience', 'expert', 'professional', 'certified', 'qualified', 'specializ', 'years', 'proven', 'award'];
+  const industryTerms = getIndustryTerms(industry);
+  
+  let score = 60; // Base score
+  
+  expertiseWords.forEach(word => {
+    if (text.toLowerCase().includes(word)) score += 5;
+  });
+  
+  industryTerms.forEach(term => {
+    if (text.toLowerCase().includes(term)) score += 3;
+  });
+  
+  return Math.min(100, score);
+}
+
+function calculateReadabilityScore(wordCount, text) {
+  // Simple readability estimate based on word count and sentence structure
+  const sentences = text.split(/[.!?]+/).length;
+  const avgWordsPerSentence = wordCount / sentences;
+  
+  let score = 80; // Base score
+  
+  if (avgWordsPerSentence > 25) score -= 20; // Long sentences
+  if (avgWordsPerSentence > 20) score -= 10;
+  if (wordCount < 150) score -= 15; // Too short
+  
+  return Math.max(30, Math.min(100, score));
+}
+
+function getIndustryTerms(industry) {
+  const terms = {
+    'healthcare': ['patient', 'treatment', 'medical', 'health', 'clinic', 'diagnosis'],
+    'legal': ['client', 'case', 'court', 'law', 'attorney', 'legal'],
+    'technology': ['software', 'digital', 'solution', 'system', 'tech', 'development'],
+    'finance': ['investment', 'financial', 'money', 'capital', 'portfolio', 'banking'],
+    'real estate': ['property', 'home', 'house', 'listing', 'market', 'mortgage'],
+    'business': ['service', 'solution', 'client', 'customer', 'professional', 'quality']
+  };
+  
+  return terms[industry] || terms['business'];
 }
