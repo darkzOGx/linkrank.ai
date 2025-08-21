@@ -105,19 +105,19 @@ export default function BacklinkChecker() {
                 <h3 className="font-medium mb-4">Link Types Distribution</h3>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                   <div className="p-3 bg-gray-50 border border-gray-200">
-                    <div className="text-xl font-medium">{result.linkTypes.dofollow}%</div>
+                    <div className="text-xl font-medium">{result.linkTypes?.dofollow}%</div>
                     <div className="text-sm text-gray-600">DoFollow</div>
                   </div>
                   <div className="p-3 bg-gray-50 border border-gray-200">
-                    <div className="text-xl font-medium">{result.linkTypes.nofollow}%</div>
+                    <div className="text-xl font-medium">{result.linkTypes?.nofollow}%</div>
                     <div className="text-sm text-gray-600">NoFollow</div>
                   </div>
                   <div className="p-3 bg-gray-50 border border-gray-200">
-                    <div className="text-xl font-medium">{result.linkTypes.text}%</div>
+                    <div className="text-xl font-medium">{result.linkTypes?.text}%</div>
                     <div className="text-sm text-gray-600">Text Links</div>
                   </div>
                   <div className="p-3 bg-gray-50 border border-gray-200">
-                    <div className="text-xl font-medium">{result.linkTypes.image}%</div>
+                    <div className="text-xl font-medium">{result.linkTypes?.image}%</div>
                     <div className="text-sm text-gray-600">Image Links</div>
                   </div>
                 </div>
@@ -130,7 +130,7 @@ export default function BacklinkChecker() {
                   Top Referring Domains
                 </h3>
                 <div className="space-y-3">
-                  {result.topBacklinks.map((link, index) => (
+                  {result.topBacklinks?.map((link, index) => (
                     <div key={index} className="border border-gray-200 p-4">
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
@@ -172,7 +172,7 @@ export default function BacklinkChecker() {
               <div className="mb-8">
                 <h3 className="font-medium mb-4">Top Anchor Texts</h3>
                 <div className="space-y-2">
-                  {result.anchorTexts.map((anchor, index) => (
+                  {result.anchorTexts?.map((anchor, index) => (
                     <div key={index} className="flex items-center justify-between p-3 bg-gray-50 border border-gray-200">
                       <span className="text-sm">{anchor.text}</span>
                       <div className="flex items-center gap-4">
@@ -198,15 +198,15 @@ export default function BacklinkChecker() {
                 <div className="grid grid-cols-3 gap-4 text-sm">
                   <div>
                     <span className="text-green-700">New (30 days):</span>
-                    <span className="ml-2 font-medium text-green-800">+{result.growth.new30days}</span>
+                    <span className="ml-2 font-medium text-green-800">+{result.growth?.new30days}</span>
                   </div>
                   <div>
                     <span className="text-green-700">Lost (30 days):</span>
-                    <span className="ml-2 font-medium text-red-600">-{result.growth.lost30days}</span>
+                    <span className="ml-2 font-medium text-red-600">-{result.growth?.lost30days}</span>
                   </div>
                   <div>
                     <span className="text-green-700">Net Growth:</span>
-                    <span className="ml-2 font-medium text-green-800">+{result.growth.net}</span>
+                    <span className="ml-2 font-medium text-green-800">+{result.growth?.net}</span>
                   </div>
                 </div>
               </div>
@@ -224,10 +224,58 @@ export default function BacklinkChecker() {
                 </ul>
               </div>
             </div>
+          ) : result.educational ? (
+            <div className="p-6">
+              <div className="mb-6 p-4 bg-blue-50 border border-blue-200">
+                <h3 className="font-medium text-blue-800 mb-3">📚 {result.message}</h3>
+                <p className="text-blue-700 mb-4">{result.info.explanation}</p>
+              </div>
+
+              <div className="mb-6">
+                <h3 className="font-medium mb-3">🆓 Free Alternatives</h3>
+                <ul className="space-y-2">
+                  {result.info.freeAlternatives.map((alternative, index) => (
+                    <li key={index} className="flex items-start gap-2 text-sm">
+                      <span className="text-green-600 mt-1">✓</span>
+                      <span>{alternative}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="mb-6">
+                <h3 className="font-medium mb-3">🔧 Professional Tools</h3>
+                <ul className="space-y-2">
+                  {result.info.professionalTools.map((tool, index) => (
+                    <li key={index} className="flex items-start gap-2 text-sm">
+                      <span className="text-blue-600 mt-1">•</span>
+                      <span>{tool}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="mb-6">
+                <h3 className="font-medium mb-3">📊 What Professional Backlink Analysis Shows</h3>
+                <ul className="space-y-2">
+                  {result.info.whatBacklinksShow.map((insight, index) => (
+                    <li key={index} className="flex items-start gap-2 text-sm">
+                      <span className="text-purple-600 mt-1">💡</span>
+                      <span>{insight}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="p-4 bg-gray-50 border border-gray-200">
+                <h4 className="font-medium mb-2">🚀 Implementation Guide</h4>
+                <p className="text-sm text-gray-700">{result.info.implementation}</p>
+              </div>
+            </div>
           ) : (
             <div className="p-6">
               <div className="text-red-600 mb-4">
-                <span className="font-medium">Error:</span> {result.error}
+                <span className="font-medium">Error:</span> {result.error || 'An unknown error occurred'}
               </div>
             </div>
           )}
