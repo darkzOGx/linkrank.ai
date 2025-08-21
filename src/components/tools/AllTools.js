@@ -1,4 +1,4 @@
-// Export all tool components
+// Export all SEO tool components
 export { default as RobotsTester } from './RobotsTester';
 export { default as KeywordResearch } from './KeywordResearch';
 export { default as WebsiteSpeedTest } from './WebsiteSpeedTest';
@@ -18,3 +18,8 @@ export { default as OrganicTrafficChecker } from './OrganicTrafficChecker';
 export { default as MetaGenerator } from './MetaGenerator';
 export { default as CacheChecker } from './CacheChecker';
 export { default as LLMsGenerator } from './LLMsGenerator';
+
+// Export GEO tool components
+export { default as StructuredDataValidator } from './StructuredDataValidator';
+export { default as AICitationAnalyzer } from './AICitationAnalyzer';
+export { default as FactDensityChecker } from './FactDensityChecker';
