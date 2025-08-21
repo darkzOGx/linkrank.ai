@@ -3,8 +3,29 @@
  * Performs comprehensive website analysis without external dependencies
  */
 
-// Utility function to safely fetch a webpage
+import { isDemoWebsite, getDemoData } from './demoData.js';
+
+// List of CORS proxy services to try
+const CORS_PROXIES = [
+  'https://api.allorigins.win/raw?url=',
+  'https://corsproxy.io/?',
+  'https://cors-anywhere.herokuapp.com/',
+  'https://api.codetabs.com/v1/proxy?quest='
+];
+
+// Utility function to safely fetch a webpage with CORS proxy fallback
 async function fetchWebpage(url) {
+  const originalUrl = url;
+  
+  // Check if this is a demo website
+  if (isDemoWebsite(url)) {
+    const demoData = getDemoData(url);
+    if (demoData) {
+      return demoData;
+    }
+  }
+  
+  // First try direct fetch (in case the site allows CORS)
   try {
     const response = await fetch(url, {
       method: 'GET',
@@ -15,15 +36,36 @@ async function fetchWebpage(url) {
       mode: 'cors'
     });
     
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    if (response.ok) {
+      const html = await response.text();
+      return { html, status: response.status, headers: response.headers };
     }
-    
-    const html = await response.text();
-    return { html, status: response.status, headers: response.headers };
-  } catch (error) {
-    throw new Error(`Failed to fetch webpage: ${error.message}`);
+  } catch (directError) {
+    console.log('Direct fetch failed, trying CORS proxies...');
   }
+  
+  // Try CORS proxies if direct fetch fails
+  for (const proxy of CORS_PROXIES) {
+    try {
+      const proxyUrl = proxy + encodeURIComponent(originalUrl);
+      const response = await fetch(proxyUrl, {
+        method: 'GET',
+        headers: {
+          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+        }
+      });
+      
+      if (response.ok) {
+        const html = await response.text();
+        return { html, status: response.status, headers: response.headers };
+      }
+    } catch (proxyError) {
+      console.log(`Proxy ${proxy} failed:`, proxyError.message);
+      continue;
+    }
+  }
+  
+  throw new Error(`Unable to fetch webpage. CORS restrictions prevent direct access. Try using "demo.linkrank.ai" or "example.com" to test the tool, or ensure the URL allows cross-origin requests.`);
 }
 
 // Parse HTML content and create a virtual DOM for analysis
@@ -33,24 +75,15 @@ function parseHTML(html) {
   return doc;
 }
 
-// Check for redirects using fetch response
+// Check for redirects using fetch response (simplified due to CORS limitations)
 async function checkRedirects(url) {
   try {
-    const response = await fetch(url, { 
-      method: 'HEAD',
-      redirect: 'manual'
-    });
-    
-    if (response.status >= 300 && response.status < 400) {
-      const location = response.headers.get('location');
-      return {
-        hasRedirect: true,
-        redirectTo: location,
-        status: response.status
-      };
-    }
-    
-    return { hasRedirect: false };
+    // Due to CORS limitations, we can't reliably check redirects from the browser
+    // This is a limitation of client-side analysis
+    return { 
+      hasRedirect: false, 
+      note: 'Redirect checking limited by browser CORS policy' 
+    };
   } catch (error) {
     return { hasRedirect: false, error: error.message };
   }
@@ -526,6 +559,36 @@ export async function performSEOAnalysis(url) {
     };
     
   } catch (error) {
-    throw new Error(`SEO analysis failed: ${error.message}`);
+    // Return a fallback result instead of throwing an error
+    return {
+      url,
+      timestamp: new Date().toISOString(),
+      responseTime: Date.now() - startTime,
+      overallScore: 0,
+      error: true,
+      errorMessage: error.message,
+      title_tag: { value: '', score: 0 },
+      meta_description: { value: '', score: 0 },
+      headings: { h1_count: 0, score: 0 },
+      images: { total_images: 0, missing_alt: 0, score: 0 },
+      page_speed: { load_time: 0, score: 0 },
+      mobile_friendly: { is_mobile_friendly: false, score: 0 },
+      https: { is_https: url.startsWith('https://'), score: url.startsWith('https://') ? 100 : 0 },
+      content: { word_count: 0, score: 0 },
+      links: { internal_count: 0, external_count: 0, internal_score: 0, external_score: 0 },
+      categories: {
+        onPage: { score: 0, results: [] },
+        performance: { score: 0, results: [] },
+        accessibility: { score: 0, results: [] },
+        bestPractices: { score: 0, results: [] }
+      },
+      metadata: {
+        title: '',
+        description: '',
+        h1Count: 0,
+        imageCount: 0,
+        linkCount: 0
+      }
+    };
   }
 }

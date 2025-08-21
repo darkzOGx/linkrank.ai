@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { performSEOAnalysis } from '../services/seoAnalyzer';
+import { performServerSideAnalysis } from '../services/serverSeoAnalyzer';
 import HeroSection from '../components/HeroSection';
 import FeaturesSection from '../components/FeaturesSection';
 import SEOAuditResults from '../components/SEOAuditResults';
-import { AlertTriangle } from 'lucide-react';
+import { AlertTriangle, Server, Zap } from 'lucide-react';
 
 export default function SEOAuditPage() {
   const [isLoading, setIsLoading] = useState(false);
@@ -16,11 +16,11 @@ export default function SEOAuditPage() {
     setCurrentResult(null);
 
     try {
-      const result = await performSEOAnalysis(url);
+      const result = await performServerSideAnalysis(url);
       setCurrentResult(result);
     } catch (err) {
       console.error('SEO analysis error:', err);
-      setError('Failed to analyze website. Please check the URL and try again. The website may be blocking automated requests or may be temporarily unavailable.');
+      setError(err.message || 'Failed to analyze website. Please check the URL and try again.');
     } finally {
       setIsLoading(false);
     }
@@ -32,16 +32,25 @@ export default function SEOAuditPage() {
   };
   
   if (currentResult) {
-    return <SEOAuditResults results={currentResult} onNewAudit={handleNewAudit} />;
+    return <SEOAuditResults result={currentResult} onNewAudit={handleNewAudit} />;
   }
 
   if (isLoading) {
     return (
       <div className="min-h-[50vh] flex items-center justify-center px-4">
-        <div className="text-center font-mono">
-          <div className="w-8 h-8 border-2 border-black border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-sm">ANALYZING WEBSITE...</p>
-          <p className="text-xs text-gray-500 mt-2">Please wait while we analyze the page</p>
+        <div className="text-center">
+          <div className="mb-6">
+            <Server className="w-12 h-12 text-blue-600 mx-auto mb-4" />
+            <div className="w-8 h-8 border-2 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
+          </div>
+          <h2 className="text-xl font-semibold text-gray-900 mb-2">Server-Side Analysis in Progress</h2>
+          <p className="text-gray-600 mb-4">Our advanced SEO crawler is analyzing your website...</p>
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 max-w-md mx-auto">
+            <div className="flex items-center gap-2 text-sm text-blue-800">
+              <Zap className="w-4 h-4" />
+              <span>No CORS restrictions • Full website access • Comprehensive analysis</span>
+            </div>
+          </div>
         </div>
       </div>
     );
