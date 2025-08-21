@@ -248,7 +248,15 @@ function analyzeWebsite(fetchResult, originalUrl) {
   
   // Generate comprehensive analysis results
   const websiteContext = extractWebsiteContext(html, title, metaDescription, textContent, finalUrl);
-  const technicalResults = generateTechnicalResults(hasHttps, hasViewport, hasCanonical, hasFavicon, hasOpenGraph, hasTwitterCard, hasSchemaMarkup, hasGoogleAnalytics, hasGoogleSearchConsole, hasSitemap, structuredDataTypes, urlHasHyphens, urlHasUnderscores, urlIsReadable, hasNavigation, responseTime, websiteContext, hasGzip, hasLazyLoading, hasPreconnect, hasDNSPrefetch, hasAmp, hasServiceWorker, hasWebP, hasXMLSitemap, hasRobotsTxt, hasHttp2, hasContentSecurity, hasHsts);
+  const technicalData = {
+    hasHttps, hasViewport, hasCanonical, hasFavicon, hasOpenGraph, hasTwitterCard, 
+    hasSchemaMarkup, hasGoogleAnalytics, hasGoogleSearchConsole, hasSitemap, 
+    structuredDataTypes, urlHasHyphens, urlHasUnderscores, urlIsReadable, 
+    hasNavigation, responseTime, hasGzip, hasLazyLoading, hasPreconnect, 
+    hasDNSPrefetch, hasAmp, hasServiceWorker, hasWebP, hasXMLSitemap, 
+    hasRobotsTxt, hasHttp2, hasContentSecurity, hasHsts
+  };
+  const technicalResults = generateTechnicalResults(technicalData, websiteContext);
   const linkResults = generateLinkResults(links, websiteContext);
   const contentResults = generateContentResults(wordCount, textContent, websiteContext);
   
@@ -418,7 +426,15 @@ function extractWebsiteContext(html, title, metaDescription, textContent, url) {
   };
 }
 
-function generateTechnicalResults(hasHttps, hasViewport, hasCanonical, hasFavicon, hasOpenGraph, hasTwitterCard, hasSchemaMarkup, hasGoogleAnalytics, hasGoogleSearchConsole, hasSitemap, structuredDataTypes, urlHasHyphens, urlHasUnderscores, urlIsReadable, hasNavigation, responseTime, websiteContext, hasGzip, hasLazyLoading, hasPreconnect, hasDNSPrefetch, hasAmp, hasServiceWorker, hasWebP, hasXMLSitemap, hasRobotsTxt, hasHttp2, hasContentSecurity, hasHsts) {
+function generateTechnicalResults(data, websiteContext) {
+  const {
+    hasHttps, hasViewport, hasCanonical, hasFavicon, hasOpenGraph, hasTwitterCard,
+    hasSchemaMarkup, hasGoogleAnalytics, hasGoogleSearchConsole, hasSitemap,
+    structuredDataTypes, urlHasHyphens, urlHasUnderscores, urlIsReadable,
+    hasNavigation, responseTime, hasGzip, hasLazyLoading, hasPreconnect,
+    hasDNSPrefetch, hasAmp, hasServiceWorker, hasWebP, hasXMLSitemap,
+    hasRobotsTxt, hasHttp2, hasContentSecurity, hasHsts
+  } = data;
   return [
     {
       label: 'HTTPS Security',
