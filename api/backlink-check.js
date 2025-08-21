@@ -10,8 +10,41 @@ export default async function handler(req, res) {
   }
 
   try {
-    const mockResults = generateMockBacklinkData(url);
-    return res.json(mockResults);
+    // Note: Comprehensive backlink analysis requires access to large crawl databases
+    // For production use, integrate with legitimate backlink analysis services
+    return res.json({
+      success: false,
+      educational: true,
+      message: 'Professional backlink analysis requires specialized databases',
+      info: {
+        url,
+        explanation: 'Accurate backlink analysis requires access to massive web crawl databases that are proprietary to SEO companies. Free alternatives provide limited data compared to professional tools.',
+        freeAlternatives: [
+          'Google Search Console - Free tool showing some backlinks to your verified site',
+          'Bing Webmaster Tools - Microsoft\'s free backlink reporting',
+          'Backlink Watch - Basic free backlink checker with limited results',
+          'OpenLinkProfiler - Free tool with basic backlink data'
+        ],
+        professionalTools: [
+          'Ahrefs - Industry-leading backlink database with 16+ trillion links',
+          'Majestic SEO - Specialized in link intelligence and trust metrics',
+          'SEMrush - Comprehensive backlink analysis with competitor insights',
+          'Moz Link Explorer - Domain authority metrics and link analysis',
+          'Screaming Frog SEO Spider - Technical SEO crawler with link analysis'
+        ],
+        whatBacklinksShow: [
+          'Domain Authority and Page Authority scores',
+          'Number of referring domains and total backlinks',
+          'Anchor text distribution and link types',
+          'Follow vs nofollow link ratios',
+          'Link acquisition trends over time',
+          'Competitor backlink comparison',
+          'Toxic link identification'
+        ],
+        implementation: 'To implement backlink analysis, choose a professional SEO tool based on your budget and integrate their API endpoints.'
+      }
+    });
+
   } catch (error) {
     console.error('Backlink check error:', error);
     return res.status(500).json({
@@ -19,64 +52,4 @@ export default async function handler(req, res) {
       error: 'Internal server error occurred while checking backlinks'
     });
   }
-}
-
-function generateMockBacklinkData(url) {
-  const totalBacklinks = Math.floor(Math.random() * 50000) + 1000;
-  const referringDomains = Math.floor(totalBacklinks / (Math.random() * 10 + 5));
-  const domainAuthority = Math.floor(Math.random() * 60) + 20;
-
-  const topDomains = [
-    { domain: 'techcrunch.com', da: 92 },
-    { domain: 'forbes.com', da: 95 },
-    { domain: 'medium.com', da: 89 },
-    { domain: 'wikipedia.org', da: 93 },
-    { domain: 'github.com', da: 94 },
-    { domain: 'stackoverflow.com', da: 91 },
-    { domain: 'reddit.com', da: 91 },
-    { domain: 'linkedin.com', da: 98 },
-    { domain: 'twitter.com', da: 94 },
-    { domain: 'youtube.com', da: 100 }
-  ];
-
-  const anchorTexts = [
-    'click here', 'learn more', 'website', 'official site', 
-    'read article', 'source', 'reference', 'visit site'
-  ];
-
-  const topBacklinks = topDomains.slice(0, 5).map(site => ({
-    domain: site.domain,
-    url: `https://${site.domain}/article-${Math.floor(Math.random() * 1000)}`,
-    anchorText: anchorTexts[Math.floor(Math.random() * anchorTexts.length)],
-    domainAuthority: site.da,
-    dofollow: Math.random() > 0.3,
-    firstSeen: new Date(Date.now() - Math.random() * 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
-  }));
-
-  const anchorTextDistribution = anchorTexts.slice(0, 5).map(text => ({
-    text: text,
-    percentage: Math.floor(Math.random() * 30) + 5
-  }));
-
-  return {
-    success: true,
-    url: url,
-    totalBacklinks: totalBacklinks,
-    referringDomains: referringDomains,
-    domainAuthority: domainAuthority,
-    trustFlow: Math.floor(domainAuthority * 0.8 + Math.random() * 10),
-    linkTypes: {
-      dofollow: 65,
-      nofollow: 35,
-      text: 80,
-      image: 20
-    },
-    topBacklinks: topBacklinks,
-    anchorTexts: anchorTextDistribution,
-    growth: {
-      new30days: Math.floor(Math.random() * 100) + 10,
-      lost30days: Math.floor(Math.random() * 30) + 5,
-      net: Math.floor(Math.random() * 70) + 5
-    }
-  };
 }

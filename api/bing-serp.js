@@ -10,8 +10,34 @@ export default async function handler(req, res) {
   }
 
   try {
-    const mockResults = generateMockBingSERPResults(keyword, domain, location);
-    return res.json(mockResults);
+    // Note: Direct SERP scraping violates Bing's ToS and can get IP addresses blocked
+    // For production use, integrate with legitimate SERP API services
+    return res.json({
+      success: false,
+      educational: true,
+      message: 'Direct SERP checking requires API integration',
+      info: {
+        keyword,
+        domain,
+        location,
+        explanation: 'Due to Bing\'s Terms of Service, we cannot directly scrape search results. For accurate Bing SERP data, please use legitimate APIs like Bing Webmaster Tools or third-party SERP services.',
+        alternatives: [
+          'Bing Webmaster Tools - Free official tool for tracking your site\'s Bing rankings',
+          'Microsoft Advertising Intelligence - Keyword and SERP insights',
+          'SEMrush API - Includes Bing search data and competitor analysis',
+          'DataForSEO API - Multi-engine SERP data including Bing',
+          'SerpApi - Search engine results API supporting Bing'
+        ],
+        bingSpecific: [
+          'Bing typically has different ranking factors than Google',
+          'Bing gives more weight to exact match domains and social signals',
+          'Bing\'s market share varies significantly by region and demographic',
+          'Consider optimizing for both Google and Bing for maximum visibility'
+        ],
+        implementation: 'To implement Bing SERP checking, sign up for Bing Webmaster Tools or a professional SERP API service.'
+      }
+    });
+
   } catch (error) {
     console.error('Bing SERP check error:', error);
     return res.status(500).json({
@@ -19,51 +45,4 @@ export default async function handler(req, res) {
       error: 'Internal server error occurred while checking Bing SERP rankings'
     });
   }
-}
-
-function generateMockBingSERPResults(keyword, domain, location) {
-  const results = [];
-  const totalResults = Math.floor(Math.random() * 30000000) + 500000;
-  
-  const bingDomains = [
-    'microsoft.com', 'bing.com', 'msn.com', 'linkedin.com', 'github.com',
-    'stackoverflow.com', 'technet.microsoft.com', 'docs.microsoft.com',
-    'wikipedia.org', 'youtube.com', 'reddit.com', 'quora.com'
-  ];
-
-  for (let i = 1; i <= 10; i++) {
-    const randomDomain = bingDomains[Math.floor(Math.random() * bingDomains.length)];
-    const isTargetDomain = domain && Math.random() < 0.25 && i <= 15;
-    const resultDomain = isTargetDomain ? domain : randomDomain;
-    
-    results.push({
-      position: i,
-      title: `${keyword} - Bing Result ${i}`,
-      link: `https://${resultDomain}/${keyword.toLowerCase().replace(/\s+/g, '-')}`,
-      displayedLink: `${resultDomain} › ${keyword}`,
-      snippet: `Comprehensive information about ${keyword}. Find detailed guides, tutorials, and expert insights on Bing.`
-    });
-  }
-
-  const response = {
-    success: true,
-    keyword: keyword,
-    location: location,
-    totalResults: totalResults,
-    results: results
-  };
-
-  if (domain) {
-    const domainResult = results.find(r => r.link.includes(domain));
-    if (domainResult) {
-      response.domainRanking = {
-        position: domainResult.position,
-        page: Math.ceil(domainResult.position / 10),
-        title: domainResult.title,
-        link: domainResult.link
-      };
-    }
-  }
-
-  return response;
 }

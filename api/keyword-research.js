@@ -10,8 +10,50 @@ export default async function handler(req, res) {
   }
 
   try {
-    const mockResults = generateMockKeywordData(keyword);
-    return res.json(mockResults);
+    // Note: Comprehensive keyword research requires access to search volume databases
+    // For production use, integrate with legitimate keyword research APIs
+    return res.json({
+      success: false,
+      educational: true,
+      message: 'Professional keyword research requires specialized APIs',
+      info: {
+        keyword,
+        explanation: 'Accurate keyword research requires access to search volume data, competition metrics, and trend analysis that are available through specialized APIs and tools.',
+        freeAlternatives: [
+          'Google Keyword Planner - Free with Google Ads account (limited data)',
+          'Google Trends - Free trend analysis and related queries',
+          'Google Search Console - See what keywords your site ranks for',
+          'Ubersuggest - Limited free keyword suggestions',
+          'AnswerThePublic - Free question-based keyword ideas'
+        ],
+        professionalTools: [
+          'SEMrush Keyword Magic Tool - 20+ billion keyword database',
+          'Ahrefs Keywords Explorer - Comprehensive keyword metrics',
+          'Moz Keyword Explorer - Keyword difficulty and opportunity scores',
+          'Google Ads Keyword Planner - Official Google search volume data',
+          'KeywordTool.io - Long-tail keyword suggestions'
+        ],
+        keywordMetrics: [
+          'Search Volume - Monthly search frequency',
+          'Keyword Difficulty - Competition level (0-100)',
+          'CPC (Cost Per Click) - Paid advertising cost',
+          'Competition - Organic competition level',
+          'Search Intent - Informational, commercial, navigational',
+          'Trend Data - Search volume changes over time',
+          'Related Keywords - Semantic and LSI variations'
+        ],
+        researchProcess: [
+          '1. Start with seed keywords related to your topic',
+          '2. Use keyword tools to find variations and long-tail keywords',
+          '3. Analyze search volume and competition levels',
+          '4. Group keywords by search intent and topic clusters',
+          '5. Prioritize keywords based on opportunity and relevance',
+          '6. Create content targeting your selected keywords'
+        ],
+        implementation: 'To implement keyword research, choose a professional SEO tool and integrate their keyword API endpoints.'
+      }
+    });
+
   } catch (error) {
     console.error('Keyword research error:', error);
     return res.status(500).json({
@@ -19,60 +61,4 @@ export default async function handler(req, res) {
       error: 'Internal server error occurred while researching keywords'
     });
   }
-}
-
-function generateMockKeywordData(keyword) {
-  const baseVolume = Math.floor(Math.random() * 50000) + 1000;
-  
-  const relatedKeywords = [
-    `best ${keyword}`,
-    `${keyword} guide`,
-    `how to ${keyword}`,
-    `${keyword} tips`,
-    `${keyword} tutorial`,
-    `${keyword} for beginners`,
-    `${keyword} strategies`,
-    `${keyword} tools`
-  ].map(kw => ({
-    keyword: kw,
-    volume: Math.floor(baseVolume * (Math.random() * 0.8 + 0.1)),
-    difficulty: Math.floor(Math.random() * 80) + 10,
-    cpc: (Math.random() * 8 + 0.5).toFixed(2),
-    trend: ['up', 'down', 'stable'][Math.floor(Math.random() * 3)]
-  }));
-
-  const longtailKeywords = [
-    `what is the best ${keyword} for small business`,
-    `how to use ${keyword} effectively in 2025`,
-    `${keyword} vs alternatives comparison`,
-    `step by step ${keyword} tutorial for beginners`,
-    `common ${keyword} mistakes to avoid`,
-    `${keyword} best practices and tips`
-  ].map(kw => ({
-    keyword: kw,
-    volume: Math.floor(baseVolume * (Math.random() * 0.3 + 0.05)),
-    difficulty: Math.floor(Math.random() * 50) + 5
-  }));
-
-  const questions = [
-    `What is ${keyword}?`,
-    `How does ${keyword} work?`,
-    `Why is ${keyword} important?`,
-    `When should I use ${keyword}?`,
-    `What are the benefits of ${keyword}?`
-  ];
-
-  return {
-    success: true,
-    mainKeyword: {
-      keyword: keyword,
-      volume: baseVolume,
-      difficulty: Math.floor(Math.random() * 70) + 20,
-      cpc: (Math.random() * 10 + 1).toFixed(2),
-      competition: ['Low', 'Medium', 'High'][Math.floor(Math.random() * 3)]
-    },
-    relatedKeywords: relatedKeywords,
-    longtailKeywords: longtailKeywords,
-    questions: questions
-  };
 }
