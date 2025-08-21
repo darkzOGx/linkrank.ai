@@ -89,7 +89,7 @@ export default function MobileTest() {
               <div className="mb-8">
                 <h3 className="font-medium mb-4">Mobile Compatibility Checks</h3>
                 <div className="space-y-3">
-                  {result.checks.map((check, index) => (
+                  {result.checks?.map((check, index) => (
                     <div key={index} className="flex items-start gap-3 p-3 bg-gray-50 border border-gray-200">
                       {check.passed ? (
                         <Check className="w-5 h-5 text-green-600 mt-0.5" />
@@ -106,10 +106,11 @@ export default function MobileTest() {
               </div>
 
               {/* Device Preview Scores */}
-              <div className="mb-8">
-                <h3 className="font-medium mb-4">Device-Specific Scores</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  {result.devices.map((device, index) => (
+              {result.devices && result.devices.length > 0 && (
+                <div className="mb-8">
+                  <h3 className="font-medium mb-4">Device-Specific Scores</h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    {result.devices.map((device, index) => (
                     <div key={index} className="text-center p-4 border border-gray-200">
                       <Smartphone className="w-8 h-8 mx-auto mb-2 text-gray-600" />
                       <div className="font-medium">{device.name}</div>
@@ -122,9 +123,10 @@ export default function MobileTest() {
                       </div>
                       <div className="text-xs text-gray-500 mt-1">{device.resolution}</div>
                     </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* Issues Found */}
               {result.issues && result.issues.length > 0 && (
@@ -134,7 +136,7 @@ export default function MobileTest() {
                     Issues to Fix
                   </h3>
                   <div className="space-y-2">
-                    {result.issues.map((issue, index) => (
+                    {result.issues?.map((issue, index) => (
                       <div key={index} className="p-3 bg-yellow-50 border border-yellow-200">
                         <div className="font-medium text-yellow-800">{issue.title}</div>
                         <div className="text-sm text-yellow-700 mt-1">{issue.description}</div>
@@ -160,7 +162,30 @@ export default function MobileTest() {
           ) : (
             <div className="p-6">
               <div className="text-red-600 mb-4">
-                <span className="font-medium">Error:</span> {result.error}
+                <span className="font-medium">Error:</span> {result.error || 'An unknown error occurred'}
+              </div>
+              
+              <div className="mt-6 p-4 bg-blue-50 border border-blue-200">
+                <h3 className="font-medium text-blue-800 mb-3">📱 Alternative Mobile Testing Options</h3>
+                <ul className="text-sm text-blue-700 space-y-2">
+                  <li>• <strong>Google Mobile-Friendly Test:</strong> Official Google tool for testing mobile compatibility</li>
+                  <li>• <strong>Google PageSpeed Insights:</strong> Includes mobile performance and usability analysis</li>
+                  <li>• <strong>GTmetrix:</strong> Comprehensive mobile performance testing</li>
+                  <li>• <strong>WebPageTest:</strong> Advanced mobile testing with device emulation</li>
+                  <li>• <strong>Browser DevTools:</strong> Use Chrome/Firefox responsive design mode for quick testing</li>
+                  <li>• <strong>BrowserStack:</strong> Real device testing across multiple mobile browsers</li>
+                </ul>
+              </div>
+
+              <div className="mt-4 p-4 bg-gray-50 border border-gray-200">
+                <h4 className="font-medium mb-2">🔧 Manual Mobile Testing Tips</h4>
+                <ul className="text-sm text-gray-700 space-y-1">
+                  <li>• Test on actual mobile devices when possible</li>
+                  <li>• Check viewport meta tag: <code className="bg-gray-200 px-1">&lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;</code></li>
+                  <li>• Ensure text is readable without zooming (minimum 16px font size)</li>
+                  <li>• Verify touch targets are at least 48x48 pixels</li>
+                  <li>• Test horizontal scrolling doesn't occur</li>
+                </ul>
               </div>
             </div>
           )}
