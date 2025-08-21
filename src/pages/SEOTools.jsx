@@ -173,6 +173,12 @@ export default function SEOTools() {
             <p className="text-lg text-gray-700 mb-10 max-w-3xl mx-auto">
               A comprehensive collection of free SEO analysis tools to help you optimize your website's performance, rankings, and technical implementation.
             </p>
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 max-w-4xl mx-auto">
+              <h2 className="text-xl font-medium text-blue-900 mb-3">What is SEO (Search Engine Optimization)?</h2>
+              <p className="text-blue-800 text-sm leading-relaxed">
+                SEO focuses on optimizing content and websites to rank higher in traditional search engine results pages (SERPs), prioritizing keywords, backlinks, and user experience signals to drive organic traffic clicks to your website. The primary goal is to increase visibility in search results and attract visitors who will click through to your site.
+              </p>
+            </div>
           </div>
         </div>
       </section>
