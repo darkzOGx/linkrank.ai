@@ -1,6 +1,5 @@
-import * as cheerio from 'cheerio';
-
 export default async function handler(req, res) {
+  const cheerio = await import('cheerio').then(m => m.default || m);
   if (req.method !== 'GET') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
