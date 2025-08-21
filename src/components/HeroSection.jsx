@@ -38,7 +38,7 @@ export default function HeroSection({ onStartAudit, isLoading }) {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="px-6 py-3 bg-black text-white font-medium flex items-center justify-center gap-2 hover:bg-gray-800 disabled:bg-gray-400 transition-colors"
+                className="px-6 py-3 bg-[#fcd63a] text-black font-medium flex items-center justify-center gap-2 hover:bg-[#e6c133] disabled:bg-gray-400 transition-colors"
               >
                 {isLoading ? 'Analyzing...' : 'Generate Report'}
                 {!isLoading && <ArrowRight className="w-4 h-4" />}
