@@ -31,8 +31,16 @@ export default function FeaturesSection() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-black border border-black">
-          {analysisPoints.map((point) => (
-            <div key={point.title} className="bg-white p-8">
+          {analysisPoints.map((point, index) => (
+            <div 
+              key={point.title} 
+              className={`bg-white p-8 ${
+                index === 0 ? 'border-r-2 border-black' : // Content Metadata -> Performance Metrics
+                index === 1 ? 'border-r-2 border-black' : // Semantic Structure -> Accessibility & Mobile  
+                index === 2 ? 'border-r-2 border-black' : // Asset Optimization -> Link Integrity
+                ''
+              }`}
+            >
               <div className="flex items-start gap-4">
                 <div className="mt-1">
                   <point.icon className="w-6 h-6 text-black" />
@@ -48,6 +56,42 @@ export default function FeaturesSection() {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* Additional SEO Factors */}
+        <div className="mt-16 bg-white border border-black p-8">
+          <h3 className="text-2xl font-medium text-black mb-6">
+            Additional SEO Factors Analyzed
+          </h3>
+          <div className="grid md:grid-cols-3 gap-6">
+            <div>
+              <h4 className="font-medium text-[#fcd63a] mb-3">On-Page Elements</h4>
+              <ul className="text-gray-600 space-y-1">
+                <li>• Meta keywords optimization</li>
+                <li>• URL structure analysis</li>
+                <li>• Content keyword density</li>
+                <li>• Internal linking strategy</li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-medium text-[#fcd63a] mb-3">Technical Performance</h4>
+              <ul className="text-gray-600 space-y-1">
+                <li>• Page loading speed</li>
+                <li>• Mobile responsiveness</li>
+                <li>• Core Web Vitals</li>
+                <li>• ADA & WCAG compliance</li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-medium text-[#fcd63a] mb-3">Advanced Optimization</h4>
+              <ul className="text-gray-600 space-y-1">
+                <li>• Schema markup validation</li>
+                <li>• Social media integration</li>
+                <li>• Analytics implementation</li>
+                <li>• Security & SSL status</li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     </section>
