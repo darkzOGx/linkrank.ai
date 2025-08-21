@@ -19,19 +19,20 @@ const GEOHeroSection = ({ onStartAudit, isLoading }) => {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-32">
         <div className="text-center">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-medium text-black mb-6">
-            AI Visibility & <span className="text-[#fcd63a]">GEO Audit</span>
+            <span className="block sm:inline">AI Visibility</span>{' '}
+            <span className="block sm:inline">& <span className="text-[#fcd63a]">GEO Audit</span></span>
           </h1>
           <p className="text-lg text-gray-700 mb-10 max-w-3xl mx-auto">
             A comprehensive analysis protocol for evaluating Generative Engine Optimization and AI citation potential. Enter a URL to assess your website's visibility across AI platforms and language models.
           </p>
 
           {/* What is GEO explanation */}
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 max-w-4xl mx-auto mb-10">
-            <h2 className="text-xl font-medium text-blue-900 mb-3 flex items-center justify-center gap-2">
+          <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 max-w-4xl mx-auto mb-10">
+            <h2 className="text-xl font-medium text-gray-900 mb-3 flex items-center justify-center gap-2">
               <Database className="w-5 h-5" />
               What is GEO (Generative Engine Optimization)?
             </h2>
-            <p className="text-blue-800 text-sm leading-relaxed">
+            <p className="text-gray-800 text-sm leading-relaxed">
               GEO focuses on optimizing content for inclusion within AI-generated answers, prioritizing factual authority, 
               structured data, and citations to be quoted or referenced by large language models like ChatGPT, Claude, Gemini, 
               and Perplexity. Unlike SEO which aims for clicks, GEO aims to be cited as a source within AI responses.
@@ -84,7 +85,8 @@ const GEOFeaturesSection = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16 max-w-3xl mx-auto">
           <h2 className="text-3xl sm:text-4xl font-medium text-black mb-4">
-            Comprehensive GEO Analysis
+            <span className="block sm:inline">Comprehensive</span>{' '}
+            <span className="block sm:inline">GEO Analysis</span>
           </h2>
           <p className="text-lg text-gray-700">
             Our protocol performs a multi-point inspection of a given URL against established best practices for Generative Engine Optimization and AI citation potential. Key areas of analysis include:

@@ -5,6 +5,8 @@ import GEOAudit from "./GEOAudit";
 import SEOTools from "./SEOTools";
 import GEOTools from "./GEOTools";
 import ToolPage from "./ToolPage";
+import PrivacyPolicy from "./PrivacyPolicy";
+import TermsOfService from "./TermsOfService";
 
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 
@@ -48,6 +50,8 @@ function PagesContent() {
                 <Route path="/tools/:toolId" element={<ToolPage />} />
                 <Route path="/geo-tools" element={<GEOTools />} />
                 <Route path="/geo-tools/:toolId" element={<ToolPage />} />
+                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                <Route path="/terms-of-service" element={<TermsOfService />} />
                 
             </Routes>
         </Layout>

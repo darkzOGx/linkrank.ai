@@ -425,32 +425,25 @@ export default function SEOAuditResults({ result, onNewAudit }) {
         {/* Strategy Sections */}
         {result.strategy_sections && (
           <div className="bg-white border border-gray-200 rounded-lg p-8 mb-8">
-            <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
               <Target className="w-8 h-8 text-purple-600" />
               Strategic SEO Recommendations
-            </h3>
+            </h2>
             
             <div className="grid gap-8">
               {Object.entries(result.strategy_sections).map(([key, section]) => (
                 <div key={key} className="border border-gray-200 rounded-lg p-6">
-                  <h4 className="text-xl font-semibold text-gray-900 mb-2">{section.title}</h4>
+                  <h3 className="text-xl font-semibold text-gray-900 mb-2">{section.title}</h3>
                   <p className="text-gray-600 mb-4">{section.description}</p>
                   
                   <div className="space-y-4">
                     {section.recommendations.map((rec, index) => (
                       <div key={index} className="border-l-4 border-blue-500 pl-4">
-                        <div className="flex items-center gap-2 mb-2">
-                          <span className={`px-2 py-1 text-xs font-medium rounded ${
-                            rec.priority === 'high' ? 'bg-red-100 text-red-800' :
-                            rec.priority === 'medium' ? 'bg-yellow-100 text-yellow-800' :
-                            'bg-green-100 text-green-800'
-                          }`}>
-                            {rec.priority} priority
-                          </span>
-                          <h5 className="font-medium text-gray-900">{rec.action}</h5>
-                        </div>
+                        <h4 className="font-medium text-gray-900 mb-1">{rec.action}</h4>
                         <p className="text-sm text-gray-600 mb-2">{rec.description}</p>
-                        <p className="text-sm text-blue-600"><strong>Implementation:</strong> {rec.implementation}</p>
+                        <div className="bg-gray-50 p-3 rounded text-xs">
+                          <strong>Implementation:</strong> {rec.implementation}
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -460,49 +453,89 @@ export default function SEOAuditResults({ result, onNewAudit }) {
           </div>
         )}
 
-        {/* Overall Score Summary */}
-        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-lg p-8 text-center">
-          <h3 className="text-2xl font-bold text-gray-900 mb-4 flex items-center justify-center gap-3">
-            <Target className="w-8 h-8 text-blue-600" />
-            Overall SEO Performance Score
-          </h3>
+        {/* Comprehensive SEO Analysis */}
+        <div className="bg-white border border-gray-200 rounded-lg p-8 mt-8">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+            <Target className="w-8 h-8 text-purple-600" />
+            Comprehensive SEO Analysis
+          </h2>
           
-          <div className="flex items-center justify-center mb-6">
-            <ScoreIndicator score={overallComprehensiveScore} />
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-            <div className="bg-white/70 border border-blue-200 rounded-lg p-4">
-              <div className="flex items-center justify-center mb-2">
-                <Search className="w-6 h-6 text-gray-700 mr-2" />
-                <span className="font-semibold text-gray-900">On-Page SEO</span>
+          <div className="grid gap-8">
+            {/* Content Authority Strategy */}
+            <div className="border border-gray-200 rounded-lg p-6">
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">SEO Performance & Optimization Strategy</h3>
+              <p className="text-gray-600 mb-4">Build search-optimized content that ranks well and drives organic traffic.</p>
+              
+              <div className="space-y-4">
+                <div className="border-l-4 border-blue-500 pl-4">
+                  <h4 className="font-medium text-gray-900 mb-1">On-Page SEO Excellence</h4>
+                  <p className="text-sm text-gray-600 mb-2">
+                    Optimize meta tags, headings, and content structure for maximum search engine visibility.
+                  </p>
+                  <div className="bg-gray-50 p-3 rounded text-xs">
+                    <strong>Current Score:</strong> {onPageScore}/100 - Implementation: Focus on title tags, meta descriptions, and H1-H6 hierarchy optimization
+                  </div>
+                </div>
+                
+                <div className="border-l-4 border-green-500 pl-4">
+                  <h4 className="font-medium text-gray-900 mb-1">Technical Performance Optimization</h4>
+                  <p className="text-sm text-gray-600 mb-2">
+                    Enhance site speed, mobile responsiveness, and technical SEO factors for better crawlability.
+                  </p>
+                  <div className="bg-gray-50 p-3 rounded text-xs">
+                    <strong>Current Score:</strong> {technicalScore}/100 - Implementation: Improve site speed, implement structured data, and enhance mobile optimization
+                  </div>
+                </div>
+                
+                <div className="border-l-4 border-purple-500 pl-4">
+                  <h4 className="font-medium text-gray-900 mb-1">Content & Link Structure Excellence</h4>
+                  <p className="text-sm text-gray-600 mb-2">
+                    Develop high-quality content with strategic internal linking and authoritative external references.
+                  </p>
+                  <div className="bg-gray-50 p-3 rounded text-xs">
+                    <strong>Current Score:</strong> {contentScore}/100 - Implementation: Create comprehensive content hubs, implement strategic internal linking, and build quality backlinks
+                  </div>
+                </div>
               </div>
-              <div className="text-3xl font-bold text-gray-900">{onPageScore}/100</div>
             </div>
-            
-            <div className="bg-white/70 border border-blue-200 rounded-lg p-4">
-              <div className="flex items-center justify-center mb-2">
-                <Zap className="w-6 h-6 text-gray-700 mr-2" />
-                <span className="font-semibold text-gray-900">Advanced Technical Performance</span>
+
+            {/* Overall Performance Summary */}
+            <div className="border border-gray-200 rounded-lg p-6">
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">Overall SEO Performance Analysis</h3>
+              <p className="text-gray-600 mb-4">Comprehensive evaluation of your website's search engine optimization status and potential.</p>
+              
+              <div className="space-y-4">
+                <div className="border-l-4 border-orange-500 pl-4">
+                  <h4 className="font-medium text-gray-900 mb-1">Search Engine Visibility Score</h4>
+                  <p className="text-sm text-gray-600 mb-2">
+                    Your overall SEO performance across all critical ranking factors and optimization opportunities.
+                  </p>
+                  <div className="bg-gray-50 p-3 rounded text-xs">
+                    <strong>Overall Score:</strong> {overallComprehensiveScore}/100 - Comprehensive analysis of {onPageItems.length + technicalItems.length + contentItems.length} critical SEO factors
+                  </div>
+                </div>
+                
+                <div className="border-l-4 border-red-500 pl-4">
+                  <h4 className="font-medium text-gray-900 mb-1">Priority Optimization Areas</h4>
+                  <p className="text-sm text-gray-600 mb-2">
+                    Focus areas that will provide the highest impact for improving your search engine rankings.
+                  </p>
+                  <div className="bg-gray-50 p-3 rounded text-xs">
+                    <strong>Implementation:</strong> Address lowest-scoring elements first, implement missing structured data, and optimize underperforming content
+                  </div>
+                </div>
+                
+                <div className="border-l-4 border-teal-500 pl-4">
+                  <h4 className="font-medium text-gray-900 mb-1">Long-term SEO Strategy</h4>
+                  <p className="text-sm text-gray-600 mb-2">
+                    Strategic approach for sustained organic growth and improved search engine authority.
+                  </p>
+                  <div className="bg-gray-50 p-3 rounded text-xs">
+                    <strong>Implementation:</strong> Regular content audits, competitive analysis, and continuous optimization based on search algorithm updates
+                  </div>
+                </div>
               </div>
-              <div className="text-3xl font-bold text-gray-900">{technicalScore}/100</div>
             </div>
-            
-            <div className="bg-white/70 border border-blue-200 rounded-lg p-4">
-              <div className="flex items-center justify-center mb-2">
-                <FileText className="w-6 h-6 text-gray-700 mr-2" />
-                <span className="font-semibold text-gray-900">Content & Structure</span>
-              </div>
-              <div className="text-3xl font-bold text-gray-900">{contentScore}/100</div>
-            </div>
-          </div>
-          
-          <div className="bg-white/50 border border-blue-200 rounded-lg p-4">
-            <p className="text-sm text-gray-700 leading-relaxed">
-              This comprehensive analysis evaluated <span className="font-semibold">{onPageItems.length + technicalItems.length + contentItems.length} critical SEO factors</span> across 
-              on-page elements, technical performance, and content structure. Each element was analyzed with detailed path tracking, 
-              issue identification, and practical optimization examples to help improve your search engine visibility.
-            </p>
           </div>
         </div>
       </div>
