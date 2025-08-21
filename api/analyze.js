@@ -1204,7 +1204,11 @@ function generateEnhancedContentResults(data, websiteContext) {
 // Helper functions for enhanced content analysis
 function countKeywordOccurrences(text, keyword) {
   if (!keyword || !text) return 0;
-  const regex = new RegExp(keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+  // Use a safer approach to escape regex special characters
+  const escapedKeyword = keyword.replace(/[.*+?^${}()|[\]\\]/g, function(match) {
+    return '\\' + match;
+  });
+  const regex = new RegExp(escapedKeyword, 'gi');
   return (text.match(regex) || []).length;
 }
 
