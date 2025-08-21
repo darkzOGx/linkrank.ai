@@ -94,6 +94,70 @@ const geoTools = {
   'fact-density-checker': {
     component: Tools.FactDensityChecker,
     title: 'Fact Density Checker'
+  },
+  'authority-signal-detector': {
+    component: null,
+    title: 'Authority Signal Detector'
+  },
+  'ai-content-extractor': {
+    component: Tools.AIContentExtractor,
+    title: 'AI Content Extractor'
+  },
+  'citation-format-optimizer': {
+    component: null,
+    title: 'Citation Format Optimizer'
+  },
+  'source-attribution-checker': {
+    component: null,
+    title: 'Source Attribution Checker'
+  },
+  'knowledge-panel-optimizer': {
+    component: null,
+    title: 'Knowledge Panel Optimizer'
+  },
+  'ai-readability-scorer': {
+    component: null,
+    title: 'AI Readability Scorer'
+  },
+  'trust-signal-analyzer': {
+    component: Tools.TrustSignalAnalyzer,
+    title: 'Trust Signal Analyzer'
+  },
+  'llm-response-simulator': {
+    component: null,
+    title: 'LLM Response Simulator'
+  },
+  'entity-recognition-optimizer': {
+    component: null,
+    title: 'Entity Recognition Optimizer'
+  },
+  'faq-schema-generator': {
+    component: null,
+    title: 'FAQ Schema Generator'
+  },
+  'ai-traffic-estimator': {
+    component: null,
+    title: 'AI Traffic Estimator'
+  },
+  'content-atomization-tool': {
+    component: null,
+    title: 'Content Atomization Tool'
+  },
+  'citation-competitor-analysis': {
+    component: null,
+    title: 'Citation Competitor Analysis'
+  },
+  'expertise-markup-validator': {
+    component: null,
+    title: 'Expertise Markup Validator'
+  },
+  'ai-snippet-optimizer': {
+    component: null,
+    title: 'AI Snippet Optimizer'
+  },
+  'geo-performance-tracker': {
+    component: null,
+    title: 'GEO Performance Tracker'
   }
 };
 

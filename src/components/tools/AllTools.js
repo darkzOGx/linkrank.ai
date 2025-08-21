@@ -23,3 +23,5 @@ export { default as LLMsGenerator } from './LLMsGenerator';
 export { default as StructuredDataValidator } from './StructuredDataValidator';
 export { default as AICitationAnalyzer } from './AICitationAnalyzer';
 export { default as FactDensityChecker } from './FactDensityChecker';
+export { default as AIContentExtractor } from './AIContentExtractor';
+export { default as TrustSignalAnalyzer } from './TrustSignalAnalyzer';
