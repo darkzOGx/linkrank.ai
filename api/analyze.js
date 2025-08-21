@@ -67,15 +67,22 @@ export default async function handler(req, res) {
     }
     
     // Parse HTML and extract elements
-    const analysis = analyzeWebsite(fetchResult, normalizedUrl);
-    
-    return res.status(200).json(analysis);
+    try {
+      const analysis = analyzeWebsite(fetchResult, normalizedUrl);
+      return res.status(200).json(analysis);
+    } catch (analysisError) {
+      console.error('Analysis function error:', analysisError.message);
+      console.error('Analysis stack:', analysisError.stack);
+      throw new Error(`Analysis processing failed: ${analysisError.message}`);
+    }
     
   } catch (error) {
     console.error('Analysis error:', error.message);
+    console.error('Error stack:', error.stack);
     return res.status(500).json({ 
       error: 'Analysis failed', 
-      message: error.message 
+      message: error.message,
+      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
     });
   }
 }
@@ -254,7 +261,7 @@ function analyzeWebsite(fetchResult, originalUrl) {
     structuredDataTypes, urlHasHyphens, urlHasUnderscores, urlIsReadable, 
     hasNavigation, responseTime, hasGzip, hasLazyLoading, hasPreconnect, 
     hasDNSPrefetch, hasAmp, hasServiceWorker, hasWebP, hasXMLSitemap, 
-    hasRobotsTxt, hasHttp2, hasContentSecurity, hasHsts
+    hasRobotsTxt, hasHttp2, hasContentSecurity, hasHsts, hasRobots
   };
   const technicalResults = generateTechnicalResults(technicalData, websiteContext);
   const linkResults = generateLinkResults(links, websiteContext);
