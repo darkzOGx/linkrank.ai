@@ -24,7 +24,12 @@ export default function RobotsTester() {
       const robotsUrl = `${urlObj.protocol}//${urlObj.hostname}/robots.txt`;
 
       // Fetch robots.txt content
-      const response = await fetch(`/api/robots-check?url=${encodeURIComponent(robotsUrl)}`);
+      const response = await fetch(`/api/robots-check?url=${encodeURIComponent(robotsUrl)}&_t=${Date.now()}`, {
+        cache: 'no-store',
+        headers: {
+          'Cache-Control': 'no-cache'
+        }
+      });
       const data = await response.json();
 
       if (data.success) {

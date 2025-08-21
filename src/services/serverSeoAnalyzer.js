@@ -24,13 +24,15 @@ export async function performServerSideAnalysis(url) {
     }
     
     // Make API request to our serverless function
-    const response = await fetch(`${API_BASE_URL}/analyze`, {
+    const response = await fetch(`${API_BASE_URL}/analyze?_t=${Date.now()}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Accept': 'application/json'
+        'Accept': 'application/json',
+        'Cache-Control': 'no-cache'
       },
       body: JSON.stringify({ url }),
+      cache: 'no-store',
       // Add timeout for client-side request
       signal: AbortSignal.timeout(60000) // 60 second timeout
     });

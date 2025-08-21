@@ -1,4 +1,9 @@
 export default async function handler(req, res) {
+  // Set no-cache headers to prevent stale results
+  res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+  res.setHeader('Pragma', 'no-cache');
+  res.setHeader('Expires', '0');
+  
   if (req.method !== 'GET') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
@@ -10,10 +15,16 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Validate URL
+    // Validate and construct robots.txt URL
+    let baseUrl;
     let robotsUrl;
     try {
-      robotsUrl = new URL(url);
+      // Handle URL with or without protocol
+      const inputUrl = url.startsWith('http') ? url : `https://${url}`;
+      baseUrl = new URL(inputUrl);
+      
+      // Always construct robots.txt URL from the domain root
+      robotsUrl = new URL('/robots.txt', baseUrl.origin);
     } catch (e) {
       return res.status(400).json({ error: 'Invalid URL format' });
     }
@@ -26,8 +37,12 @@ export default async function handler(req, res) {
       const response = await fetch(robotsUrl.toString(), {
         method: 'GET',
         headers: {
-          'User-Agent': 'SEO-Analysis-Protocol/1.0 (Robots.txt Checker)'
+          'User-Agent': 'LinkRank-SEO-Bot/1.0 (Robots.txt Checker)',
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0'
         },
+        cache: 'no-store',
         signal: controller.signal
       });
 
