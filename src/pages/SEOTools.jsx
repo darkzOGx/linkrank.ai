@@ -1,5 +1,5 @@
 import React from 'react';
-import { Terminal, Search, Link, Smartphone, Gauge, FileText, Globe, Code, Target, CheckCircle } from 'lucide-react';
+import { Terminal, Search, Link, Smartphone, Gauge, FileText, Globe, Code, Target, CheckCircle, Shield, Settings, ExternalLink, Anchor, Bot, TrendingUp, Edit, Calendar, Cpu } from 'lucide-react';
 
 const seoTools = [
   {
@@ -9,38 +9,6 @@ const seoTools = [
     buttonText: "Check Robots.txt",
     icon: Terminal,
     id: "robots-tester"
-  },
-  {
-    title: "Free SEO Audit Tool",
-    description: "The free SEO audit tool analyzes a website's on-page and off-page elements, such as keywords, meta tags, and backlinks, to identify technical and content-related issues that may be hindering its search engine visibility and ranking.",
-    price: "FREE",
-    buttonText: "Try SEO Audit Tool",
-    icon: Search,
-    id: "seo-audit"
-  },
-  {
-    title: "Free Google SERP Checker",
-    description: "The Google SERP checker tool allows users to check the position of their website or specific pages in the Google search engine results pages (SERP) for targeted keywords.",
-    price: "FREE",
-    buttonText: "Explore Google SERP",
-    icon: Globe,
-    id: "google-serp"
-  },
-  {
-    title: "Free Bing SERP Checker",
-    description: "The free Bing SERP checker tool is like a spyglass for your website's search engine performance, allowing you to keep an eye on where you stand in the Bing search engine results pages and adjust your SEO strategy accordingly.",
-    price: "FREE",
-    buttonText: "Explore BING Serp",
-    icon: Globe,
-    id: "bing-serp"
-  },
-  {
-    title: "Free Backlink Checker Tool",
-    description: "Free backlink tools are like treasure maps for your website's link building journey, helping you discover new link opportunities and navigate the seas of the internet to improve your search engine visibility and ranking.",
-    price: "FREE",
-    buttonText: "Check My Backlinks",
-    icon: Link,
-    id: "backlink-checker"
   },
   {
     title: "Free Keyword Research",
@@ -113,6 +81,78 @@ const seoTools = [
     buttonText: "Check My Sitemap",
     icon: CheckCircle,
     id: "sitemap-finder"
+  },
+  {
+    title: "Domain Authority Checker",
+    description: "The domain authority checker analyzes your website's authority and trustworthiness by examining multiple SEO factors including domain age, technical implementation, content quality, and trust signals to provide a comprehensive DA/PA score.",
+    price: "FREE",
+    buttonText: "Check Domain Authority",
+    icon: Shield,
+    id: "domain-authority"
+  },
+  {
+    title: "Website Technology Checker",
+    description: "The website technology detector analyzes your site's tech stack including CMS, frameworks, libraries, security features, and performance optimizations to provide insights into your website's technical foundation and modernization opportunities.",
+    price: "FREE",
+    buttonText: "Analyze Tech Stack",
+    icon: Settings,
+    id: "tech-checker"
+  },
+  {
+    title: "URL Redirect Checker",
+    description: "The redirect checker tool traces and analyzes your URL redirect chains, providing detailed insights into redirect types, performance impact, security implications, and optimization recommendations for better SEO and user experience.",
+    price: "FREE",
+    buttonText: "Check Redirects",
+    icon: ExternalLink,
+    id: "redirect-checker"
+  },
+  {
+    title: "Anchor Text Link Extractor",
+    description: "The anchor text analyzer extracts and evaluates all anchor texts from your web pages, categorizing links as internal/external and providing comprehensive analysis of anchor text patterns, diversity, and SEO optimization opportunities.",
+    price: "FREE",
+    buttonText: "Extract Anchor Texts",
+    icon: Anchor,
+    id: "anchor-extractor"
+  },
+  {
+    title: "AI SEO Assistant",
+    description: "Get intelligent SEO recommendations and analysis powered by AI. Perform content analysis, keyword research, SEO audits, competitor analysis, and receive personalized optimization strategies for better search rankings.",
+    price: "FREE",
+    buttonText: "Get AI SEO Help",
+    icon: Bot,
+    id: "ai-seo-assistant"
+  },
+  {
+    title: "Organic Traffic Checker",
+    description: "Analyze estimated organic search traffic and discover optimization opportunities. Get insights into traffic potential, SEO performance, keyword analysis, competitiveness, and actionable recommendations for growth.",
+    price: "FREE",
+    buttonText: "Check Organic Traffic",
+    icon: TrendingUp,
+    id: "organic-traffic"
+  },
+  {
+    title: "Meta Title & Description Generator",
+    description: "Generate SEO-optimized meta titles and descriptions with AI-powered suggestions. Create multiple variations, analyze content, get scoring and recommendations for better click-through rates and search rankings.",
+    price: "FREE",
+    buttonText: "Generate Meta Tags",
+    icon: Edit,
+    id: "meta-generator"
+  },
+  {
+    title: "Google Cache Date Checker",
+    description: "Check if your website pages are cached by Google and analyze cache-related factors. Get insights into indexability, cacheability scores, and optimization recommendations for better search visibility.",
+    price: "FREE",
+    buttonText: "Check Cache Status",
+    icon: Calendar,
+    id: "cache-checker"
+  },
+  {
+    title: "Free LLMs.txt Generator",
+    description: "Generate LLMs.txt files to guide Large Language Models on how to interact with your website. Create site-specific rules, analyze content structure, and implement proper AI interaction guidelines.",
+    price: "FREE",
+    buttonText: "Generate LLMs.txt",
+    icon: Cpu,
+    id: "llms-generator"
   }
 ];
 

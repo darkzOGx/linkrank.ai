@@ -39,7 +39,16 @@ export async function performServerSideAnalysis(url) {
       const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
       
       if (response.status === 429) {
-        throw new Error('Rate limit exceeded. Please wait a moment before trying again.');
+        // Enhanced rate limiting error with specific messaging
+        const retryAfter = errorData.retryAfter ? `Please try again in ${errorData.retryAfter} seconds.` : 'Please wait a moment before trying again.';
+        const rateLimitMessage = errorData.type === 'RATE_LIMITED' 
+          ? `${errorData.message} ${retryAfter}`
+          : `Rate limit exceeded. ${retryAfter}`;
+        
+        const error = new Error(rateLimitMessage);
+        error.type = 'RATE_LIMITED';
+        error.retryAfter = errorData.retryAfter || 60;
+        throw error;
       } else if (response.status === 400) {
         throw new Error(errorData.message || 'Invalid URL provided');
       } else if (response.status >= 500) {

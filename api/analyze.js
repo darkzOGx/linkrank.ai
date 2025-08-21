@@ -63,6 +63,20 @@ export default async function handler(req, res) {
       };
       
     } catch (error) {
+      // Check for rate limiting errors
+      if (error.message && error.message.includes('429')) {
+        throw new Error('RATE_LIMITED: You are being rate limited. Please wait a moment before trying again.');
+      }
+      
+      // Check for common rate limiting keywords in error messages
+      if (error.message && (
+        error.message.toLowerCase().includes('rate limit') ||
+        error.message.toLowerCase().includes('too many requests') ||
+        error.message.toLowerCase().includes('throttled')
+      )) {
+        throw new Error('RATE_LIMITED: Request rate limit exceeded. Please try again in a few minutes.');
+      }
+      
       throw new Error(`Failed to fetch website: ${error.message}`);
     }
     
@@ -79,6 +93,17 @@ export default async function handler(req, res) {
   } catch (error) {
     console.error('Analysis error:', error.message);
     console.error('Error stack:', error.stack);
+    
+    // Check if this is a rate limiting error
+    if (error.message && error.message.startsWith('RATE_LIMITED:')) {
+      return res.status(429).json({
+        error: 'Rate limit exceeded',
+        message: error.message.replace('RATE_LIMITED: ', ''),
+        type: 'RATE_LIMITED',
+        retryAfter: 60 // seconds
+      });
+    }
+    
     return res.status(500).json({ 
       error: 'Analysis failed', 
       message: error.message,

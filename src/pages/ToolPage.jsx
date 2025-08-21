@@ -8,28 +8,12 @@ const tools = {
     component: Tools.RobotsTester,
     title: 'Robots.txt Tester'
   },
-  'seo-audit': {
-    component: null, // Use main SEO audit
-    redirectTo: '/'
-  },
-  'google-serp': {
-    component: Tools.GoogleSERPChecker,
-    title: 'Google SERP Checker'
-  },
-  'bing-serp': {
-    component: Tools.BingSERPChecker,
-    title: 'Bing SERP Checker'
-  },
-  'backlink-checker': {
-    component: Tools.BacklinkChecker,
-    title: 'Backlink Checker'
-  },
   'keyword-research': {
     component: Tools.KeywordResearch,
     title: 'Keyword Research'
   },
   'crawl-test': {
-    component: null, // Not implemented yet
+    component: Tools.CrawlTest,
     title: 'Page Crawl Test'
   },
   'mobile-test': {
@@ -37,7 +21,7 @@ const tools = {
     title: 'Mobile Support Test'
   },
   'header-test': {
-    component: null, // Not implemented yet
+    component: Tools.HeaderTest,
     title: 'HTTP Header Test'
   },
   'speed-test': {
@@ -45,7 +29,7 @@ const tools = {
     title: 'Website Speed Test'
   },
   'internal-links': {
-    component: null, // Not implemented yet
+    component: Tools.InternalLinkChecker,
     title: 'Internal Link Checker'
   },
   'keyword-density': {
@@ -59,6 +43,42 @@ const tools = {
   'sitemap-finder': {
     component: Tools.SitemapFinder,
     title: 'Sitemap Finder'
+  },
+  'domain-authority': {
+    component: Tools.DomainAuthorityChecker,
+    title: 'Domain Authority Checker'
+  },
+  'tech-checker': {
+    component: Tools.TechChecker,
+    title: 'Website Technology Checker'
+  },
+  'redirect-checker': {
+    component: Tools.RedirectChecker,
+    title: 'URL Redirect Checker'
+  },
+  'anchor-extractor': {
+    component: Tools.AnchorExtractor,
+    title: 'Anchor Text Link Extractor'
+  },
+  'ai-seo-assistant': {
+    component: Tools.AISEOAssistant,
+    title: 'AI SEO Assistant'
+  },
+  'organic-traffic': {
+    component: Tools.OrganicTrafficChecker,
+    title: 'Organic Traffic Checker'
+  },
+  'meta-generator': {
+    component: Tools.MetaGenerator,
+    title: 'Meta Title & Description Generator'
+  },
+  'cache-checker': {
+    component: Tools.CacheChecker,
+    title: 'Google Cache Date Checker'
+  },
+  'llms-generator': {
+    component: Tools.LLMsGenerator,
+    title: 'Free LLMs.txt Generator'
   }
 };
 

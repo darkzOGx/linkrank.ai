@@ -86,8 +86,8 @@ export default function WebsiteSpeedTest() {
             <div className="p-6">
               {/* Overall Score */}
               <div className="text-center mb-8">
-                <div className={`text-6xl font-bold mx-auto w-32 h-32 rounded-full flex items-center justify-center ${getScoreColor(result.overallScore)}`}>
-                  {result.overallScore}
+                <div className={`text-6xl font-bold mx-auto w-32 h-32 rounded-full flex items-center justify-center ${getScoreColor(result.overallScore || 0)}`}>
+                  {result.overallScore || 0}
                 </div>
                 <p className="text-lg font-medium mt-2">Overall Performance Score</p>
                 <p className="text-sm text-gray-600">Based on Core Web Vitals and performance metrics</p>
@@ -104,27 +104,27 @@ export default function WebsiteSpeedTest() {
                   <div className="space-y-3">
                     <div className="flex justify-between items-center">
                       <span className="text-sm">Performance Score</span>
-                      <span className={`font-medium px-2 py-1 rounded ${getScoreColor(result.desktop.performanceScore)}`}>
-                        {result.desktop.performanceScore}/100
+                      <span className={`font-medium px-2 py-1 rounded ${getScoreColor(result.desktop?.performanceScore || 0)}`}>
+                        {result.desktop?.performanceScore || 0}/100
                       </span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-sm">Load Time</span>
-                      <span className={`font-medium ${getSpeedColor(result.desktop.loadTime)}`}>
-                        {result.desktop.loadTime}s
+                      <span className={`font-medium ${getSpeedColor(result.desktop?.loadTime || 0)}`}>
+                        {result.desktop?.loadTime || 0}s
                       </span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-sm">First Contentful Paint</span>
-                      <span className="font-medium">{result.desktop.fcp}s</span>
+                      <span className="font-medium">{result.desktop?.fcp || 0}s</span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-sm">Largest Contentful Paint</span>
-                      <span className="font-medium">{result.desktop.lcp}s</span>
+                      <span className="font-medium">{result.desktop?.lcp || 0}s</span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-sm">Cumulative Layout Shift</span>
-                      <span className="font-medium">{result.desktop.cls}</span>
+                      <span className="font-medium">{result.desktop?.cls || 0}</span>
                     </div>
                   </div>
                 </div>
@@ -138,27 +138,27 @@ export default function WebsiteSpeedTest() {
                   <div className="space-y-3">
                     <div className="flex justify-between items-center">
                       <span className="text-sm">Performance Score</span>
-                      <span className={`font-medium px-2 py-1 rounded ${getScoreColor(result.mobile.performanceScore)}`}>
-                        {result.mobile.performanceScore}/100
+                      <span className={`font-medium px-2 py-1 rounded ${getScoreColor(result.mobile?.performanceScore || 0)}`}>
+                        {result.mobile?.performanceScore || 0}/100
                       </span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-sm">Load Time</span>
-                      <span className={`font-medium ${getSpeedColor(result.mobile.loadTime)}`}>
-                        {result.mobile.loadTime}s
+                      <span className={`font-medium ${getSpeedColor(result.mobile?.loadTime || 0)}`}>
+                        {result.mobile?.loadTime || 0}s
                       </span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-sm">First Contentful Paint</span>
-                      <span className="font-medium">{result.mobile.fcp}s</span>
+                      <span className="font-medium">{result.mobile?.fcp || 0}s</span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-sm">Largest Contentful Paint</span>
-                      <span className="font-medium">{result.mobile.lcp}s</span>
+                      <span className="font-medium">{result.mobile?.lcp || 0}s</span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-sm">Cumulative Layout Shift</span>
-                      <span className="font-medium">{result.mobile.cls}</span>
+                      <span className="font-medium">{result.mobile?.cls || 0}</span>
                     </div>
                   </div>
                 </div>
@@ -172,24 +172,24 @@ export default function WebsiteSpeedTest() {
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div className="p-4 border border-gray-200 text-center">
-                    <div className="text-2xl font-medium mb-2">{result.coreWebVitals.lcp}s</div>
+                    <div className="text-2xl font-medium mb-2">{result.coreWebVitals?.lcp || 0}s</div>
                     <div className="text-sm text-gray-600 mb-1">Largest Contentful Paint</div>
-                    <div className={`text-xs px-2 py-1 rounded ${result.coreWebVitals.lcp <= 2.5 ? 'bg-green-100 text-green-800' : result.coreWebVitals.lcp <= 4 ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800'}`}>
-                      {result.coreWebVitals.lcp <= 2.5 ? 'Good' : result.coreWebVitals.lcp <= 4 ? 'Needs Improvement' : 'Poor'}
+                    <div className={`text-xs px-2 py-1 rounded ${(result.coreWebVitals?.lcp || 0) <= 2.5 ? 'bg-green-100 text-green-800' : (result.coreWebVitals?.lcp || 0) <= 4 ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800'}`}>
+                      {(result.coreWebVitals?.lcp || 0) <= 2.5 ? 'Good' : (result.coreWebVitals?.lcp || 0) <= 4 ? 'Needs Improvement' : 'Poor'}
                     </div>
                   </div>
                   <div className="p-4 border border-gray-200 text-center">
-                    <div className="text-2xl font-medium mb-2">{result.coreWebVitals.fid}ms</div>
+                    <div className="text-2xl font-medium mb-2">{result.coreWebVitals?.fid || 0}ms</div>
                     <div className="text-sm text-gray-600 mb-1">First Input Delay</div>
-                    <div className={`text-xs px-2 py-1 rounded ${result.coreWebVitals.fid <= 100 ? 'bg-green-100 text-green-800' : result.coreWebVitals.fid <= 300 ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800'}`}>
-                      {result.coreWebVitals.fid <= 100 ? 'Good' : result.coreWebVitals.fid <= 300 ? 'Needs Improvement' : 'Poor'}
+                    <div className={`text-xs px-2 py-1 rounded ${(result.coreWebVitals?.fid || 0) <= 100 ? 'bg-green-100 text-green-800' : (result.coreWebVitals?.fid || 0) <= 300 ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800'}`}>
+                      {(result.coreWebVitals?.fid || 0) <= 100 ? 'Good' : (result.coreWebVitals?.fid || 0) <= 300 ? 'Needs Improvement' : 'Poor'}
                     </div>
                   </div>
                   <div className="p-4 border border-gray-200 text-center">
-                    <div className="text-2xl font-medium mb-2">{result.coreWebVitals.cls}</div>
+                    <div className="text-2xl font-medium mb-2">{result.coreWebVitals?.cls || 0}</div>
                     <div className="text-sm text-gray-600 mb-1">Cumulative Layout Shift</div>
-                    <div className={`text-xs px-2 py-1 rounded ${result.coreWebVitals.cls <= 0.1 ? 'bg-green-100 text-green-800' : result.coreWebVitals.cls <= 0.25 ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800'}`}>
-                      {result.coreWebVitals.cls <= 0.1 ? 'Good' : result.coreWebVitals.cls <= 0.25 ? 'Needs Improvement' : 'Poor'}
+                    <div className={`text-xs px-2 py-1 rounded ${(result.coreWebVitals?.cls || 0) <= 0.1 ? 'bg-green-100 text-green-800' : (result.coreWebVitals?.cls || 0) <= 0.25 ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800'}`}>
+                      {(result.coreWebVitals?.cls || 0) <= 0.1 ? 'Good' : (result.coreWebVitals?.cls || 0) <= 0.25 ? 'Needs Improvement' : 'Poor'}
                     </div>
                   </div>
                 </div>
@@ -204,7 +204,7 @@ export default function WebsiteSpeedTest() {
                       Performance Opportunities
                     </h3>
                     <div className="space-y-2">
-                      {result.opportunities.map((opportunity, index) => (
+                      {result.opportunities?.map((opportunity, index) => (
                         <div key={index} className="p-3 bg-yellow-50 border border-yellow-200">
                           <h4 className="font-medium text-yellow-800">{opportunity.title}</h4>
                           <p className="text-sm text-yellow-700 mt-1">{opportunity.description}</p>
@@ -226,7 +226,7 @@ export default function WebsiteSpeedTest() {
                       Passed Audits
                     </h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                      {result.passed.map((item, index) => (
+                      {result.passed?.map((item, index) => (
                         <div key={index} className="p-2 bg-green-50 border border-green-200 text-sm">
                           <span className="text-green-800">{item}</span>
                         </div>
