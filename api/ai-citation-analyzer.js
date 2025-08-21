@@ -126,19 +126,66 @@ export default async function handler(req, res) {
 
       const grade = score >= 90 ? 'A' : score >= 80 ? 'B' : score >= 70 ? 'C' : score >= 60 ? 'D' : 'F';
 
-      // Generate recommendations
+      // Generate recommendations and practical implementations
       const recommendations = [];
+      const practicalImplementations = [];
+      
+      // Extract page context for practical examples
+      const pageTitle = $('title').text() || '';
+      const pageDescription = $('meta[name="description"]').attr('content') || '';
+      const h1Text = $('h1').first().text() || pageTitle;
+      const domain = new URL(targetUrl).hostname;
+      
+      // Get sample content from the page
+      const firstParagraph = $('p').first().text().substring(0, 200) || '';
+      const hasImages = $('img').length > 0;
       
       if (factualDensity < 10) {
         recommendations.push('Increase factual density by adding more statistics, data points, and verifiable claims.');
+        practicalImplementations.push({
+          title: 'Transform Generic Claims into Factual Statements',
+          before: firstParagraph.substring(0, 100) || 'Our service helps businesses grow and succeed.',
+          after: `Since 2020, our service has helped over 1,200 businesses achieve an average 45% increase in revenue, with 89% of clients reporting improved operational efficiency within the first 6 months.`,
+          description: 'Replace vague statements with specific numbers, percentages, and timeframes from your actual data.'
+        });
       }
       
       if (!Object.values(authoritySignals).some(Boolean)) {
         recommendations.push('Add author credentials, qualifications, or institutional affiliations to establish authority.');
+        practicalImplementations.push({
+          title: 'Add Author Bio Section with Credentials',
+          code: `<!-- Add this author bio section to your content -->
+<div class="author-bio">
+  <h3>About the Author</h3>
+  <p><strong>Dr. [Your Name], PhD</strong> - Senior Research Scientist at ${domain}</p>
+  <p>With over 15 years of experience in [your field], Dr. [Name] has published 30+ peer-reviewed papers and holds certifications from [relevant organizations]. Former professor at [University Name] and board member of [Professional Association].</p>
+  <p>Connect: <a href="https://linkedin.com/in/yourprofile">LinkedIn</a> | <a href="https://orcid.org/your-id">ORCID</a></p>
+</div>`,
+          description: 'Add a detailed author bio with verifiable credentials to establish expertise and trustworthiness.'
+        });
       }
       
       if (sources.length < 3) {
         recommendations.push('Include more external sources and references to authoritative websites.');
+        practicalImplementations.push({
+          title: 'Add Inline Citations with Authoritative Sources',
+          code: `<!-- Example of adding inline citations -->
+<p>According to a <a href="https://www.nature.com/articles/study-link">2024 study published in Nature</a>, 
+the effectiveness of this approach has been validated across multiple trials. 
+The <a href="https://www.who.int/report">World Health Organization reports</a> similar findings, 
+with additional support from <a href="https://academic.oup.com/journal">Oxford Academic research</a>.</p>
+
+<!-- Add a references section -->
+<section class="references">
+  <h3>References</h3>
+  <ol>
+    <li>Smith, J. et al. (2024). "Title of Study." <em>Nature</em>, 599, 234-239. DOI: 10.1038/xxxxx</li>
+    <li>WHO Global Report (2024). "Topic Report." World Health Organization. Retrieved from [URL]</li>
+    <li>Johnson, A. (2023). "Research Title." <em>Oxford Academic Journal</em>, 45(3), 123-145.</li>
+  </ol>
+</section>`,
+          description: 'Link to high-authority domains (.gov, .edu, established journals) to support your claims.'
+        });
       }
       
       if (citations.length === 0) {
@@ -147,6 +194,35 @@ export default async function handler(req, res) {
       
       if (totalHeadings < 3) {
         recommendations.push('Improve content structure with more descriptive headings for better AI comprehension.');
+        practicalImplementations.push({
+          title: 'Restructure Content with Semantic Headings',
+          code: `<!-- Transform flat content into well-structured sections -->
+<article>
+  <h1>${h1Text || 'Main Topic'}</h1>
+  
+  <h2>Key Findings and Statistics</h2>
+  <p>Present your main data points here...</p>
+  
+  <h2>Methodology and Research Approach</h2>
+  <p>Explain how data was collected...</p>
+  
+  <h3>Data Collection Process</h3>
+  <p>Specific details about methodology...</p>
+  
+  <h3>Analysis Techniques</h3>
+  <p>How the data was analyzed...</p>
+  
+  <h2>Practical Applications</h2>
+  <p>Real-world use cases...</p>
+  
+  <h2>Expert Insights</h2>
+  <blockquote>
+    <p>"Quote from industry expert about the topic..."</p>
+    <cite>- Dr. Expert Name, Institution</cite>
+  </blockquote>
+</article>`,
+          description: 'Use hierarchical headings (H1-H3) to create clear content structure that AI can easily parse.'
+        });
       }
 
       const result = {
@@ -174,6 +250,7 @@ export default async function handler(req, res) {
           total_headings: totalHeadings
         },
         recommendations,
+        practicalImplementations,
         timestamp: new Date().toISOString()
       };
 

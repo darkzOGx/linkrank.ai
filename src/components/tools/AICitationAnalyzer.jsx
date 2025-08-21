@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { ArrowRight, Quote, AlertCircle, TrendingUp, ExternalLink } from 'lucide-react';
+import { ArrowRight, Quote, AlertCircle, TrendingUp, ExternalLink, Copy, Check } from 'lucide-react';
 
 export default function AICitationAnalyzer() {
   const [url, setUrl] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState(null);
+  const [copiedField, setCopiedField] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -41,6 +42,12 @@ export default function AICitationAnalyzer() {
       case 'F': return 'text-red-600 bg-red-100';
       default: return 'text-gray-600 bg-gray-100';
     }
+  };
+
+  const copyToClipboard = (text, field) => {
+    navigator.clipboard.writeText(text);
+    setCopiedField(field);
+    setTimeout(() => setCopiedField(null), 2000);
   };
 
   const AuthoritySignal = ({ label, value, description }) => (
@@ -252,6 +259,53 @@ export default function AICitationAnalyzer() {
                       </li>
                     ))}
                   </ul>
+                </div>
+              )}
+
+              {/* Practical Implementations */}
+              {result.practicalImplementations && result.practicalImplementations.length > 0 && (
+                <div className="bg-green-50 border border-green-200 p-6 rounded">
+                  <h3 className="text-lg font-medium text-green-900 mb-4">Practical Implementations</h3>
+                  <div className="space-y-4">
+                    {result.practicalImplementations.map((impl, index) => (
+                      <div key={index} className="bg-white border border-green-300 rounded p-4">
+                        <div className="flex items-start justify-between mb-2">
+                          <h4 className="font-medium text-green-900">{impl.title}</h4>
+                          {impl.code && (
+                            <button
+                              onClick={() => copyToClipboard(impl.code, `impl-${index}`)}
+                              className="flex items-center gap-1 text-sm text-green-700 hover:text-green-900"
+                            >
+                              {copiedField === `impl-${index}` ? (
+                                <Check className="w-3 h-3" />
+                              ) : (
+                                <Copy className="w-3 h-3" />
+                              )}
+                              Copy Code
+                            </button>
+                          )}
+                        </div>
+                        <p className="text-sm text-gray-600 mb-3">{impl.description}</p>
+                        {impl.before && impl.after && (
+                          <div className="space-y-2">
+                            <div className="bg-red-50 border border-red-200 rounded p-3">
+                              <p className="text-xs font-medium text-red-700 mb-1">Before:</p>
+                              <p className="text-sm text-red-900">{impl.before}</p>
+                            </div>
+                            <div className="bg-green-50 border border-green-200 rounded p-3">
+                              <p className="text-xs font-medium text-green-700 mb-1">After:</p>
+                              <p className="text-sm text-green-900">{impl.after}</p>
+                            </div>
+                          </div>
+                        )}
+                        {impl.code && (
+                          <pre className="bg-gray-50 border border-gray-200 rounded p-3 text-xs overflow-x-auto mt-3">
+                            <code className="language-html">{impl.code}</code>
+                          </pre>
+                        )}
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
             </>

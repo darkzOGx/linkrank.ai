@@ -115,23 +115,130 @@ export default async function handler(req, res) {
       
       let score = 0;
       let recommendations = [];
+      let practicalImplementations = [];
+
+      // Extract page title and description for context
+      const pageTitle = $('title').text() || '';
+      const pageDescription = $('meta[name="description"]').attr('content') || '';
+      const h1Text = $('h1').first().text() || pageTitle;
+      const domain = new URL(targetUrl).hostname;
 
       if (totalStructuredData === 0) {
         score = 0;
         recommendations.push('No structured data found. Add JSON-LD, Microdata, or RDFa to help AI systems understand your content.');
+        
+        // Generate practical implementations for no structured data
+        practicalImplementations.push({
+          title: 'Add Basic Organization Schema',
+          code: `<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "${h1Text || domain}",
+  "url": "${targetUrl}",
+  "description": "${pageDescription || 'Your organization description'}",
+  "logo": "${targetUrl}/logo.png"
+}
+</script>`,
+          description: 'Add this to your <head> section to establish basic entity recognition.'
+        });
+
+        practicalImplementations.push({
+          title: 'Implement WebSite Schema with SearchAction',
+          code: `<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "${h1Text}",
+  "url": "${targetUrl}",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "${targetUrl}/search?q={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>`,
+          description: 'Enable AI systems to understand your site structure and search functionality.'
+        });
       } else {
         score = Math.min(100, (validJsonLd * 30) + (microdataItems.length * 20) + (rdfaItems.length * 15));
         
         if (validJsonLd === 0) {
           recommendations.push('Add JSON-LD structured data for better AI comprehension.');
+          practicalImplementations.push({
+            title: 'Convert Microdata to JSON-LD',
+            code: `<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "${h1Text}",
+  "description": "${pageDescription}",
+  "url": "${targetUrl}",
+  "datePublished": "${new Date().toISOString()}",
+  "author": {
+    "@type": "Person",
+    "name": "Your Name"
+  }
+}
+</script>`,
+            description: 'JSON-LD is preferred by AI systems. Add alongside existing microdata.'
+          });
         }
         
         if (!jsonLdScripts.some(item => item.type === 'Organization' || item.type === 'Person')) {
           recommendations.push('Add Organization or Person schema to establish authority.');
+          practicalImplementations.push({
+            title: 'Add Author/Organization Authority Schema',
+            code: `<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Expert Name",
+  "jobTitle": "Your Title",
+  "worksFor": {
+    "@type": "Organization",
+    "name": "${domain}"
+  },
+  "sameAs": [
+    "https://linkedin.com/in/yourprofile",
+    "https://twitter.com/yourhandle"
+  ]
+}
+</script>`,
+            description: 'Establish credibility by linking to your professional profiles.'
+          });
         }
         
         if (!jsonLdScripts.some(item => item.type === 'Article' || item.type === 'BlogPosting')) {
           recommendations.push('Add Article schema for content-based pages.');
+          practicalImplementations.push({
+            title: 'Implement Article Schema for Content',
+            code: `<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "${h1Text}",
+  "alternativeHeadline": "${pageDescription}",
+  "image": "${targetUrl}/featured-image.jpg",
+  "author": {
+    "@type": "Person",
+    "name": "Author Name",
+    "url": "${targetUrl}/about"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "${domain}",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "${targetUrl}/logo.png"
+    }
+  },
+  "datePublished": "${new Date().toISOString()}",
+  "dateModified": "${new Date().toISOString()}"
+}
+</script>`,
+            description: 'Help AI understand your content structure and authorship.'
+          });
         }
       }
 
@@ -153,6 +260,7 @@ export default async function handler(req, res) {
           rdfa: rdfaItems
         },
         recommendations,
+        practicalImplementations,
         timestamp: new Date().toISOString()
       };
 

@@ -137,27 +137,115 @@ export default async function handler(req, res) {
 
       const grade = score >= 90 ? 'A' : score >= 80 ? 'B' : score >= 70 ? 'C' : score >= 60 ? 'D' : 'F';
 
-      // Generate recommendations
+      // Generate recommendations and practical implementations
       const recommendations = [];
+      const practicalImplementations = [];
+      
+      // Extract page context for practical examples
+      const pageTitle = $('title').text() || '';
+      const h1Text = $('h1').first().text() || pageTitle;
+      const domain = new URL(targetUrl).hostname;
+      
+      // Get sample content from the page
+      const sampleSentences = sentences.slice(0, 3);
+      const hasLists = $('ul, ol').length > 0;
       
       if (factDensityPer100Words < 2) {
         recommendations.push('Increase fact density by adding more statistics, numbers, and data points (aim for 2-5 facts per 100 words).');
+        
+        // Create a practical example using their content
+        const sampleText = sampleSentences[0] || 'We provide excellent service to our customers.';
+        practicalImplementations.push({
+          title: 'Enhance Content with Specific Facts and Data',
+          before: sampleText.substring(0, 150),
+          after: `Since 2019, we've served 12,847 customers across 48 states, maintaining a 94.3% satisfaction rate. Our response time averages 2.4 hours, 65% faster than the industry standard of 6.8 hours.`,
+          description: 'Transform generic statements into fact-rich content that AI systems can extract and cite.'
+        });
       }
       
       if (factCounts.percentages === 0) {
         recommendations.push('Include percentage statistics to make your content more concrete and citation-worthy.');
+        practicalImplementations.push({
+          title: 'Add Percentage-Based Statistics',
+          code: `<!-- Transform absolute numbers into percentages -->
+<p>Original: "Most of our clients are satisfied with our service."</p>
+<p>Improved: "92% of our 5,000+ clients rate our service 4.5 stars or higher, with 78% becoming repeat customers within 6 months."</p>
+
+<!-- Create comparison percentages -->
+<ul>
+  <li>Customer retention: 87% (industry average: 72%)</li>
+  <li>First-call resolution: 91% (up from 76% in 2023)</li>
+  <li>Cost savings for clients: Average 34% reduction in operational expenses</li>
+</ul>`,
+          description: 'Percentages make comparisons clearer and are highly valued by AI for factual citations.'
+        });
       }
       
       if (factCounts.years < 2) {
         recommendations.push('Add more temporal context with specific years and dates.');
+        practicalImplementations.push({
+          title: 'Include Temporal Context and Timeline',
+          code: `<!-- Add specific dates and timeframes -->
+<section class="timeline">
+  <h3>Key Milestones</h3>
+  <ul>
+    <li><strong>2019:</strong> Company founded with initial team of 5</li>
+    <li><strong>2021:</strong> Reached 1,000 customers milestone</li>
+    <li><strong>2023:</strong> Expanded to 25 states, 45 employees</li>
+    <li><strong>Q1 2024:</strong> Launched AI-powered features</li>
+    <li><strong>October 2024:</strong> Achieved ISO 27001 certification</li>
+  </ul>
+  <p>As of ${new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}, we've processed over 250,000 transactions.</p>
+</section>`,
+          description: 'Specific dates and years help AI understand the recency and relevance of information.'
+        });
       }
       
       if (factCounts.authority_claims === 0) {
         recommendations.push('Use phrases like "according to research" or "studies show" to introduce factual claims.');
+        practicalImplementations.push({
+          title: 'Add Authority-Backed Statements',
+          code: `<!-- Include research-backed claims -->
+<p>According to a 2024 Harvard Business Review study, companies using our methodology see an average 45% improvement in efficiency.</p>
+
+<p>Research from MIT Sloan Management Review (2023) shows that businesses implementing similar strategies report:</p>
+<ul>
+  <li>38% reduction in operational costs</li>
+  <li>52% improvement in customer satisfaction scores</li>
+  <li>41% increase in employee productivity</li>
+</ul>
+
+<blockquote>
+  "Studies conducted by Stanford University indicate that this approach yields a 3.2x ROI within the first 18 months."
+  <cite>- Stanford Business Research, 2024</cite>
+</blockquote>`,
+          description: 'Reference studies and research to add credibility to your factual claims.'
+        });
       }
       
       if (factTypesUsed < 4) {
         recommendations.push('Diversify your fact types by including measurements, financial figures, and quantified subjects.');
+        practicalImplementations.push({
+          title: 'Diversify Fact Categories',
+          code: `<!-- Include various types of facts -->
+<div class="fact-rich-content">
+  <!-- Financial figures -->
+  <p>Investment: $2.5 million seed funding, $15 million Series A (2023)</p>
+  
+  <!-- Measurements and scale -->
+  <p>Coverage: 50,000 square feet facility, 12 regional offices</p>
+  
+  <!-- Quantified subjects -->
+  <p>Team: 125 engineers, 45 data scientists, 30 customer success managers</p>
+  
+  <!-- Time-based metrics -->
+  <p>Performance: 99.9% uptime, 15ms average response time, 24/7 support</p>
+  
+  <!-- Comparative statistics -->
+  <p>Market position: #3 in North America, serving 15% market share</p>
+</div>`,
+          description: 'Mix different fact types to create comprehensive, citable content.'
+        });
       }
       
       if (factualSentences.length / sentences.length < 0.3) {
@@ -191,6 +279,7 @@ export default async function handler(req, res) {
           examples: factExamples[category]
         })),
         recommendations,
+        practicalImplementations,
         timestamp: new Date().toISOString()
       };
 
