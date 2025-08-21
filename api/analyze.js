@@ -176,8 +176,7 @@ function analyzeWebsite(fetchResult, originalUrl) {
   const audioMatches = [...html.matchAll(/<audio[^>]*>/gi)];
   const iframeMatches = [...html.matchAll(/<iframe[^>]*>/gi)];
   
-  // Check for accessibility features
-  const hasSkipLinks = html.includes('skip to content') || html.includes('skip-link');
+  // Check for accessibility features  
   const ariaLabelsCount = (html.match(/aria-label=/gi) || []).length;
   const altAttributesCount = (html.match(/alt=/gi) || []).length;
   
@@ -267,6 +266,31 @@ function analyzeWebsite(fetchResult, originalUrl) {
   
   // Check navigation structure
   const hasNavigation = html.includes('<nav') || html.includes('navigation') || html.includes('menu');
+
+  // ADA & WCAG Accessibility Compliance Checks
+  const hasLangAttribute = html.includes('<html') && html.includes('lang=');
+  const hasAltTextImages = (() => {
+    const imgMatches = [...html.matchAll(/<img[^>]*>/gi)];
+    const totalImages = imgMatches.length;
+    if (totalImages === 0) return true; // No images to check
+    const imagesWithAlt = imgMatches.filter(match => match[0].includes('alt=')).length;
+    return imagesWithAlt / totalImages > 0.8; // 80% threshold for good compliance
+  })();
+  const hasAriaLabels = html.includes('aria-label') || html.includes('aria-labelledby');
+  const hasSkipLinks = html.includes('skip') && (html.includes('content') || html.includes('main'));
+  const hasFocusIndicators = html.includes(':focus') || html.includes('focus-');
+  const hasSemanticMarkup = html.includes('<main') || html.includes('<article') || html.includes('<section');
+  const hasHeadingHierarchy = (() => {
+    const h1Count = (html.match(/<h1[^>]*>/gi) || []).length;
+    const hasH2 = html.includes('<h2');
+    return h1Count === 1 && hasH2; // Should have exactly one H1 and some H2s
+  })();
+  const hasColorContrast = !html.includes('color:') || html.includes('contrast') || html.includes('wcag');
+  const hasAccessibleForms = (() => {
+    const hasForm = html.includes('<form');
+    if (!hasForm) return true; // No forms to check
+    return html.includes('<label') && (html.includes('for=') || html.includes('aria-label'));
+  })();
   const hasFooter = html.includes('<footer');
   const hasBreadcrumbs = html.includes('breadcrumb');
   
@@ -342,7 +366,11 @@ function analyzeWebsite(fetchResult, originalUrl) {
     structuredDataTypes, urlHasHyphens, urlHasUnderscores, urlIsReadable, 
     hasNavigation, responseTime, hasGzip, hasLazyLoading, hasPreconnect, 
     hasDNSPrefetch, hasAmp, hasServiceWorker, hasWebP, hasXMLSitemap, 
-    hasRobotsTxt, hasHttp2, hasContentSecurity, hasHsts, hasRobots
+    hasRobotsTxt, hasHttp2, hasContentSecurity, hasHsts, hasRobots,
+    // ADA & WCAG Accessibility
+    hasLangAttribute, hasAltTextImages, hasAriaLabels, hasSkipLinks, 
+    hasFocusIndicators, hasSemanticMarkup, hasHeadingHierarchy, 
+    hasColorContrast, hasAccessibleForms
   };
   
   const onPageData = {
@@ -453,10 +481,12 @@ function getLineNumber(html, index) {
 }
 
 function capitalizeFirst(str) {
+  if (!str || typeof str !== 'string') return 'Unknown';
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
 function detectIndustryFromContent(textContent) {
+  if (!textContent || typeof textContent !== 'string') return 'business';
   const combined = textContent.toLowerCase();
   
   const industries = {
@@ -511,11 +541,11 @@ function extractWebsiteContext(html, title, metaDescription, textContent, url) {
   const industry = detectIndustryFromContent(textContent);
   
   return {
-    domain,
-    brandName: capitalizeFirst(brandName),
-    keywords,
-    primaryKeyword: keywords[0] || brandName,
-    industry,
+    domain: domain || 'unknown',
+    brandName: capitalizeFirst(brandName) || 'Unknown',
+    keywords: keywords || [],
+    primaryKeyword: keywords[0] || brandName || 'services',
+    industry: industry || 'business',
     hasLocation: false
   };
 }
@@ -527,7 +557,11 @@ function generateTechnicalResults(data, websiteContext) {
     structuredDataTypes, urlHasHyphens, urlHasUnderscores, urlIsReadable,
     hasNavigation, responseTime, hasGzip, hasLazyLoading, hasPreconnect,
     hasDNSPrefetch, hasAmp, hasServiceWorker, hasWebP, hasXMLSitemap,
-    hasRobotsTxt, hasHttp2, hasContentSecurity, hasHsts, hasRobots
+    hasRobotsTxt, hasHttp2, hasContentSecurity, hasHsts, hasRobots,
+    // ADA & WCAG Accessibility
+    hasLangAttribute, hasAltTextImages, hasAriaLabels, hasSkipLinks,
+    hasFocusIndicators, hasSemanticMarkup, hasHeadingHierarchy,
+    hasColorContrast, hasAccessibleForms
   } = data;
   return [
     {
@@ -669,6 +703,56 @@ function generateTechnicalResults(data, websiteContext) {
       issues: hasTwitterCard ? [] : ['Missing Twitter Card meta tags'],
       recommendations: hasTwitterCard ? ['Twitter Cards properly configured'] : ['Add Twitter Card meta tags for better social sharing'],
       practicalExample: hasTwitterCard ? null : `<meta name="twitter:card" content="summary_large_image">\n<meta name="twitter:title" content="${websiteContext.primaryKeyword} Services | ${websiteContext.brandName}">\n<meta name="twitter:description" content="Professional ${websiteContext.industry} services">`
+    },
+    {
+      label: 'ADA & WCAG Compliance - Language Declaration',
+      description: 'Language attribute helps screen readers and assistive technologies properly interpret content.',
+      score: hasLangAttribute ? 100 : 40,
+      current: hasLangAttribute ? 'Language attribute found on HTML element' : 'No language attribute detected',
+      path: hasLangAttribute ? 'HTML element' : 'Missing from HTML tag',
+      issues: hasLangAttribute ? [] : ['Missing lang attribute on HTML element'],
+      recommendations: hasLangAttribute ? ['Language declaration is properly set'] : ['Add lang attribute to HTML element for accessibility'],
+      practicalExample: hasLangAttribute ? null : '<html lang="en">'
+    },
+    {
+      label: 'ADA & WCAG Compliance - Image Accessibility',
+      description: 'Alt text on images is essential for screen readers and visually impaired users.',
+      score: hasAltTextImages ? 100 : 30,
+      current: hasAltTextImages ? 'Most images have alt attributes' : 'Many images missing alt text',
+      path: 'Image elements throughout site',
+      issues: hasAltTextImages ? [] : ['Images missing alt attributes'],
+      recommendations: hasAltTextImages ? ['Image accessibility is well implemented'] : ['Add descriptive alt text to all images'],
+      practicalExample: hasAltTextImages ? null : '<img src="logo.png" alt="Company name logo" width="200" height="60">'
+    },
+    {
+      label: 'ADA & WCAG Compliance - ARIA Labels & Landmarks',
+      description: 'ARIA labels provide additional context for screen readers and assistive technologies.',
+      score: hasAriaLabels ? 100 : 60,
+      current: hasAriaLabels ? 'ARIA labels or landmarks detected' : 'No ARIA labels found',
+      path: hasAriaLabels ? 'Various elements' : 'Not implemented',
+      issues: hasAriaLabels ? [] : ['Consider adding ARIA labels for better accessibility'],
+      recommendations: hasAriaLabels ? ['ARIA implementation is present'] : ['Add ARIA labels to interactive elements and form controls'],
+      practicalExample: hasAriaLabels ? null : '<button aria-label="Close dialog">×</button>\n<nav aria-label="Main navigation">'
+    },
+    {
+      label: 'ADA & WCAG Compliance - Heading Hierarchy',
+      description: 'Proper heading structure (H1-H6) creates logical content flow for screen readers.',
+      score: hasHeadingHierarchy ? 100 : 50,
+      current: hasHeadingHierarchy ? 'Heading hierarchy properly structured' : 'Heading structure needs improvement',
+      path: 'Document structure',
+      issues: hasHeadingHierarchy ? [] : ['Heading hierarchy should be improved'],
+      recommendations: hasHeadingHierarchy ? ['Heading structure follows best practices'] : ['Use one H1 per page and follow logical H2, H3 sequence'],
+      practicalExample: hasHeadingHierarchy ? null : '<h1>Main Page Title</h1>\n<h2>Section Title</h2>\n<h3>Subsection Title</h3>'
+    },
+    {
+      label: 'ADA & WCAG Compliance - Accessible Forms',
+      description: 'Form labels and proper association help users understand form purpose and requirements.',
+      score: hasAccessibleForms ? 100 : 50,
+      current: hasAccessibleForms ? 'Forms have proper labels' : 'Forms may lack proper labeling',
+      path: 'Form elements',
+      issues: hasAccessibleForms ? [] : ['Forms should have proper labels'],
+      recommendations: hasAccessibleForms ? ['Form accessibility is well implemented'] : ['Associate labels with form inputs using for attributes'],
+      practicalExample: hasAccessibleForms ? null : '<label for="email">Email Address</label>\n<input type="email" id="email" required>'
     }
   ];
 }

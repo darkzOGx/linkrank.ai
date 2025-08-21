@@ -96,7 +96,7 @@ const geoTools = {
     title: 'Fact Density Checker'
   },
   'authority-signal-detector': {
-    component: null,
+    component: Tools.AuthoritySignalDetector,
     title: 'Authority Signal Detector'
   },
   'ai-content-extractor': {
@@ -104,19 +104,19 @@ const geoTools = {
     title: 'AI Content Extractor'
   },
   'citation-format-optimizer': {
-    component: null,
+    component: Tools.CitationFormatOptimizer,
     title: 'Citation Format Optimizer'
   },
   'source-attribution-checker': {
-    component: null,
+    component: Tools.SourceAttributionChecker,
     title: 'Source Attribution Checker'
   },
   'knowledge-panel-optimizer': {
-    component: null,
+    component: Tools.KnowledgePanelOptimizer,
     title: 'Knowledge Panel Optimizer'
   },
   'ai-readability-scorer': {
-    component: null,
+    component: Tools.AIReadabilityScorer,
     title: 'AI Readability Scorer'
   },
   'trust-signal-analyzer': {
@@ -124,40 +124,48 @@ const geoTools = {
     title: 'Trust Signal Analyzer'
   },
   'llm-response-simulator': {
-    component: null,
+    component: Tools.LLMResponseSimulator,
     title: 'LLM Response Simulator'
   },
   'entity-recognition-optimizer': {
-    component: null,
+    component: Tools.EntityRecognitionOptimizer,
     title: 'Entity Recognition Optimizer'
   },
   'faq-schema-generator': {
-    component: null,
+    component: Tools.FAQSchemaGenerator,
     title: 'FAQ Schema Generator'
   },
   'ai-traffic-estimator': {
-    component: null,
+    component: Tools.AITrafficEstimator,
     title: 'AI Traffic Estimator'
   },
   'content-atomization-tool': {
-    component: null,
+    component: Tools.ContentAtomizationTool,
     title: 'Content Atomization Tool'
   },
   'citation-competitor-analysis': {
-    component: null,
+    component: Tools.CitationCompetitorAnalysis,
     title: 'Citation Competitor Analysis'
   },
   'expertise-markup-validator': {
-    component: null,
+    component: Tools.ExpertiseMarkupValidator,
     title: 'Expertise Markup Validator'
   },
   'ai-snippet-optimizer': {
-    component: null,
+    component: Tools.AISnippetOptimizer,
     title: 'AI Snippet Optimizer'
   },
   'geo-performance-tracker': {
-    component: null,
+    component: Tools.GEOPerformanceTracker,
     title: 'GEO Performance Tracker'
+  },
+  'semantic-relevance-analyzer': {
+    component: Tools.SemanticRelevanceAnalyzer,
+    title: 'Semantic Relevance Analyzer'
+  },
+  'intent-matching-optimizer': {
+    component: Tools.IntentMatchingOptimizer,
+    title: 'Intent Matching Optimizer'
   }
 };
 

@@ -84,7 +84,7 @@ const geoTools = [
   },
   {
     title: "LLM Response Simulator",
-    description: "Simulate how major LLMs (ChatGPT, Claude, Gemini) might reference your content in their responses. Test different queries and see your citation potential across various AI models.",
+    description: "Simulate how major LLMs (ChatGPT, Claude, Gemini, Perplexity) might reference your content in their responses. Test different queries and see your citation potential across various AI models.",
     price: "FREE",
     buttonText: "Simulate LLM Responses",
     icon: Cpu,

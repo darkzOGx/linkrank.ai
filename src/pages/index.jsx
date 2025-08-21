@@ -1,6 +1,7 @@
 import Layout from "./Layout.jsx";
 
 import SEOAudit from "./SEOAudit";
+import GEOAudit from "./GEOAudit";
 import SEOTools from "./SEOTools";
 import GEOTools from "./GEOTools";
 import ToolPage from "./ToolPage";
@@ -10,6 +11,7 @@ import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-route
 const PAGES = {
     
     SEOAudit: SEOAudit,
+    GEOAudit: GEOAudit,
     SEOTools: SEOTools,
     GEOTools: GEOTools,
     
@@ -41,6 +43,7 @@ function PagesContent() {
                 
                 
                 <Route path="/SEOAudit" element={<SEOAudit />} />
+                <Route path="/GEOAudit" element={<GEOAudit />} />
                 <Route path="/tools" element={<SEOTools />} />
                 <Route path="/tools/:toolId" element={<ToolPage />} />
                 <Route path="/geo-tools" element={<GEOTools />} />

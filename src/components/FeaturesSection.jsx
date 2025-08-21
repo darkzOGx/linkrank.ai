@@ -21,9 +21,9 @@ export default function FeaturesSection() {
   return (
     <section className="bg-white py-20 sm:py-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-left mb-16 max-w-3xl">
+        <div className="text-center mb-16 max-w-3xl mx-auto">
           <h2 className="text-3xl sm:text-4xl font-medium text-black mb-4">
-            Audit Methodology
+            Comprehensive SEO Analysis
           </h2>
           <p className="text-lg text-gray-700">
             Our protocol performs a multi-point inspection of a given URL against established best practices for search engine optimization and web performance. Key areas of analysis include:

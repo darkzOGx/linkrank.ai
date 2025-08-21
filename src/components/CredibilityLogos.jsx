@@ -10,7 +10,8 @@ export default function CredibilityLogos() {
         <img 
           src="/linkrank-logo.png" 
           alt="LinkRank.ai Logo" 
-          className="h-32 w-auto opacity-80 hover:opacity-100 transition-opacity"
+          className="w-auto opacity-80 hover:opacity-100 transition-opacity"
+          style={{ height: '103px' }}
         />
       </div>
     </div>

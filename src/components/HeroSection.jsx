@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Search } from 'lucide-react';
 import CredibilityLogos from './CredibilityLogos';
 
 export default function HeroSection({ onStartAudit, isLoading }) {
@@ -17,11 +17,23 @@ export default function HeroSection({ onStartAudit, isLoading }) {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-32">
         <div className="text-center">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-medium text-black mb-6">
-            Website Performance & SEO Audit
+            Website Performance & <span className="text-[#fcd63a]">SEO Audit</span>
           </h1>
           <p className="text-lg text-gray-700 mb-10 max-w-3xl mx-auto">
             An independent analysis protocol for evaluating on-page search engine optimization and technical performance metrics. Enter a URL to begin the automated assessment.
           </p>
+
+          {/* What is SEO explanation */}
+          <div className="bg-green-50 border border-green-200 rounded-lg p-6 max-w-4xl mx-auto mb-10">
+            <h2 className="text-xl font-medium text-green-900 mb-3 flex items-center justify-center gap-2">
+              <Search className="w-5 h-5" />
+              What is SEO (Search Engine Optimization)?
+            </h2>
+            <p className="text-green-800 text-sm leading-relaxed">
+              SEO focuses on optimizing websites to rank higher in traditional search engine results pages (SERPs) like Google, Bing, and Yahoo. 
+              It involves improving on-page elements, technical performance, content quality, and user experience to increase organic visibility and drive more clicks to your website.
+            </p>
+          </div>
 
           <form onSubmit={handleSubmit} className="max-w-3xl mx-auto mb-20">
             <div className="flex flex-col sm:flex-row gap-0">

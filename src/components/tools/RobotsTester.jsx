@@ -293,7 +293,7 @@ export default function RobotsTester() {
                 <span className="font-medium">Robots.txt Not Found or Error</span>
               </div>
               <p className="text-gray-700 mb-4">{result.error}</p>
-              <div className="bg-blue-50 border border-blue-200 p-4">
+              <div className="bg-blue-50 border border-blue-200 p-4 mb-4">
                 <h4 className="font-medium text-blue-800 mb-2">Recommendations:</h4>
                 <ul className="text-sm text-blue-700 space-y-1">
                   <li>• Create a robots.txt file in your website's root directory</li>
@@ -301,6 +301,35 @@ export default function RobotsTester() {
                   <li>• Include basic directives like User-agent and Disallow</li>
                   <li>• Add your sitemap URL for better SEO</li>
                 </ul>
+              </div>
+
+              <div className="bg-green-50 border border-green-200 p-4">
+                <h4 className="font-medium text-green-800 mb-3">Practical Implementations:</h4>
+                <div className="space-y-4">
+                  <div>
+                    <h5 className="text-sm font-medium text-green-700 mb-2">Basic robots.txt file:</h5>
+                    <div className="bg-white p-3 border border-green-200 rounded">
+                      <pre className="text-xs text-gray-800 overflow-x-auto">
+{`User-agent: *
+Disallow: /admin/
+Disallow: /private/
+Allow: /
+
+Sitemap: ${result.robotsUrl ? result.robotsUrl.replace('/robots.txt', '/sitemap.xml') : 'https://yoursite.com/sitemap.xml'}`}
+                      </pre>
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <h5 className="text-sm font-medium text-green-700 mb-2">Upload instructions:</h5>
+                    <div className="text-xs text-green-700 space-y-1">
+                      <p>1. Create a file named "robots.txt" on your computer</p>
+                      <p>2. Copy the above content into the file</p>
+                      <p>3. Upload to your website's root directory via FTP/cPanel</p>
+                      <p>4. Verify accessibility at: {result.robotsUrl || 'https://yoursite.com/robots.txt'}</p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           )}
