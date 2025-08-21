@@ -138,7 +138,7 @@ function analyzeWebsite(fetchResult, originalUrl) {
   const hasRobots = html.includes('name="robots"');
   const hasHttps = finalUrl.startsWith('https://');
   
-  // Extract content for word count
+  // Extract content for word count and keyword analysis
   const textContent = html
     .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
     .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
@@ -148,14 +148,17 @@ function analyzeWebsite(fetchResult, originalUrl) {
   
   const wordCount = textContent.split(/\s+/).filter(word => word.length > 0).length;
   
-  // Analyze and score each element
-  const titleAnalysis = analyzeTitleTag(title, titleLine);
-  const metaAnalysis = analyzeMetaDescription(metaDescription, metaDescLine);
-  const headingAnalysis = analyzeHeadings(h1Matches, h2Matches, h3Matches, h4Matches, h5Matches, h6Matches, html);
-  const imageAnalysis = analyzeImages(images);
-  const linkAnalysis = analyzeLinks(links);
-  const technicalAnalysis = analyzeTechnical(hasHttps, hasViewport, hasCanonical, hasRobots, responseTime);
-  const contentAnalysis = analyzeContent(wordCount, links);
+  // Extract keywords and website context
+  const websiteContext = extractWebsiteContext(html, title, metaDescription, textContent, finalUrl);
+  
+  // Analyze and score each element with website context
+  const titleAnalysis = analyzeTitleTag(title, titleLine, websiteContext);
+  const metaAnalysis = analyzeMetaDescription(metaDescription, metaDescLine, websiteContext);
+  const headingAnalysis = analyzeHeadings(h1Matches, h2Matches, h3Matches, h4Matches, h5Matches, h6Matches, html, websiteContext);
+  const imageAnalysis = analyzeImages(images, websiteContext);
+  const linkAnalysis = analyzeLinks(links, websiteContext);
+  const technicalAnalysis = analyzeTechnical(hasHttps, hasViewport, hasCanonical, hasRobots, responseTime, websiteContext);
+  const contentAnalysis = analyzeContent(wordCount, links, websiteContext);
   
   // Calculate scores
   const onPageScore = Math.round((titleAnalysis.score + metaAnalysis.score + headingAnalysis.score + imageAnalysis.score + linkAnalysis.score) / 5);
@@ -247,7 +250,98 @@ function getLineNumber(html, index) {
   return html.substring(0, index).split('\n').length;
 }
 
-function analyzeTitleTag(title, line) {
+function extractWebsiteContext(html, title, metaDescription, textContent, url) {
+  // Extract domain and brand name
+  const domain = url.replace(/^https?:\/\//, '').replace(/^www\./, '').split('/')[0];
+  const brandName = domain.split('.')[0];
+  
+  // Extract keywords from title and meta description
+  const titleWords = title.toLowerCase().split(/\s+/).filter(word => word.length > 2 && !isStopWord(word));
+  const metaWords = metaDescription.toLowerCase().split(/\s+/).filter(word => word.length > 2 && !isStopWord(word));
+  
+  // Extract H1 content for primary keywords
+  const h1Match = html.match(/<h1[^>]*>([^<]*)<\/h1>/i);
+  const h1Content = h1Match ? h1Match[1].toLowerCase() : '';
+  const h1Words = h1Content.split(/\s+/).filter(word => word.length > 2 && !isStopWord(word));
+  
+  // Combine and rank keywords
+  const allWords = [...titleWords, ...metaWords, ...h1Words];
+  const wordFreq = {};
+  allWords.forEach(word => {
+    wordFreq[word] = (wordFreq[word] || 0) + 1;
+  });
+  
+  // Get top keywords
+  const keywords = Object.entries(wordFreq)
+    .sort(([,a], [,b]) => b - a)
+    .slice(0, 5)
+    .map(([word]) => word);
+  
+  // Detect industry/category
+  const industry = detectIndustry(textContent, title, h1Content);
+  
+  // Extract location keywords
+  const locationKeywords = extractLocationKeywords(textContent, title, metaDescription);
+  
+  return {
+    domain,
+    brandName: capitalizeFirst(brandName),
+    keywords,
+    primaryKeyword: keywords[0] || brandName,
+    industry,
+    locationKeywords,
+    hasLocation: locationKeywords.length > 0
+  };
+}
+
+function isStopWord(word) {
+  const stopWords = ['the', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'by', 
+                   'from', 'up', 'about', 'into', 'through', 'during', 'before', 'after', 'above', 
+                   'below', 'between', 'among', 'this', 'that', 'these', 'those', 'is', 'are', 'was', 
+                   'were', 'be', 'been', 'being', 'have', 'has', 'had', 'do', 'does', 'did', 'will', 
+                   'would', 'should', 'could', 'can', 'may', 'might', 'must', 'shall', 'your', 'our', 
+                   'we', 'you', 'they', 'them', 'their', 'its', 'his', 'her', 'my', 'me', 'us', 'him'];
+  return stopWords.includes(word.toLowerCase());
+}
+
+function detectIndustry(textContent, title, h1Content) {
+  const combined = (textContent + ' ' + title + ' ' + h1Content).toLowerCase();
+  
+  const industries = {
+    'healthcare': ['health', 'medical', 'doctor', 'clinic', 'hospital', 'treatment', 'therapy', 'wellness'],
+    'legal': ['law', 'legal', 'attorney', 'lawyer', 'court', 'justice', 'litigation', 'counsel'],
+    'restaurant': ['restaurant', 'food', 'dining', 'cuisine', 'menu', 'chef', 'culinary', 'catering'],
+    'real estate': ['real estate', 'property', 'homes', 'houses', 'buying', 'selling', 'realtor', 'agent'],
+    'technology': ['technology', 'software', 'development', 'digital', 'tech', 'solutions', 'innovation'],
+    'finance': ['finance', 'financial', 'investment', 'banking', 'money', 'wealth', 'insurance'],
+    'education': ['education', 'school', 'learning', 'training', 'course', 'university', 'academy'],
+    'retail': ['shop', 'store', 'retail', 'products', 'merchandise', 'shopping', 'buy', 'sell'],
+    'automotive': ['car', 'auto', 'vehicle', 'automotive', 'repair', 'dealer', 'mechanic'],
+    'fitness': ['fitness', 'gym', 'workout', 'exercise', 'training', 'health', 'sport']
+  };
+  
+  for (const [industry, keywords] of Object.entries(industries)) {
+    if (keywords.some(keyword => combined.includes(keyword))) {
+      return industry;
+    }
+  }
+  
+  return 'business';
+}
+
+function extractLocationKeywords(textContent, title, metaDescription) {
+  const combined = (textContent + ' ' + title + ' ' + metaDescription).toLowerCase();
+  const locationPattern = /\b(in|near|around|serving|located|based|area|city|county|state|california|texas|florida|new york|los angeles|chicago|houston|phoenix|philadelphia|san antonio|san diego|dallas|san jose|austin|jacksonville|fort worth|columbus|charlotte|san francisco|indianapolis|seattle|denver|washington|boston|el paso|detroit|nashville|portland|oklahoma|las vegas|baltimore|louisville|milwaukee|albuquerque|tucson|fresno|sacramento|mesa|kansas city|atlanta|colorado springs|raleigh|omaha|miami|oakland|tulsa|minneapolis|cleveland|wichita|arlington|new orleans|bakersfield|tampa|honolulu|anaheim|aurora|santa ana|st louis|riverside|corpus christi|lexington|pittsburgh|anchorage|stockton|cincinnati|st paul|toledo|newark|greensboro|plano|henderson|lincoln|buffalo|jersey city|chula vista|fort wayne|orlando|st petersburg|chandler|laredo|norfolk|durham|madison|lubbock|irvine|winston salem|glendale|garland|hialeah|reno|chesapeake|gilbert|baton rouge|irving|scottsdale|north las vegas|fremont|boise|richmond|san bernardino|birmingham|spokane|rochester|des moines|modesto|fayetteville|tacoma|oxnard|fontana|columbus|montgomery|moreno valley|shreveport|aurora|yonkers|akron|huntington beach|little rock|augusta|amarillo|glendale|mobile|grand rapids|salt lake city|tallahassee|huntsville|grand prairie|knoxville|worcester|newport news|brownsville|overland park|santa clarita|providence|garden grove|chattanooga|oceanside|jackson|fort lauderdale|santa rosa|rancho cucamonga|port st lucie|tempe|ontario|vancouver|cape coral|sioux falls|springfield|peoria|pembroke pines|elk grove|salem|lancaster|corona|eugene|palmdale|salinas|springfield|pasadena|fort collins|hayward|pomona|cary|rockford|alexandria|escondido|mckinney|kansas city|joliet|sunnyvale|torrance|bridgeport|lakewood|hollywood|paterson|naperville|syracuse|mesquite|dayton|savannah|clarksville|orange|pasadena|fullerton|killeen|frisco|hampton|mcallen|warren|bellevue|west valley city|columbia|olathe|sterling heights|new haven|miramar|waco|thousand oaks|cedar rapids|charleston|sioux city|round rock|fargo|carrollton|roseville|concord|thornton|visalia|gainesville|coral springs|stamford|elizabeth|thousand oaks|vallejo|lowell|norwalk|kent|denton|manchester|ventura|inglewood|richmond|westminster|pearland|high point|miami gardens|temecula|murfreesboro|evansville|ann arbor|berkeley|peoria|provo|el monte|columbia|lansing|flint|victorville|pueblo|largo|daly city|topeka|sandy springs|centennial|midland|downey|waterbury|lewisville|livonia|fairfield|billings|west covina|arvada|clearwater|new bedford|richardson|carmel|west palm beach|independence|rochester|yuma)\s+[a-z]+/gi);
+  
+  const matches = combined.match(locationPattern) || [];
+  return [...new Set(matches.map(match => match.trim()))].slice(0, 3);
+}
+
+function capitalizeFirst(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+function analyzeTitleTag(title, line, websiteContext) {
   const length = title.length;
   let score = 100;
   let issues = [];
@@ -258,17 +352,20 @@ function analyzeTitleTag(title, line) {
     score = 0;
     issues.push('Missing title tag');
     recommendations.push('Add a unique, descriptive title tag between 50-60 characters');
-    practicalExample = '<title>Your Primary Keyword | Brand Name</title>';
+    const locationPart = websiteContext.hasLocation ? ` ${websiteContext.locationKeywords[0] || ''}` : '';
+    practicalExample = `<title>${capitalizeFirst(websiteContext.primaryKeyword)} ${capitalizeFirst(websiteContext.industry)}${locationPart} | ${websiteContext.brandName}</title>`;
   } else if (length < 30) {
     score = 60;
     issues.push(`Title too short (${length} characters)`);
     recommendations.push('Expand title to 30-60 characters for optimal SEO impact');
-    practicalExample = `<title>${title} - Additional Keywords | Brand</title>`;
+    const additionalKeywords = websiteContext.keywords.slice(1, 3).join(' ');
+    practicalExample = `<title>${title} - ${capitalizeFirst(additionalKeywords)} | ${websiteContext.brandName}</title>`;
   } else if (length > 60) {
     score = 75;
     issues.push(`Title may be truncated (${length} characters)`);
     recommendations.push('Shorten title to under 60 characters to prevent truncation in search results');
-    practicalExample = `<title>${title.substring(0, 50)}...</title>`;
+    const shortenedTitle = title.includes('|') ? title.split('|')[0].trim() : title.substring(0, 50);
+    practicalExample = `<title>${shortenedTitle} | ${websiteContext.brandName}</title>`;
   } else {
     recommendations.push('Title length is optimal');
     practicalExample = `Current title is well-optimized: "${title}"`;
@@ -287,7 +384,7 @@ function analyzeTitleTag(title, line) {
   };
 }
 
-function analyzeMetaDescription(metaDescription, line) {
+function analyzeMetaDescription(metaDescription, line, websiteContext) {
   const length = metaDescription.length;
   let score = 100;
   let issues = [];
@@ -298,12 +395,15 @@ function analyzeMetaDescription(metaDescription, line) {
     score = 0;
     issues.push('Missing meta description');
     recommendations.push('Add a compelling meta description between 150-160 characters');
-    practicalExample = '<meta name="description" content="Discover how our services help you achieve your goals. Get started today with our expert team and proven solutions.">';
+    const locationPart = websiteContext.hasLocation ? ` in ${websiteContext.locationKeywords[0] || ''}` : '';
+    const keywords = websiteContext.keywords.slice(0, 2).join(' and ');
+    practicalExample = `<meta name="description" content="Professional ${websiteContext.primaryKeyword} ${websiteContext.industry} services${locationPart}. Expert ${keywords} solutions for your needs. Contact ${websiteContext.brandName} today for a free consultation.">`;
   } else if (length < 120) {
     score = 70;
     issues.push(`Meta description too short (${length} characters)`);
     recommendations.push('Expand to 150-160 characters for better search result display');
-    practicalExample = `<meta name="description" content="${metaDescription} Learn more about our comprehensive solutions and expert support.">`;
+    const additionalContent = websiteContext.hasLocation ? ` Serving ${websiteContext.locationKeywords[0] || ''} and surrounding areas` : ` with expert ${websiteContext.primaryKeyword} solutions`;
+    practicalExample = `<meta name="description" content="${metaDescription}${additionalContent}. Contact us today for more information.">`;
   } else if (length > 160) {
     score = 80;
     issues.push(`Meta description may be truncated (${length} characters)`);
@@ -327,16 +427,20 @@ function analyzeMetaDescription(metaDescription, line) {
   };
 }
 
-function analyzeHeadings(h1s, h2s, h3s, h4s, h5s, h6s, html) {
+function analyzeHeadings(h1s, h2s, h3s, h4s, h5s, h6s, html, websiteContext) {
   let score = 100;
   let issues = [];
   let recommendations = [];
   let details = [];
   
+  let practicalExample = '';
+  
   if (h1s.length === 0) {
     score = 40;
     issues.push('Missing H1 tag');
     recommendations.push('Add exactly one H1 tag that describes the main topic');
+    const locationPart = websiteContext.hasLocation ? ` in ${websiteContext.locationKeywords[0] || ''}` : '';
+    practicalExample = `<h1>${capitalizeFirst(websiteContext.primaryKeyword)} ${capitalizeFirst(websiteContext.industry)}${locationPart} - ${websiteContext.brandName}</h1>`;
   } else if (h1s.length > 1) {
     score = 70;
     issues.push(`Multiple H1 tags found (${h1s.length})`);
@@ -344,8 +448,10 @@ function analyzeHeadings(h1s, h2s, h3s, h4s, h5s, h6s, html) {
     h1s.forEach((h1, index) => {
       details.push(`H1 #${index + 1}: "${h1[1]}" at Line ${getLineNumber(html, h1.index)}`);
     });
+    practicalExample = `<h1>${h1s[0][1]}</h1>\n<h2>${h1s[1][1]}</h2>\n<h3>Supporting ${websiteContext.primaryKeyword} Information</h3>`;
   } else {
     details.push(`H1: "${h1s[0][1]}" at Line ${getLineNumber(html, h1s[0].index)}`);
+    practicalExample = `<h1>${h1s[0][1]}</h1>\n<h2>Our ${capitalizeFirst(websiteContext.primaryKeyword)} Services</h2>\n<h3>Why Choose ${websiteContext.brandName}</h3>`;
   }
   
   return {
@@ -356,12 +462,12 @@ function analyzeHeadings(h1s, h2s, h3s, h4s, h5s, h6s, html) {
     score,
     issues,
     recommendations,
-    practicalExample: '<h1>Main Topic</h1>\n<h2>Primary Subtopic</h2>\n<h3>Supporting Details</h3>',
+    practicalExample,
     details
   };
 }
 
-function analyzeImages(images) {
+function analyzeImages(images, websiteContext) {
   let score = 100;
   let issues = [];
   let recommendations = [];
@@ -403,12 +509,12 @@ function analyzeImages(images) {
     score: Math.max(0, score),
     issues,
     recommendations,
-    practicalExample: '<img src="product.jpg" alt="Blue wireless headphones with noise cancellation" width="300" height="200">',
+    practicalExample: `<img src="${websiteContext.primaryKeyword}-${websiteContext.industry}.jpg" alt="${capitalizeFirst(websiteContext.primaryKeyword)} ${websiteContext.industry} services by ${websiteContext.brandName}" width="400" height="300">`,
     details
   };
 }
 
-function analyzeLinks(links) {
+function analyzeLinks(links, websiteContext) {
   let score = 100;
   let issues = [];
   let recommendations = [];
@@ -440,12 +546,12 @@ function analyzeLinks(links) {
     score: Math.max(0, score),
     issues,
     recommendations,
-    practicalExample: '<a href="/related-page" title="Learn more about our services">Our comprehensive services</a>',
+    practicalExample: `<a href="/${websiteContext.primaryKeyword}-services" title="Learn about our ${websiteContext.primaryKeyword} ${websiteContext.industry} services">Our ${capitalizeFirst(websiteContext.primaryKeyword)} Services</a>`,
     details
   };
 }
 
-function analyzeTechnical(hasHttps, hasViewport, hasCanonical, hasRobots, responseTime) {
+function analyzeTechnical(hasHttps, hasViewport, hasCanonical, hasRobots, responseTime, websiteContext) {
   const results = [];
   
   // HTTPS Analysis
@@ -509,13 +615,13 @@ function analyzeTechnical(hasHttps, hasViewport, hasCanonical, hasRobots, respon
     score: hasCanonical ? 100 : 75,
     issues: hasCanonical ? [] : ['Missing canonical URL'],
     recommendations: hasCanonical ? ['Canonical URL properly set'] : ['Add canonical URL to prevent duplicate content issues'],
-    practicalExample: hasCanonical ? 'Current canonical URL is properly configured' : '<link rel="canonical" href="https://example.com/page">'
+    practicalExample: hasCanonical ? 'Current canonical URL is properly configured' : `<link rel="canonical" href="${websiteContext.domain}/${websiteContext.primaryKeyword}-${websiteContext.industry}">`
   });
   
   return results;
 }
 
-function analyzeContent(wordCount, links) {
+function analyzeContent(wordCount, links, websiteContext) {
   const results = [];
   
   // Content Length Analysis
@@ -572,7 +678,7 @@ function analyzeContent(wordCount, links) {
     score: internalScore,
     issues: internalIssues,
     recommendations: internalRecs,
-    practicalExample: '<a href="/related-service" title="Learn about our related services">Explore our comprehensive services</a>'
+    practicalExample: `<a href="/${websiteContext.keywords[1] || 'about'}" title="Learn about our ${websiteContext.primaryKeyword} ${websiteContext.industry} services">Explore Our ${capitalizeFirst(websiteContext.primaryKeyword)} Solutions</a>`
   });
   
   // External Links Analysis
