@@ -223,168 +223,12 @@ export default function SEOAuditResults({ result, onNewAudit }) {
     );
   }
 
-  // Use real API analysis data if available, otherwise fallback to legacy format
-  const onPageItems = result.analysis?.on_page?.results || [
-    {
-      label: 'Title Tag',
-      description: 'The HTML title tag is the most important on-page SEO element. It appears as the clickable headline in search results and browser tabs.',
-      current: result.title_tag?.value || 'No title tag found',
-      score: result.title_tag?.score || 0,
-      path: result.title_tag?.path,
-      issues: result.title_tag?.issues || [],
-      details: result.title_tag?.details || [],
-      recommendations: result.title_tag?.recommendations || (result.title_tag?.score < 90 ? ['Create a unique, descriptive title 50-60 characters long that includes your primary keyword near the beginning.'] : []),
-      practicalExample: result.title_tag?.score < 90 ? `<title>Professional Debt Settlement Services | Orange County | YourCompany</title>
+  // Use ONLY the enhanced API analysis data, no fallback legacy format to avoid duplicates
+  const onPageItems = result.analysis?.on_page?.results || [];
 
-<!-- Good length (59 chars), includes primary keyword and location -->` : null
-    },
-    {
-      label: 'Meta Description',
-      description: 'Meta descriptions provide a concise summary of page content in search results and significantly influence click-through rates.',
-      current: result.meta_description?.value || 'No meta description found',
-      score: result.meta_description?.score || 0,
-      path: result.meta_description?.path,
-      issues: result.meta_description?.issues || [],
-      details: result.meta_description?.details || [],
-      recommendations: result.meta_description?.recommendations || (result.meta_description?.score < 90 ? ['Write compelling meta descriptions 150-160 characters long that include target keywords and a clear call-to-action.'] : []),
-      practicalExample: result.meta_description?.score < 90 ? `<meta name="description" content="Get professional debt settlement help in Orange County. Our certified experts reduce debt by up to 50%. Free consultation available. Call now!">
+  const technicalItems = result.analysis?.technical?.results || [];
 
-<!-- Optimized length (154 chars), includes location, benefit, and CTA -->` : null
-    },
-    {
-      label: 'H1 Heading Structure',
-      description: 'H1 tags define the primary topic of your page and help search engines understand content hierarchy and relevance.',
-      current: `${result.headings?.h1_count || 0} H1 tag(s) found`,
-      score: result.headings?.score || 0,
-      path: result.headings?.path,
-      issues: result.headings?.issues || [],
-      details: result.headings?.details || [],
-      recommendations: result.headings?.recommendations || (result.headings?.score < 90 ? ['Use exactly one H1 tag per page that clearly describes the main topic and includes your primary keyword.'] : []),
-      practicalExample: result.headings?.score < 90 ? `<h1>Debt Settlement Services in Orange County</h1>
-
-<!-- Single H1 with primary keyword and location targeting -->
-<h2>How Our Debt Relief Process Works</h2>
-<h3>Step 1: Free Debt Analysis</h3>` : null
-    },
-    {
-      label: 'Image Optimization',
-      description: 'Alt text improves accessibility for screen readers and helps search engines understand image content for better rankings.',
-      current: `${result.images?.missing_alt || 0} images missing alt text out of ${result.images?.total_images || 0} total`,
-      score: result.images?.score || 0,
-      path: result.images?.path,
-      issues: result.images?.issues || [],
-      details: result.images?.details || [],
-      recommendations: result.images?.recommendations || (result.images?.score < 90 ? ['Add descriptive alt text to all images. Focus on accurate descriptions while naturally incorporating relevant keywords.'] : []),
-      practicalExample: result.images?.score < 90 ? `<img src="debt-consultation.jpg" alt="Professional debt settlement consultant meeting with Orange County client in modern office">
-
-<!-- Descriptive alt text with context and location -->
-<img src="chart.png" alt="Debt reduction chart showing 50% savings over 24 months">` : null
-    }
-  ];
-
-  const technicalItems = result.analysis?.technical?.results || [
-    {
-      label: 'Page Load Speed',
-      description: 'Fast loading times are crucial for user experience and are a confirmed Google ranking factor. Pages should load in under 3 seconds.',
-      current: result.page_speed?.load_time ? `${result.page_speed.load_time.toFixed(2)} seconds` : 'Load time not measured',
-      score: result.page_speed?.score || 0,
-      path: result.page_speed?.path,
-      issues: result.page_speed?.issues || [],
-      details: result.page_speed?.details || [],
-      recommendations: result.page_speed?.recommendations || (result.page_speed?.score < 90 ? ['Optimize images, minify CSS/JS files, leverage browser caching, and consider using a CDN to improve load times.'] : []),
-      practicalExample: result.page_speed?.score < 90 ? `<!-- Enable compression -->
-<script src="app.min.js"></script>
-<link rel="stylesheet" href="styles.min.css">
-
-<!-- Optimize images -->
-<img src="hero-1200w.webp" alt="Debt relief services" loading="lazy">
-
-<!-- Add CDN -->
-<link rel="dns-prefetch" href="//cdn.example.com">` : null
-    },
-    {
-      label: 'Mobile Responsiveness',
-      description: 'Mobile-friendly design is essential as Google uses mobile-first indexing. Your site must work perfectly on all devices.',
-      current: result.mobile_friendly?.is_mobile_friendly ? 'Mobile-friendly design detected' : 'Mobile compatibility issues found',
-      score: result.mobile_friendly?.score || 0,
-      path: result.mobile_friendly?.path,
-      issues: result.mobile_friendly?.issues || [],
-      details: result.mobile_friendly?.details || [],
-      recommendations: result.mobile_friendly?.recommendations || (result.mobile_friendly?.score < 90 ? ['Implement responsive design with proper viewport meta tag and ensure all content adapts to mobile screens.'] : []),
-      practicalExample: result.mobile_friendly?.score < 90 ? `<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<style>
-  @media (max-width: 768px) {
-    .container { padding: 1rem; }
-    .heading { font-size: 1.5rem; }
-    .cta-button { width: 100%; padding: 1rem; }
-  }
-</style>` : null
-    }
-  ];
-
-  const contentItems = result.analysis?.content?.results || [
-    {
-      label: 'Content Quality & Length',
-      description: 'Comprehensive content helps search engines understand your topic and provides value to users, improving dwell time.',
-      current: result.content?.word_count ? `${result.content.word_count} words of content` : 'Content length not analyzed',
-      score: result.content?.score || 0,
-      path: result.content?.path,
-      issues: result.content?.issues || [],
-      details: result.content?.details || [],
-      recommendations: result.content?.recommendations || (result.content?.score < 90 ? ['Create at least 300 words of high-quality, relevant content that thoroughly covers your topic and answers user questions.'] : []),
-      practicalExample: result.content?.score < 90 ? `<article>
-  <h1>Complete Guide to Debt Settlement in Orange County</h1>
-  
-  <p>If you're struggling with overwhelming debt in Orange County, debt settlement 
-  offers a viable path to financial freedom. Our certified debt specialists have 
-  helped thousands of Orange County residents reduce their debt by an average of 
-  50% through strategic negotiation with creditors.</p>
-  
-  <h2>How Debt Settlement Works</h2>
-  <p>Debt settlement involves negotiating with creditors to accept a lump sum 
-  payment that's less than the total amount owed...</p>
-  
-  <!-- Continue with detailed, helpful content (aim for 800+ words) -->
-</article>` : null
-    },
-    {
-      label: 'Internal Link Structure',
-      description: 'Internal links distribute page authority throughout your site and help users navigate to related content.',
-      current: `${result.links?.internal_count || 0} internal links found`,
-      score: result.links?.internal_score || 0,
-      path: result.links?.path,
-      issues: result.links?.issues || [],
-      details: result.links?.details || [],
-      recommendations: result.links?.recommendations || (result.links?.internal_score < 90 ? ['Add 2-5 contextual internal links to relevant pages using descriptive anchor text that includes target keywords.'] : []),
-      practicalExample: result.links?.internal_score < 90 ? `<p>Before choosing debt settlement, it's important to understand all your options. 
-Our <a href="/debt-consolidation-orange-county" title="Debt Consolidation Services">debt consolidation services</a> 
-might be a better fit for your situation. You can also learn more about 
-<a href="/bankruptcy-vs-debt-settlement" title="Bankruptcy vs Debt Settlement Comparison">bankruptcy alternatives</a> 
-and review our <a href="/client-success-stories" title="Orange County Debt Relief Success Stories">client success stories</a>.</p>
-
-<!-- Contextual internal links with descriptive anchor text -->` : null
-    },
-    {
-      label: 'External Link Authority',
-      description: 'Quality outbound links to authoritative sources can enhance content credibility and provide additional value to users.',
-      current: `${result.links?.external_count || 0} external links found`,
-      score: result.links?.external_score || 0,
-      path: result.links?.path,
-      issues: result.links?.issues || [],
-      details: result.links?.details || [],
-      recommendations: result.links?.recommendations || (result.links?.external_score < 90 ? ['Include 1-3 links to high-authority, relevant external sources to support your content and build trust.'] : []),
-      practicalExample: result.links?.external_score < 90 ? `<p>According to the <a href="https://www.consumer.ftc.gov/articles/debt-relief-services" 
-target="_blank" rel="noopener noreferrer">Federal Trade Commission</a>, 
-consumers should be aware of their rights when working with debt relief companies.</p>
-
-<p>The <a href="https://www.nfcc.org/" target="_blank" rel="noopener noreferrer">
-National Foundation for Credit Counseling</a> provides additional resources 
-for debt management strategies.</p>
-
-<!-- Links to authoritative government and industry sources -->` : null
-    }
-  ];
+  const contentItems = result.analysis?.content?.results || [];
 
   // Calculate category scores using API data if available, otherwise calculate from items
   const onPageScore = result.analysis?.on_page?.score || Math.round(onPageItems.reduce((sum, item) => sum + item.score, 0) / onPageItems.length);
@@ -451,7 +295,7 @@ for debt management strategies.</p>
           <div className="bg-white border border-gray-200 rounded-lg p-6 text-center">
             <ScoreIndicator score={technicalScore} size="small" />
             <h3 className="font-semibold text-gray-900 mt-3">Advanced Technical Performance</h3>
-            <p className="text-sm text-gray-600 mt-1">{technicalItems.length + (result.analysis?.technical?.results?.length || 0)} factors checked</p>
+            <p className="text-sm text-gray-600 mt-1">{technicalItems.length} factors checked</p>
           </div>
           
           <div className="bg-white border border-gray-200 rounded-lg p-6 text-center">
@@ -474,7 +318,7 @@ for debt management strategies.</p>
           title="Advanced Technical Performance" 
           score={technicalScore}
           description="Comprehensive technical factors including performance, security, analytics, and crawlability"
-          items={[...technicalItems, ...(result.analysis?.technical?.results || [])]}
+          items={technicalItems}
           icon={Zap}
         />
         
