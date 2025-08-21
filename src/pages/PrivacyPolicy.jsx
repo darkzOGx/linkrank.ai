@@ -108,7 +108,7 @@ export default function PrivacyPolicy() {
           </p>
           <p className="text-gray-700">
             Email: support@linkrank.ai<br />
-            Phone: +1 (555) 123-4567<br />
+            Phone: +1 (502) 232-8511<br />
             Website: https://linkrank.ai
           </p>
         </section>

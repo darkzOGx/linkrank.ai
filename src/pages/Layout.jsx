@@ -65,8 +65,8 @@ export default function Layout({ children }) {
                 </p>
                 <p className="mb-2">
                   <strong>Phone:</strong>{' '}
-                  <a href="tel:+15551234567" className="text-blue-600 hover:underline">
-                    +1 (555) 123-4567
+                  <a href="tel:+15022328511" className="text-blue-600 hover:underline">
+                    +1 (502) 232-8511
                   </a>
                 </p>
                 <p className="mb-2">
