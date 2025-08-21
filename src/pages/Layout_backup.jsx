@@ -15,7 +15,7 @@ export default function Layout({ children }) {
           <div className="border-t border-gray-200 pt-3">
             <nav className="flex items-center justify-center">
               <a href="/" className="text-sm font-medium hover:text-gray-600 transition-colors">
-                Home
+                Free SEO Audit
               </a>
               <span className="text-gray-400 mx-2">|</span>
               <a href="/GEOAudit" className="text-sm font-medium hover:text-gray-600 transition-colors">

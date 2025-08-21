@@ -1,7 +1,5 @@
 import Layout from "./Layout.jsx";
 
-import Home from "./Home";
-
 import SEOAudit from "./SEOAudit";
 import GEOAudit from "./GEOAudit";
 import SEOTools from "./SEOTools";
@@ -13,7 +11,6 @@ import TermsOfService from "./TermsOfService";
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 
 const PAGES = {
-    Home: Home,
     
     SEOAudit: SEOAudit,
     GEOAudit: GEOAudit,
@@ -44,7 +41,7 @@ function PagesContent() {
         <Layout currentPageName={currentPage}>
             <Routes>            
                 
-                    <Route path="/" element={<Home />} />
+                    <Route path="/" element={<SEOAudit />} />
                 
                 
                 <Route path="/SEOAudit" element={<SEOAudit />} />

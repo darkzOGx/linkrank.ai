@@ -17,12 +17,33 @@ export default function HeroSection({ onStartAudit, isLoading }) {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-32">
         <div className="text-center">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-medium text-black mb-6">
-            Website Performance LinkRank.ai - Professional <span className="text-[#fcd63a]">SEO & GEO Audit</span> Tool <span className="text-[#fcd63a]">SEO Audit</span>
+            LinkRank.ai - Professional <span className="text-[#fcd63a]">SEO & GEO Audit</span> Tool
           </h1>
           <p className="text-lg text-gray-700 mb-10 max-w-3xl mx-auto">
-            An independent analysis protocol for evaluating on-page search engine optimization and technical performance metrics. Enter a URL to begin the automated assessment.
+            <strong>LinkRank.ai</strong> provides comprehensive SEO and GEO (Generative Engine Optimization) audits to help your website rank higher in search engines and perform better with AI systems. Our advanced analysis protocol evaluates over 50+ on-page optimization factors, technical performance metrics, and AI-readiness signals.
           </p>
 
+          {/* What is SEO explanation */}
+          <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 max-w-4xl mx-auto mb-6">
+            <h2 className="text-xl font-medium text-gray-900 mb-3 flex items-center justify-center gap-2">
+              <Search className="w-5 h-5" />
+              What is SEO (Search Engine Optimization)?
+            </h2>
+            <p className="text-gray-800 text-sm leading-relaxed mb-4">
+              <strong>SEO (Search Engine Optimization)</strong> is the practice of optimizing websites to rank higher in traditional search engine results pages (SERPs) like Google, Bing, and Yahoo. 
+              It involves improving on-page elements, technical performance, content quality, and user experience to increase organic visibility and drive more clicks to your website.
+            </p>
+            <p className="text-gray-800 text-sm leading-relaxed">
+              LinkRank.ai's SEO audit analyzes critical factors including title tags, meta descriptions, heading structure, content quality, page speed, mobile-friendliness, schema markup, and accessibility compliance. 
+              Our tool provides actionable recommendations with practical implementation examples to help you improve your search rankings.
+            </p>
+          </div>
+
+          {/* What is GEO explanation */}
+          <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 max-w-4xl mx-auto mb-10">
+            <h2 className="text-xl font-medium text-gray-900 mb-3 flex items-center justify-center gap-2">
+              <Search className="w-5 h-5" />
+              What is GEO (Generative Engine Optimization)?
             </h2>
             <p className="text-gray-800 text-sm leading-relaxed mb-4">
               <strong>GEO (Generative Engine Optimization)</strong> is the emerging practice of optimizing content for AI systems and large language models like ChatGPT, Claude, and Google's AI Overview. 
