@@ -107,8 +107,8 @@ const ComprehensiveAuditItem = ({ item, category }) => {
               </div>
             )}
             
-            {/* Recommendations */}
-            {item.recommendations && item.recommendations.length > 0 && (
+            {/* Recommendations - only show if score < 90 */}
+            {item.score < 90 && item.recommendations && item.recommendations.length > 0 && (
               <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg">
                 <p className="text-sm font-semibold text-blue-800 mb-2">💡 Recommendations:</p>
                 <ul className="text-sm text-blue-700 space-y-1">
@@ -122,8 +122,8 @@ const ComprehensiveAuditItem = ({ item, category }) => {
               </div>
             )}
 
-            {/* Practical Example */}
-            {item.practicalExample && (
+            {/* Practical Example - only show if score < 90 */}
+            {item.score < 90 && item.practicalExample && (
               <div className="bg-green-50 border border-green-200 p-4 rounded-lg">
                 <p className="text-sm font-semibold text-green-800 mb-2">🔧 Practical Example:</p>
                 <pre className="text-xs text-green-700 bg-green-100 p-3 rounded overflow-x-auto">
@@ -320,26 +320,6 @@ export default function SEOAuditResults({ result, onNewAudit }) {
     .cta-button { width: 100%; padding: 1rem; }
   }
 </style>` : null
-    },
-    {
-      label: 'HTTPS Security',
-      description: 'HTTPS encryption protects user data and is a ranking signal. All modern websites should use SSL certificates.',
-      current: result.https?.is_https ? 'Secure HTTPS connection' : 'Insecure HTTP connection',
-      score: result.https?.score || 0,
-      path: result.https?.path,
-      issues: result.https?.issues || [],
-      details: result.https?.details || [],
-      recommendations: result.https?.recommendations || (result.https?.score < 90 ? ['Install an SSL certificate and set up 301 redirects from HTTP to HTTPS for all pages.'] : []),
-      practicalExample: result.https?.score < 90 ? `# .htaccess redirect HTTP to HTTPS
-RewriteEngine On
-RewriteCond %{HTTPS} off
-RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-
-# Or in nginx:
-server {
-    listen 80;
-    return 301 https://$server_name$request_uri;
-}` : null
     }
   ];
 
@@ -470,8 +450,8 @@ for debt management strategies.</p>
           
           <div className="bg-white border border-gray-200 rounded-lg p-6 text-center">
             <ScoreIndicator score={technicalScore} size="small" />
-            <h3 className="font-semibold text-gray-900 mt-3">Technical Performance</h3>
-            <p className="text-sm text-gray-600 mt-1">{technicalItems.length} factors checked</p>
+            <h3 className="font-semibold text-gray-900 mt-3">Advanced Technical Performance</h3>
+            <p className="text-sm text-gray-600 mt-1">{technicalItems.length + (result.analysis?.technical?.results?.length || 0)} factors checked</p>
           </div>
           
           <div className="bg-white border border-gray-200 rounded-lg p-6 text-center">
@@ -491,10 +471,10 @@ for debt management strategies.</p>
         />
         
         <CategoryResults 
-          title="Technical Performance" 
+          title="Advanced Technical Performance" 
           score={technicalScore}
-          description="Technical factors that affect user experience and search engine crawling"
-          items={technicalItems}
+          description="Comprehensive technical factors including performance, security, analytics, and crawlability"
+          items={[...technicalItems, ...(result.analysis?.technical?.results || [])]}
           icon={Zap}
         />
         
@@ -553,31 +533,15 @@ for debt management strategies.</p>
           </div>
         </div>
 
-        {/* Comprehensive Analysis Sections from API */}
-        {result.analysis && (
-          <>
-            {/* Technical SEO Analysis */}
-            {result.analysis.technical && (
-              <CategoryResults 
-                title="Advanced Technical SEO" 
-                score={result.analysis.technical.score}
-                description="Comprehensive technical factors including GSC, Analytics, Schema, and crawlability"
-                items={result.analysis.technical.results}
-                icon={Zap}
-              />
-            )}
-
-            {/* Link Structure Analysis */}
-            {result.analysis.link_structure && (
-              <CategoryResults 
-                title="Link Structure & Navigation" 
-                score={result.analysis.link_structure.score}
-                description="Internal/external links, URL structure, and site navigation analysis"
-                items={result.analysis.link_structure.results}
-                icon={Globe}
-              />
-            )}
-          </>
+        {/* Link Structure Analysis from API */}
+        {result.analysis?.link_structure && (
+          <CategoryResults 
+            title="Link Structure & Navigation" 
+            score={result.analysis.link_structure.score}
+            description="Internal/external links, URL structure, and site navigation analysis"
+            items={result.analysis.link_structure.results}
+            icon={Globe}
+          />
         )}
 
         {/* SEO Checklists */}
@@ -675,7 +639,7 @@ for debt management strategies.</p>
             <div className="bg-white/70 border border-blue-200 rounded-lg p-4">
               <div className="flex items-center justify-center mb-2">
                 <Zap className="w-6 h-6 text-gray-700 mr-2" />
-                <span className="font-semibold text-gray-900">Technical Performance</span>
+                <span className="font-semibold text-gray-900">Advanced Technical Performance</span>
               </div>
               <div className="text-3xl font-bold text-gray-900">{technicalScore}/100</div>
             </div>

@@ -146,6 +146,20 @@ function analyzeWebsite(fetchResult, originalUrl) {
   const hasGoogleSearchConsole = html.includes('google-site-verification');
   const hasSitemap = html.includes('sitemap.xml') || html.includes('sitemap');
   
+  // Additional technical checks
+  const hasGzip = html.includes('gzip') || html.includes('compress');
+  const hasLazyLoading = html.includes('loading="lazy"');
+  const hasPreconnect = html.includes('rel="preconnect"');
+  const hasDNSPrefetch = html.includes('rel="dns-prefetch"');
+  const hasAmp = html.includes('⚡') || html.includes('amp-');
+  const hasServiceWorker = html.includes('serviceWorker') || html.includes('sw.js');
+  const hasWebP = html.includes('.webp');
+  const hasXMLSitemap = html.includes('sitemap.xml');
+  const hasRobotsTxt = html.includes('robots.txt');
+  const hasHttp2 = finalUrl.startsWith('https://'); // Assume HTTPS sites use HTTP/2
+  const hasContentSecurity = html.includes('Content-Security-Policy');
+  const hasHsts = html.includes('Strict-Transport-Security');
+  
   // Check for structured data
   const jsonLdMatches = [...html.matchAll(/<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)];
   const structuredDataTypes = jsonLdMatches.map(match => {
@@ -234,7 +248,7 @@ function analyzeWebsite(fetchResult, originalUrl) {
   
   // Generate comprehensive analysis results
   const websiteContext = extractWebsiteContext(html, title, metaDescription, textContent, finalUrl);
-  const technicalResults = generateTechnicalResults(hasHttps, hasViewport, hasCanonical, hasFavicon, hasOpenGraph, hasTwitterCard, hasSchemaMarkup, hasGoogleAnalytics, hasGoogleSearchConsole, hasSitemap, structuredDataTypes, urlHasHyphens, urlHasUnderscores, urlIsReadable, hasNavigation, responseTime, websiteContext);
+  const technicalResults = generateTechnicalResults(hasHttps, hasViewport, hasCanonical, hasFavicon, hasOpenGraph, hasTwitterCard, hasSchemaMarkup, hasGoogleAnalytics, hasGoogleSearchConsole, hasSitemap, structuredDataTypes, urlHasHyphens, urlHasUnderscores, urlIsReadable, hasNavigation, responseTime, websiteContext, hasGzip, hasLazyLoading, hasPreconnect, hasDNSPrefetch, hasAmp, hasServiceWorker, hasWebP, hasXMLSitemap, hasRobotsTxt, hasHttp2, hasContentSecurity, hasHsts);
   const linkResults = generateLinkResults(links, websiteContext);
   const contentResults = generateContentResults(wordCount, textContent, websiteContext);
   
@@ -404,7 +418,7 @@ function extractWebsiteContext(html, title, metaDescription, textContent, url) {
   };
 }
 
-function generateTechnicalResults(hasHttps, hasViewport, hasCanonical, hasFavicon, hasOpenGraph, hasTwitterCard, hasSchemaMarkup, hasGoogleAnalytics, hasGoogleSearchConsole, hasSitemap, structuredDataTypes, urlHasHyphens, urlHasUnderscores, urlIsReadable, hasNavigation, responseTime, websiteContext) {
+function generateTechnicalResults(hasHttps, hasViewport, hasCanonical, hasFavicon, hasOpenGraph, hasTwitterCard, hasSchemaMarkup, hasGoogleAnalytics, hasGoogleSearchConsole, hasSitemap, structuredDataTypes, urlHasHyphens, urlHasUnderscores, urlIsReadable, hasNavigation, responseTime, websiteContext, hasGzip, hasLazyLoading, hasPreconnect, hasDNSPrefetch, hasAmp, hasServiceWorker, hasWebP, hasXMLSitemap, hasRobotsTxt, hasHttp2, hasContentSecurity, hasHsts) {
   return [
     {
       label: 'HTTPS Security',
@@ -494,7 +508,57 @@ function generateTechnicalResults(hasHttps, hasViewport, hasCanonical, hasFavico
       path: 'Server-level metric',
       issues: responseTime > 3000 ? ['Very slow response time (>3 seconds)'] : responseTime > 1000 ? ['Slow response time (>1 second)'] : [],
       recommendations: responseTime > 1000 ? ['Implement caching strategies and server optimization'] : ['Response time is excellent'],
-      practicalExample: responseTime > 1000 ? 'Add cache headers: Cache-Control: public, max-age=31536000' : 'Current response time is optimal'
+      practicalExample: responseTime > 1000 ? 'Add cache headers: Cache-Control: public, max-age=31536000' : null
+    },
+    {
+      label: 'Image Optimization & Lazy Loading',
+      description: 'Lazy loading and modern image formats improve page performance and user experience.',
+      score: hasLazyLoading ? 100 : hasWebP ? 85 : 70,
+      current: hasLazyLoading ? 'Lazy loading detected' : hasWebP ? 'WebP images found' : 'Standard image loading',
+      path: 'Image elements',
+      issues: !hasLazyLoading ? ['Images not using lazy loading'] : [],
+      recommendations: !hasLazyLoading ? ['Add loading="lazy" to images below the fold'] : ['Image optimization is good'],
+      practicalExample: !hasLazyLoading ? '<img src="image.webp" alt="Description" loading="lazy" width="400" height="300">' : null
+    },
+    {
+      label: 'Resource Preloading & DNS Optimization',
+      description: 'Preconnect and DNS prefetch improve loading speed by establishing early connections.',
+      score: hasPreconnect && hasDNSPrefetch ? 100 : hasPreconnect || hasDNSPrefetch ? 80 : 60,
+      current: hasPreconnect && hasDNSPrefetch ? 'Both preconnect and DNS prefetch found' : hasPreconnect ? 'Preconnect found' : hasDNSPrefetch ? 'DNS prefetch found' : 'No resource preloading',
+      path: 'HTML head section',
+      issues: !hasPreconnect && !hasDNSPrefetch ? ['No resource preloading optimizations'] : [],
+      recommendations: !hasPreconnect && !hasDNSPrefetch ? ['Add preconnect and DNS prefetch for external resources'] : ['Resource preloading is configured'],
+      practicalExample: !hasPreconnect && !hasDNSPrefetch ? '<link rel="preconnect" href="https://fonts.googleapis.com">\n<link rel="dns-prefetch" href="//cdn.example.com">' : null
+    },
+    {
+      label: 'Robots Meta & Crawl Directives',
+      description: 'Robots meta tags control how search engines crawl and index your pages.',
+      score: hasRobots ? 100 : 85,
+      current: hasRobots ? 'Robots meta tag found' : 'No robots meta tag (default crawling)',
+      path: hasRobots ? 'HTML head section' : 'Not specified',
+      issues: [],
+      recommendations: hasRobots ? ['Robots directives are set'] : ['Consider adding robots meta tag if needed'],
+      practicalExample: !hasRobots ? '<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">' : null
+    },
+    {
+      label: 'XML Sitemap & Robots.txt',
+      description: 'XML sitemaps and robots.txt help search engines discover and crawl your content efficiently.',
+      score: hasXMLSitemap && hasRobotsTxt ? 100 : hasXMLSitemap || hasRobotsTxt ? 80 : 60,
+      current: hasXMLSitemap && hasRobotsTxt ? 'Both sitemap and robots.txt referenced' : hasXMLSitemap ? 'XML sitemap referenced' : hasRobotsTxt ? 'Robots.txt referenced' : 'No sitemap/robots.txt references',
+      path: 'Site-wide files',
+      issues: !hasXMLSitemap ? ['XML sitemap not referenced'] : [],
+      recommendations: !hasXMLSitemap ? ['Create and submit XML sitemap to search engines'] : ['Sitemap configuration is good'],
+      practicalExample: !hasXMLSitemap ? 'Add to robots.txt: Sitemap: https://example.com/sitemap.xml' : null
+    },
+    {
+      label: 'Twitter Card Meta Tags',
+      description: 'Twitter Cards enhance how content appears when shared on Twitter, improving engagement.',
+      score: hasTwitterCard ? 100 : 70,
+      current: hasTwitterCard ? 'Twitter Card tags found' : 'No Twitter Card tags',
+      path: hasTwitterCard ? 'HTML head section' : 'Not found',
+      issues: hasTwitterCard ? [] : ['Missing Twitter Card meta tags'],
+      recommendations: hasTwitterCard ? ['Twitter Cards properly configured'] : ['Add Twitter Card meta tags for better social sharing'],
+      practicalExample: hasTwitterCard ? null : `<meta name="twitter:card" content="summary_large_image">\n<meta name="twitter:title" content="${websiteContext.primaryKeyword} Services | ${websiteContext.brandName}">\n<meta name="twitter:description" content="Professional ${websiteContext.industry} services">`
     }
   ];
 }
