@@ -223,8 +223,8 @@ export default function SEOAuditResults({ result, onNewAudit }) {
     );
   }
 
-  // Create comprehensive audit items with detailed context
-  const onPageItems = [
+  // Use real API analysis data if available, otherwise fallback to legacy format
+  const onPageItems = result.analysis?.on_page?.results || [
     {
       label: 'Title Tag',
       description: 'The HTML title tag is the most important on-page SEO element. It appears as the clickable headline in search results and browser tabs.',
@@ -282,7 +282,7 @@ export default function SEOAuditResults({ result, onNewAudit }) {
     }
   ];
 
-  const technicalItems = [
+  const technicalItems = result.analysis?.technical?.results || [
     {
       label: 'Page Load Speed',
       description: 'Fast loading times are crucial for user experience and are a confirmed Google ranking factor. Pages should load in under 3 seconds.',
@@ -343,7 +343,7 @@ server {
     }
   ];
 
-  const contentItems = [
+  const contentItems = result.analysis?.content?.results || [
     {
       label: 'Content Quality & Length',
       description: 'Comprehensive content helps search engines understand your topic and provides value to users, improving dwell time.',
@@ -406,10 +406,10 @@ for debt management strategies.</p>
     }
   ];
 
-  // Calculate category scores
-  const onPageScore = Math.round(onPageItems.reduce((sum, item) => sum + item.score, 0) / onPageItems.length);
-  const technicalScore = Math.round(technicalItems.reduce((sum, item) => sum + item.score, 0) / technicalItems.length);
-  const contentScore = Math.round(contentItems.reduce((sum, item) => sum + item.score, 0) / contentItems.length);
+  // Calculate category scores using API data if available, otherwise calculate from items
+  const onPageScore = result.analysis?.on_page?.score || Math.round(onPageItems.reduce((sum, item) => sum + item.score, 0) / onPageItems.length);
+  const technicalScore = result.analysis?.technical?.score || Math.round(technicalItems.reduce((sum, item) => sum + item.score, 0) / technicalItems.length);
+  const contentScore = result.analysis?.content?.score || Math.round(contentItems.reduce((sum, item) => sum + item.score, 0) / contentItems.length);
   
   // Calculate overall comprehensive score (average of all category scores)
   const overallComprehensiveScore = Math.round((onPageScore + technicalScore + contentScore) / 3);
@@ -552,6 +552,105 @@ for debt management strategies.</p>
             </div>
           </div>
         </div>
+
+        {/* Comprehensive Analysis Sections from API */}
+        {result.analysis && (
+          <>
+            {/* Technical SEO Analysis */}
+            {result.analysis.technical && (
+              <CategoryResults 
+                title="Advanced Technical SEO" 
+                score={result.analysis.technical.score}
+                description="Comprehensive technical factors including GSC, Analytics, Schema, and crawlability"
+                items={result.analysis.technical.results}
+                icon={Zap}
+              />
+            )}
+
+            {/* Link Structure Analysis */}
+            {result.analysis.link_structure && (
+              <CategoryResults 
+                title="Link Structure & Navigation" 
+                score={result.analysis.link_structure.score}
+                description="Internal/external links, URL structure, and site navigation analysis"
+                items={result.analysis.link_structure.results}
+                icon={Globe}
+              />
+            )}
+          </>
+        )}
+
+        {/* SEO Checklists */}
+        {result.seo_checklists && (
+          <div className="bg-white border border-gray-200 rounded-lg p-8 mb-8">
+            <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+              <CheckCircle className="w-8 h-8 text-green-600" />
+              SEO Optimization Checklists
+            </h3>
+            
+            <div className="grid md:grid-cols-2 gap-8">
+              {Object.entries(result.seo_checklists).map(([key, checklist]) => (
+                <div key={key} className="border border-gray-200 rounded-lg p-6">
+                  <h4 className="text-lg font-semibold text-gray-900 mb-4">{checklist.title}</h4>
+                  <div className="space-y-3">
+                    {checklist.items.map((item, index) => (
+                      <div key={index} className="flex items-start gap-3 p-3 bg-gray-50 rounded">
+                        <div className={`w-3 h-3 rounded-full mt-1 ${
+                          item.status === 'completed' ? 'bg-green-500' : 
+                          item.status === 'critical' ? 'bg-red-500' : 'bg-yellow-500'
+                        }`} />
+                        <div className="flex-1">
+                          <h5 className="font-medium text-gray-900">{item.item}</h5>
+                          <p className="text-sm text-gray-600 mt-1">{item.description}</p>
+                          <p className="text-xs text-gray-500 mt-1"><strong>Current:</strong> {item.current_state}</p>
+                          <p className="text-xs text-blue-600 mt-1"><strong>Recommendation:</strong> {item.recommendation}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Strategy Sections */}
+        {result.strategy_sections && (
+          <div className="bg-white border border-gray-200 rounded-lg p-8 mb-8">
+            <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+              <Target className="w-8 h-8 text-purple-600" />
+              Strategic SEO Recommendations
+            </h3>
+            
+            <div className="grid gap-8">
+              {Object.entries(result.strategy_sections).map(([key, section]) => (
+                <div key={key} className="border border-gray-200 rounded-lg p-6">
+                  <h4 className="text-xl font-semibold text-gray-900 mb-2">{section.title}</h4>
+                  <p className="text-gray-600 mb-4">{section.description}</p>
+                  
+                  <div className="space-y-4">
+                    {section.recommendations.map((rec, index) => (
+                      <div key={index} className="border-l-4 border-blue-500 pl-4">
+                        <div className="flex items-center gap-2 mb-2">
+                          <span className={`px-2 py-1 text-xs font-medium rounded ${
+                            rec.priority === 'high' ? 'bg-red-100 text-red-800' :
+                            rec.priority === 'medium' ? 'bg-yellow-100 text-yellow-800' :
+                            'bg-green-100 text-green-800'
+                          }`}>
+                            {rec.priority} priority
+                          </span>
+                          <h5 className="font-medium text-gray-900">{rec.action}</h5>
+                        </div>
+                        <p className="text-sm text-gray-600 mb-2">{rec.description}</p>
+                        <p className="text-sm text-blue-600"><strong>Implementation:</strong> {rec.implementation}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Overall Score Summary */}
         <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-lg p-8 text-center">
