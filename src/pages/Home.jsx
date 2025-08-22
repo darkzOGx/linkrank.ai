@@ -34,6 +34,15 @@ export default function Home() {
               </button>
             </div>
 
+            {/* LinkRank Logo */}
+            <div className="flex justify-center mb-12">
+              <img 
+                src="/linkrank-logo.png" 
+                alt="LinkRank.ai Logo" 
+                className="h-16 w-auto opacity-80 hover:opacity-100 transition-opacity"
+              />
+            </div>
+
             <div className="bg-gray-50 border border-gray-200 rounded-lg p-8 max-w-4xl mx-auto mb-8 text-left">
               <h2 className="text-2xl font-medium text-gray-900 mb-4 flex items-center gap-2">
                 <Search className="w-6 h-6" />
