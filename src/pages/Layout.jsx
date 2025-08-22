@@ -26,7 +26,7 @@ export default function Layout({ children }) {
             </div>
 
             {/* Desktop Navigation */}
-            <nav className="hidden lg:flex items-center gap-6">
+            <nav className="hidden lg:flex items-center justify-center gap-6 flex-1">
               <a href="/" className="text-[#171919] hover:text-blue-600 transition-colors font-medium">
                 Home
               </a>
@@ -55,6 +55,32 @@ export default function Layout({ children }) {
             >
               {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
+          </div>
+          
+          {/* Mobile Navigation - Scrollable */}
+          <div className="lg:hidden">
+            <div className="overflow-x-auto scrollbar-hide">
+              <div className="flex gap-4 px-4 py-3 min-w-max">
+                <a href="/" className="text-[#171919] hover:text-blue-600 transition-colors font-medium whitespace-nowrap">
+                  Home
+                </a>
+                <a href="/SEOAudit" className="text-[#171919] hover:text-blue-600 transition-colors font-medium whitespace-nowrap">
+                  SEO Audit
+                </a>
+                <a href="/GEOAudit" className="text-[#171919] hover:text-blue-600 transition-colors font-medium whitespace-nowrap">
+                  GEO Audit
+                </a>
+                <a href="/tools" className="text-[#171919] hover:text-blue-600 transition-colors font-medium whitespace-nowrap">
+                  SEO Tools
+                </a>
+                <a href="/geo-tools" className="text-[#171919] hover:text-blue-600 transition-colors font-medium whitespace-nowrap">
+                  GEO Tools
+                </a>
+                <a href="/about" className="text-[#171919] hover:text-blue-600 transition-colors font-medium whitespace-nowrap">
+                  About
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </header>
@@ -108,22 +134,64 @@ export default function Layout({ children }) {
               <h3 className="text-lg font-medium text-white mb-3">SEO Tools</h3>
               <ul className="text-sm text-gray-300 space-y-2">
                 <li>
-                  <a href="/tools#robots-tester" className="hover:text-[#fcd63a] transition-colors">Robots.txt Tester</a>
+                  <a href="/tools/backlink-audit" className="hover:text-[#fcd63a] transition-colors">Backlink Audit Tool</a>
                 </li>
                 <li>
-                  <a href="/tools#keyword-research" className="hover:text-[#fcd63a] transition-colors">Keyword Research</a>
+                  <a href="/tools/robots-tester" className="hover:text-[#fcd63a] transition-colors">Robots.txt Tester</a>
                 </li>
                 <li>
-                  <a href="/tools#crawl-test" className="hover:text-[#fcd63a] transition-colors">Page Crawl Test</a>
+                  <a href="/tools/keyword-research" className="hover:text-[#fcd63a] transition-colors">Keyword Research</a>
                 </li>
                 <li>
-                  <a href="/tools#mobile-test" className="hover:text-[#fcd63a] transition-colors">Mobile Support Test</a>
+                  <a href="/tools/crawl-test" className="hover:text-[#fcd63a] transition-colors">Page Crawl Test</a>
                 </li>
                 <li>
-                  <a href="/tools#header-test" className="hover:text-[#fcd63a] transition-colors">HTTP Header Test</a>
+                  <a href="/tools/mobile-test" className="hover:text-[#fcd63a] transition-colors">Mobile Support Test</a>
                 </li>
                 <li>
-                  <a href="/tools#speed-test" className="hover:text-[#fcd63a] transition-colors">Website Speed Test</a>
+                  <a href="/tools/header-test" className="hover:text-[#fcd63a] transition-colors">HTTP Header Test</a>
+                </li>
+                <li>
+                  <a href="/tools/speed-test" className="hover:text-[#fcd63a] transition-colors">Website Speed Test</a>
+                </li>
+                <li>
+                  <a href="/tools/internal-links" className="hover:text-[#fcd63a] transition-colors">Internal Link Checker</a>
+                </li>
+                <li>
+                  <a href="/tools/keyword-density" className="hover:text-[#fcd63a] transition-colors">Keyword Density</a>
+                </li>
+                <li>
+                  <a href="/tools/meta-extractor" className="hover:text-[#fcd63a] transition-colors">Extract Meta Tags</a>
+                </li>
+                <li>
+                  <a href="/tools/sitemap-finder" className="hover:text-[#fcd63a] transition-colors">Sitemap Finder</a>
+                </li>
+                <li>
+                  <a href="/tools/domain-authority" className="hover:text-[#fcd63a] transition-colors">Domain Authority Checker</a>
+                </li>
+                <li>
+                  <a href="/tools/tech-checker" className="hover:text-[#fcd63a] transition-colors">Website Technology Checker</a>
+                </li>
+                <li>
+                  <a href="/tools/redirect-checker" className="hover:text-[#fcd63a] transition-colors">URL Redirect Checker</a>
+                </li>
+                <li>
+                  <a href="/tools/anchor-extractor" className="hover:text-[#fcd63a] transition-colors">Anchor Text Link Extractor</a>
+                </li>
+                <li>
+                  <a href="/tools/ai-seo-assistant" className="hover:text-[#fcd63a] transition-colors">AI SEO Assistant</a>
+                </li>
+                <li>
+                  <a href="/tools/organic-traffic" className="hover:text-[#fcd63a] transition-colors">Organic Traffic Checker</a>
+                </li>
+                <li>
+                  <a href="/tools/meta-generator" className="hover:text-[#fcd63a] transition-colors">Meta Title & Description Generator</a>
+                </li>
+                <li>
+                  <a href="/tools/cache-checker" className="hover:text-[#fcd63a] transition-colors">Google Cache Date Checker</a>
+                </li>
+                <li>
+                  <a href="/tools/llms-generator" className="hover:text-[#fcd63a] transition-colors">Free LLMs.txt Generator</a>
                 </li>
               </ul>
             </div>
@@ -133,22 +201,67 @@ export default function Layout({ children }) {
               <h3 className="text-lg font-medium text-white mb-3">GEO Tools</h3>
               <ul className="text-sm text-gray-300 space-y-2">
                 <li>
-                  <a href="/geo-tools#structured-data-validator" className="hover:text-[#fcd63a] transition-colors">Structured Data Validator</a>
+                  <a href="/geo-tools/structured-data-validator" className="hover:text-[#fcd63a] transition-colors">Structured Data Validator</a>
                 </li>
                 <li>
-                  <a href="/geo-tools#ai-citation-analyzer" className="hover:text-[#fcd63a] transition-colors">AI Citation Analyzer</a>
+                  <a href="/geo-tools/ai-citation-analyzer" className="hover:text-[#fcd63a] transition-colors">AI Citation Analyzer</a>
                 </li>
                 <li>
-                  <a href="/geo-tools#fact-density-checker" className="hover:text-[#fcd63a] transition-colors">Fact Density Checker</a>
+                  <a href="/geo-tools/fact-density-checker" className="hover:text-[#fcd63a] transition-colors">Fact Density Checker</a>
                 </li>
                 <li>
-                  <a href="/geo-tools#authority-signal-detector" className="hover:text-[#fcd63a] transition-colors">Authority Signal Detector</a>
+                  <a href="/geo-tools/authority-signal-detector" className="hover:text-[#fcd63a] transition-colors">Authority Signal Detector</a>
                 </li>
                 <li>
-                  <a href="/geo-tools#ai-content-extractor" className="hover:text-[#fcd63a] transition-colors">AI Content Extractor</a>
+                  <a href="/geo-tools/ai-content-extractor" className="hover:text-[#fcd63a] transition-colors">AI Content Extractor</a>
                 </li>
                 <li>
-                  <a href="/geo-tools#citation-format-optimizer" className="hover:text-[#fcd63a] transition-colors">Citation Format Optimizer</a>
+                  <a href="/geo-tools/citation-format-optimizer" className="hover:text-[#fcd63a] transition-colors">Citation Format Optimizer</a>
+                </li>
+                <li>
+                  <a href="/geo-tools/source-attribution-checker" className="hover:text-[#fcd63a] transition-colors">Source Attribution Checker</a>
+                </li>
+                <li>
+                  <a href="/geo-tools/knowledge-panel-optimizer" className="hover:text-[#fcd63a] transition-colors">Knowledge Panel Optimizer</a>
+                </li>
+                <li>
+                  <a href="/geo-tools/ai-readability-scorer" className="hover:text-[#fcd63a] transition-colors">AI Readability Scorer</a>
+                </li>
+                <li>
+                  <a href="/geo-tools/trust-signal-analyzer" className="hover:text-[#fcd63a] transition-colors">Trust Signal Analyzer</a>
+                </li>
+                <li>
+                  <a href="/geo-tools/llm-response-simulator" className="hover:text-[#fcd63a] transition-colors">LLM Response Simulator</a>
+                </li>
+                <li>
+                  <a href="/geo-tools/entity-recognition-optimizer" className="hover:text-[#fcd63a] transition-colors">Entity Recognition Optimizer</a>
+                </li>
+                <li>
+                  <a href="/geo-tools/faq-schema-generator" className="hover:text-[#fcd63a] transition-colors">FAQ Schema Generator</a>
+                </li>
+                <li>
+                  <a href="/geo-tools/ai-traffic-estimator" className="hover:text-[#fcd63a] transition-colors">AI Traffic Estimator</a>
+                </li>
+                <li>
+                  <a href="/geo-tools/content-atomization-tool" className="hover:text-[#fcd63a] transition-colors">Content Atomization Tool</a>
+                </li>
+                <li>
+                  <a href="/geo-tools/citation-competitor-analysis" className="hover:text-[#fcd63a] transition-colors">Citation Competitor Analysis</a>
+                </li>
+                <li>
+                  <a href="/geo-tools/expertise-markup-validator" className="hover:text-[#fcd63a] transition-colors">Expertise Markup Validator</a>
+                </li>
+                <li>
+                  <a href="/geo-tools/ai-snippet-optimizer" className="hover:text-[#fcd63a] transition-colors">AI Snippet Optimizer</a>
+                </li>
+                <li>
+                  <a href="/geo-tools/geo-performance-tracker" className="hover:text-[#fcd63a] transition-colors">GEO Performance Tracker</a>
+                </li>
+                <li>
+                  <a href="/geo-tools/semantic-relevance-analyzer" className="hover:text-[#fcd63a] transition-colors">Semantic Relevance Analyzer</a>
+                </li>
+                <li>
+                  <a href="/geo-tools/intent-matching-optimizer" className="hover:text-[#fcd63a] transition-colors">Intent Matching Optimizer</a>
                 </li>
               </ul>
             </div>

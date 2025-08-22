@@ -48,6 +48,15 @@
     font-size: 16px; /* Prevent iOS zoom */
   }
   
+  /* Hide scrollbars */
+  .scrollbar-hide {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;  /* Chrome, Safari and Opera */
+  }
+  
   /* Image optimization for mobile */
   img {
     max-width: 100%;
