@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Search, Menu, X } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 
 export default function Layout({ children }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -15,9 +15,11 @@ export default function Layout({ children }) {
           <div className="flex justify-between items-center py-4">
             {/* Logo */}
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-blue-700 rounded-lg flex items-center justify-center shadow-lg">
-                <Search className="w-5 h-5 text-white" />
-              </div>
+              <img 
+                src="/linkrank-new-logo.png" 
+                alt="LinkRank.ai Logo" 
+                className="h-8 w-auto"
+              />
               <a href="/" className="text-xl font-semibold text-[#171919] tracking-tight hover:opacity-80 transition-opacity">
                 LinkRank.ai
               </a>
