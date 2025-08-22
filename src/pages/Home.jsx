@@ -225,17 +225,13 @@ export default function Home() {
               </div>
 
               {/* Powered by LinkRank.ai */}
-              <div className="flex items-center justify-center gap-2 pt-4 border-t border-gray-200">
-                <span className="text-sm text-gray-500 font-medium">POWERED BY</span>
-                <div className="flex items-center gap-2">
-                  <div className="w-6 h-6 bg-gradient-to-r from-blue-600 to-purple-600 rounded-sm flex items-center justify-center">
-                    <div className="w-3 h-3 border border-white rounded-sm relative">
-                      <div className="absolute inset-0.5 bg-white rounded-sm">
-                        <div className="w-full h-full bg-gradient-to-br from-blue-500 to-purple-500 rounded-sm"></div>
-                      </div>
-                    </div>
+              <div className="flex items-center justify-center gap-3 pt-8 mt-8 border-t border-gray-200">
+                <span className="text-sm text-gray-500 font-medium tracking-wider">POWERED BY</span>
+                <div className="flex items-center gap-2 bg-white px-3 py-1 rounded-lg shadow-sm border">
+                  <div className="w-5 h-5 bg-gradient-to-br from-blue-500 to-purple-600 rounded flex items-center justify-center">
+                    <div className="w-2 h-2 bg-white rounded"></div>
                   </div>
-                  <span className="text-lg font-bold text-gray-700">linkrank</span>
+                  <span className="text-base font-bold text-gray-800">LinkRank.ai</span>
                 </div>
               </div>
             </div>
