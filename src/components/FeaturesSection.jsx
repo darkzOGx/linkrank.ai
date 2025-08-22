@@ -19,9 +19,9 @@ const analysisPoints = [
 
 export default function FeaturesSection() {
   return (
-    <section className="bg-white py-20 sm:py-24">
+    <section className="bg-white py-12 sm:py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16 max-w-3xl mx-auto">
+        <div className="text-center mb-12 max-w-3xl mx-auto">
           <h2 className="text-3xl sm:text-4xl font-medium text-black mb-4">
             <span className="block sm:inline">Comprehensive</span>{' '}
             <span className="block sm:inline">SEO Analysis</span>
@@ -35,7 +35,7 @@ export default function FeaturesSection() {
           {analysisPoints.map((point, index) => (
             <div 
               key={point.title} 
-              className={`bg-white p-8 ${
+              className={`bg-white p-6 ${
                 // Add bottom border for first row items on desktop (lg: 3 columns)
                 index < 3 ? 'lg:border-b lg:border-black' : ''
               }`}

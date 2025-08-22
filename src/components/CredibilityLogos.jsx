@@ -8,7 +8,7 @@ export default function CredibilityLogos() {
       </p>
       <div className="flex justify-center">
         <img 
-          src="/linkrank-logo.png" 
+          src="/linkrank-new-logo.png" 
           alt="LinkRank.ai - Professional SEO and GEO Audit Tool Logo" 
           loading="lazy"
           decoding="async"

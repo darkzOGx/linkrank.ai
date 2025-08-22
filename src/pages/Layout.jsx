@@ -14,11 +14,11 @@ export default function Layout({ children }) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
             {/* Logo */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
               <img 
-                src="/linkrank-new-logo.png" 
+                src="/linkrank-simple-logo.png" 
                 alt="LinkRank.ai Logo" 
-                className="h-8 w-auto"
+                className="h-5 w-auto"
               />
               <a href="/" className="text-xl font-semibold text-[#171919] tracking-tight hover:opacity-80 transition-opacity">
                 LinkRank.ai
@@ -49,9 +49,6 @@ export default function Layout({ children }) {
 
             {/* CTA Buttons */}
             <div className="hidden lg:flex items-center gap-3">
-              <button className="text-[#171919] hover:text-blue-600 transition-colors font-medium">
-                Log in
-              </button>
               <a href="/SEOAudit" className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-lg font-medium transition-all duration-200 shadow-lg hover:shadow-xl">
                 Start Free Analysis
               </a>

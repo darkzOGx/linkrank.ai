@@ -169,10 +169,10 @@ export default function GEOTools() {
         {/* Gradient Background */}
         <div className="absolute inset-0 bg-gradient-to-br from-white via-gray-50 to-gray-100"></div>
         <div className="absolute inset-0 bg-gradient-to-r from-blue-50/30 to-purple-50/30"></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20">
           <div className="text-center max-w-4xl mx-auto">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#171919] mb-6 leading-tight tracking-tight">
-              Free{' '}
+              Linkrank{' '}
               <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                 GEO Tools
               </span>
@@ -180,7 +180,7 @@ export default function GEOTools() {
             <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto leading-relaxed">
               Comprehensive Generative Engine Optimization tools to help you optimize your content for AI citations, enhance factual authority, and improve visibility in AI-powered search results.
             </p>
-            <div className="bg-white rounded-2xl p-8 shadow-xl border border-gray-200 max-w-2xl mx-auto mb-12">
+            <div className="bg-white rounded-2xl p-6 shadow-xl border border-gray-200 max-w-2xl mx-auto mb-10">
               <h2 className="text-xl font-semibold text-[#171919] mb-3">What is GEO (Generative Engine Optimization)?</h2>
               <p className="text-gray-600 leading-relaxed">
                 GEO focuses on optimizing content for inclusion within AI-generated answers, prioritizing factual authority, structured data, and citations to be quoted or referenced by large language models. Unlike SEO which aims for clicks, GEO aims to be cited as a source within AI responses.
@@ -195,9 +195,9 @@ export default function GEOTools() {
         </div>
       </section>
 
-      <section className="py-20 bg-white">
+      <section className="py-12 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
+          <div className="text-center mb-12">
             <h2 className="text-3xl lg:text-4xl font-bold text-[#171919] mb-4 tracking-tight">
               Everything you need for AI optimization
             </h2>
@@ -207,9 +207,9 @@ export default function GEOTools() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {geoTools.map((tool) => (
-              <div key={tool.id} className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 group">
+              <div key={tool.id} className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 group">
                 <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-purple-600 rounded-lg flex items-center justify-center mb-6 shadow-md group-hover:shadow-lg transition-shadow">
                   <tool.icon className="w-6 h-6 text-white" />
                 </div>

@@ -1,11 +1,168 @@
 import React, { useState } from 'react';
-import { Search, CheckCircle, Zap, FileText, Shield, BarChart3, Users, Code, Star, Globe, Target, Database, Brain } from 'lucide-react';
+import { Search, CheckCircle, Zap, FileText, Shield, BarChart3, Users, Code, Star, Globe, Target, Database, Brain, AlertTriangle, Server } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { performServerSideAnalysis } from '../services/serverSeoAnalyzer';
+import SEOAuditResults from '../components/SEOAuditResults';
+import GEOAuditResults from '../components/GEOAuditResults';
 import CredibilityLogos from '../components/CredibilityLogos';
+
+// GEO Audit service function
+async function performGEOAudit(url) {
+  const response = await fetch('/api/geo-audit', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Cache-Control': 'no-cache'
+    },
+    body: JSON.stringify({ url }),
+    cache: 'no-store'
+  });
+  
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+    throw new Error(errorData.message || `Request failed with status ${response.status}`);
+  }
+  
+  return await response.json();
+}
 
 export default function Home() {
   const navigate = useNavigate();
   const [auditUrl, setAuditUrl] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [auditType, setAuditType] = useState(null); // 'seo' or 'geo'
+  const [currentResult, setCurrentResult] = useState(null);
+  const [error, setError] = useState(null);
+
+  // DEPLOYMENT TEST - CHECKING IF CHANGES ARE WORKING
+  console.log('HOME PAGE DEPLOYED - TESTING ROUTING ISSUE');
+
+  // Define all functions before using them
+  const performSEOAnalysis = async (url) => {
+    setIsLoading(true);
+    setAuditType('seo');
+    setError(null);
+    setCurrentResult(null);
+
+    try {
+      const result = await performServerSideAnalysis(url);
+      setCurrentResult(result);
+    } catch (err) {
+      console.error('SEO analysis error:', err);
+      setError(err.message || 'Failed to analyze website. Please check the URL and try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const performGEOAnalysis = async (url) => {
+    setIsLoading(true);
+    setAuditType('geo');
+    setError(null);
+    setCurrentResult(null);
+
+    try {
+      const result = await performGEOAudit(url);
+      setCurrentResult(result);
+    } catch (err) {
+      console.error('GEO analysis error:', err);
+      setError(err.message || 'Failed to analyze website. Please check the URL and try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleSEOAudit = () => {
+    if (auditUrl.trim()) {
+      performSEOAnalysis(auditUrl.trim());
+    }
+  };
+
+  const handleGEOAudit = () => {
+    if (auditUrl.trim()) {
+      performGEOAnalysis(auditUrl.trim());
+    }
+  };
+
+  const handleNewAudit = () => {
+    setCurrentResult(null);
+    setError(null);
+    setAuditType(null);
+    setAuditUrl('');
+  };
+
+  // If we have results, show the appropriate results component
+  if (currentResult && auditType === 'seo') {
+    return <SEOAuditResults result={currentResult} onNewAudit={handleNewAudit} />;
+  }
+
+  if (currentResult && auditType === 'geo') {
+    return <GEOAuditResults result={currentResult} onNewAudit={handleNewAudit} />;
+  }
+
+  // Show loading state
+  if (isLoading) {
+    return (
+      <div className="min-h-screen relative overflow-hidden flex items-center justify-center px-4">
+        {/* Gradient Background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-white via-gray-50 to-gray-100"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-50/30 to-purple-50/30"></div>
+        
+        <div className="relative text-center max-w-md bg-white rounded-2xl p-6 shadow-xl border border-gray-200">
+          <div className="mb-6">
+            {auditType === 'seo' ? (
+              <Server className="w-12 h-12 text-gray-600 mx-auto mb-4" />
+            ) : (
+              <Brain className="w-12 h-12 text-gray-600 mx-auto mb-4" />
+            )}
+            <div className={`w-8 h-8 border-2 ${auditType === 'seo' ? 'border-blue-600' : 'border-purple-600'} border-t-transparent rounded-full animate-spin mx-auto`}></div>
+          </div>
+          <h2 className="text-xl font-semibold text-[#171919] mb-2">
+            {auditType === 'seo' ? 'SEO Analysis in Progress' : 'GEO Analysis in Progress'}
+          </h2>
+          <p className="text-gray-600 mb-4">
+            {auditType === 'seo' 
+              ? 'Our advanced SEO analyzer is examining your website...' 
+              : 'Our AI-powered analyzer is examining your website...'}
+          </p>
+          <div className="bg-gradient-to-r from-gray-50 to-gray-100 border border-gray-200 rounded-lg p-4">
+            <div className="flex items-center gap-2 text-sm text-gray-700">
+              <Zap className="w-4 h-4" />
+              <span>
+                {auditType === 'seo' 
+                  ? 'Comprehensive analysis • Real-time results' 
+                  : 'AI citation analysis • Authority assessment'}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Show error state
+  if (error) {
+    return (
+      <div className="min-h-screen relative overflow-hidden flex items-center justify-center px-4">
+        {/* Gradient Background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-white via-gray-50 to-gray-100"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-50/30 to-purple-50/30"></div>
+        
+        <div className="relative text-center max-w-md bg-white border border-red-200 p-6 rounded-2xl shadow-xl">
+          <AlertTriangle className="w-8 h-8 text-red-600 mx-auto mb-4" />
+          <h2 className="text-lg font-semibold text-[#171919] mb-2">Analysis Failed</h2>
+          <p className="text-gray-600 text-sm mb-6">{error}</p>
+          <button
+            onClick={handleNewAudit}
+            className="px-6 py-3 bg-blue-600 text-white font-medium hover:bg-blue-700 transition-all duration-200 shadow-lg hover:shadow-xl rounded-lg"
+          >
+            Try Again
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   // Animated company logos data
   const companies = [
@@ -17,18 +174,11 @@ export default function Home() {
   // Duplicate for seamless loop
   const duplicatedCompanies = [...companies, ...companies];
 
-  const handleAuditSubmit = (e) => {
-    e.preventDefault();
-    if (auditUrl.trim()) {
-      navigate('/SEOAudit', { state: { url: auditUrl } });
-    }
-  };
-
   return (
     <div className="min-h-screen relative overflow-hidden">
       {/* Hero Section with Gradient Background */}
       <section className="relative overflow-hidden">
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20">
           <div className="text-center max-w-4xl mx-auto">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#171919] mb-6 leading-tight tracking-tight">
               The Complete Platform for{' '}
@@ -41,7 +191,7 @@ export default function Home() {
               that drive real results. Trusted by enterprise teams worldwide.
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-10">
               <button 
                 onClick={() => navigate('/SEOAudit')}
                 className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-lg font-semibold transition-all duration-200 shadow-lg hover:shadow-xl flex items-center gap-2 justify-center"
@@ -61,7 +211,7 @@ export default function Home() {
               <p className="text-sm text-gray-500 mb-6 font-medium">Trusted by teams at</p>
               
               {/* Animated Company Logos Carousel */}
-              <div className="relative overflow-hidden">
+              <div className="relative overflow-hidden mb-8">
                 <div className="flex animate-scroll space-x-8">
                   {duplicatedCompanies.map((company, index) => (
                     <div 
@@ -73,15 +223,30 @@ export default function Home() {
                   ))}
                 </div>
               </div>
+
+              {/* Powered by LinkRank.ai */}
+              <div className="flex items-center justify-center gap-2 pt-4 border-t border-gray-200">
+                <span className="text-sm text-gray-500 font-medium">POWERED BY</span>
+                <div className="flex items-center gap-2">
+                  <div className="w-6 h-6 bg-gradient-to-r from-blue-600 to-purple-600 rounded-sm flex items-center justify-center">
+                    <div className="w-3 h-3 border border-white rounded-sm relative">
+                      <div className="absolute inset-0.5 bg-white rounded-sm">
+                        <div className="w-full h-full bg-gradient-to-br from-blue-500 to-purple-500 rounded-sm"></div>
+                      </div>
+                    </div>
+                  </div>
+                  <span className="text-lg font-bold text-gray-700">linkrank</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Features Section with Cards and Shadows */}
-      <section className="py-20 bg-white relative">
+      <section className="py-12 bg-white relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
+          <div className="text-center mb-12">
             <h2 className="text-3xl lg:text-4xl font-bold text-[#171919] mb-4 tracking-tight">
               Everything you need for optimization success
             </h2>
@@ -91,9 +256,9 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* Feature Cards with Bindplane-style shadows */}
-            <div className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 group">
+            <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 group">
               <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg flex items-center justify-center mb-6 shadow-md group-hover:shadow-lg transition-shadow">
                 <Search className="w-6 h-6 text-white" />
               </div>
@@ -112,7 +277,7 @@ export default function Home() {
               </ul>
             </div>
 
-            <div className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 group">
+            <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 group">
               <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-purple-600 rounded-lg flex items-center justify-center mb-6 shadow-md group-hover:shadow-lg transition-shadow">
                 <Zap className="w-6 h-6 text-white" />
               </div>
@@ -131,7 +296,7 @@ export default function Home() {
               </ul>
             </div>
 
-            <div className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 group">
+            <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 group">
               <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-green-600 rounded-lg flex items-center justify-center mb-6 shadow-md group-hover:shadow-lg transition-shadow">
                 <BarChart3 className="w-6 h-6 text-white" />
               </div>
@@ -150,7 +315,7 @@ export default function Home() {
               </ul>
             </div>
 
-            <div className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 group">
+            <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 group">
               <div className="w-12 h-12 bg-gradient-to-r from-red-500 to-red-600 rounded-lg flex items-center justify-center mb-6 shadow-md group-hover:shadow-lg transition-shadow">
                 <Shield className="w-6 h-6 text-white" />
               </div>
@@ -169,7 +334,7 @@ export default function Home() {
               </ul>
             </div>
 
-            <div className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 group">
+            <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 group">
               <div className="w-12 h-12 bg-gradient-to-r from-yellow-500 to-yellow-600 rounded-lg flex items-center justify-center mb-6 shadow-md group-hover:shadow-lg transition-shadow">
                 <Users className="w-6 h-6 text-white" />
               </div>
@@ -188,7 +353,7 @@ export default function Home() {
               </ul>
             </div>
 
-            <div className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 group">
+            <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 group">
               <div className="w-12 h-12 bg-gradient-to-r from-indigo-500 to-indigo-600 rounded-lg flex items-center justify-center mb-6 shadow-md group-hover:shadow-lg transition-shadow">
                 <Star className="w-6 h-6 text-white" />
               </div>
@@ -211,9 +376,9 @@ export default function Home() {
       </section>
 
       {/* Quick Analysis Section */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-12 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="grid lg:grid-cols-2 gap-8 items-center">
             <div>
               <h2 className="text-4xl font-bold text-gray-900 mb-6">
                 Get started in seconds
@@ -239,8 +404,8 @@ export default function Home() {
               </div>
             </div>
             
-            <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200">
-              <form onSubmit={handleAuditSubmit} className="space-y-4">
+            <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200">
+              <div className="space-y-4">
                 <div>
                   <label htmlFor="audit-url" className="block text-sm font-medium text-gray-700 mb-2">
                     Website URL
@@ -259,20 +424,22 @@ export default function Home() {
                 <div className="grid grid-cols-2 gap-3">
                   <button
                     type="button"
-                    onClick={() => navigate('/SEOAudit', { state: { url: auditUrl } })}
-                    className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all duration-200 shadow-md hover:shadow-lg font-medium"
+                    onClick={handleSEOAudit}
+                    disabled={isLoading || !auditUrl.trim()}
+                    className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400 transition-all duration-200 shadow-md hover:shadow-lg font-medium flex items-center justify-center gap-2"
                   >
-                    SEO Audit
+                    {isLoading && auditType === 'seo' ? 'Analyzing...' : 'SEO Audit'}
                   </button>
                   <button
                     type="button"
-                    onClick={() => navigate('/GEOAudit', { state: { url: auditUrl } })}
-                    className="px-6 py-3 border border-gray-300 text-gray-900 rounded-lg hover:border-gray-400 transition-all duration-200 shadow-sm hover:shadow-md font-medium"
+                    onClick={handleGEOAudit}
+                    disabled={isLoading || !auditUrl.trim()}
+                    className="px-6 py-3 border border-gray-300 text-gray-900 rounded-lg hover:border-gray-400 disabled:bg-gray-100 disabled:text-gray-400 transition-all duration-200 shadow-sm hover:shadow-md font-medium flex items-center justify-center gap-2"
                   >
-                    GEO Audit
+                    {isLoading && auditType === 'geo' ? 'Analyzing...' : 'GEO Audit'}
                   </button>
                 </div>
-              </form>
+              </div>
               
               <div className="mt-4 text-center text-sm text-gray-500">
                 ✓ No registration required • ✓ Results in 30 seconds • ✓ 100% free
@@ -283,7 +450,7 @@ export default function Home() {
       </section>
 
       {/* Stats Section with Gradient Background */}
-      <section className="py-20 relative overflow-hidden">
+      <section className="py-12 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-gray-50 to-gray-100"></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl lg:text-4xl font-bold text-[#171919] mb-4 tracking-tight">
@@ -293,20 +460,20 @@ export default function Home() {
             Join thousands of SEO professionals and enterprise teams who rely on our platform.
           </p>
           
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <div className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 text-center">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 text-center">
               <div className="text-4xl font-bold text-[#171919] mb-2">15,247</div>
               <div className="text-gray-600 font-medium">Websites Analyzed</div>
             </div>
-            <div className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 text-center">
+            <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 text-center">
               <div className="text-4xl font-bold text-[#171919] mb-2">97.2%</div>
               <div className="text-gray-600 font-medium">Accuracy Rate</div>
             </div>
-            <div className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 text-center">
+            <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 text-center">
               <div className="text-4xl font-bold text-[#171919] mb-2">67%</div>
               <div className="text-gray-600 font-medium">Avg. Improvement</div>
             </div>
-            <div className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 text-center">
+            <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 text-center">
               <div className="text-4xl font-bold text-[#171919] mb-2">28.4s</div>
               <div className="text-gray-600 font-medium">Analysis Time</div>
             </div>
@@ -315,7 +482,7 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-12 bg-gray-50">
         <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
           <h2 className="text-4xl font-bold text-gray-900 mb-6">
             Ready to optimize your website?

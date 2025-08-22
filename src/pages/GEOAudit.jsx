@@ -15,14 +15,17 @@ const GEOHeroSection = ({ onStartAudit, isLoading }) => {
   };
 
   return (
-    <section className="relative overflow-hidden py-20">
+    <section className="relative overflow-hidden py-12">
       {/* Gradient Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-white via-gray-50 to-gray-100"></div>
       <div className="absolute inset-0 bg-gradient-to-r from-blue-50/30 to-purple-50/30"></div>
       <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center">
-          <h1 className="text-5xl sm:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-            AI-powered GEO audit that works
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#171919] mb-6 leading-tight tracking-tight">
+            AI-Powered{' '}
+            <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              GEO Audit
+            </span>
           </h1>
           <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
             Optimize for AI search engines and increase your content's citation potential. 
@@ -30,7 +33,7 @@ const GEOHeroSection = ({ onStartAudit, isLoading }) => {
           </p>
 
           {/* What is GEO explanation */}
-          <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 max-w-4xl mx-auto mb-10">
+          <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 max-w-4xl mx-auto mb-8">
             <h2 className="text-xl font-medium text-gray-900 mb-3 flex items-center justify-center gap-2">
               <Database className="w-5 h-5" />
               What is GEO (Generative Engine Optimization)?
@@ -42,7 +45,7 @@ const GEOHeroSection = ({ onStartAudit, isLoading }) => {
             </p>
           </div>
 
-          <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-200 max-w-2xl mx-auto mb-12">
+          <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200 max-w-2xl mx-auto mb-10">
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label htmlFor="geo-url-input" className="block text-sm font-medium text-gray-700 mb-2">
@@ -92,9 +95,9 @@ const geoAnalysisPoints = [
 
 const GEOFeaturesSection = () => {
   return (
-    <section className="py-20 sm:py-24" style={{ backgroundColor: '#E8E8E8' }}>
+    <section className="py-12 sm:py-16" style={{ backgroundColor: '#E8E8E8' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16 max-w-3xl mx-auto">
+        <div className="text-center mb-12 max-w-3xl mx-auto">
           <h2 className="text-3xl sm:text-4xl font-medium text-black mb-4">
             <span className="block sm:inline">Comprehensive</span>{' '}
             <span className="block sm:inline">GEO Analysis</span>
@@ -106,7 +109,7 @@ const GEOFeaturesSection = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-black border border-black">
           {geoAnalysisPoints.map((point) => (
-            <div key={point.title} className="bg-white p-8">
+            <div key={point.title} className="bg-white p-6">
               <div className="flex items-start gap-4">
                 <div className="mt-1">
                   <point.icon className="w-6 h-6 text-black" />
@@ -125,7 +128,7 @@ const GEOFeaturesSection = () => {
         </div>
 
         {/* Additional GEO Factors */}
-        <div className="mt-16 bg-white border border-black p-8">
+        <div className="mt-12 bg-white border border-black p-6">
           <h3 className="text-2xl font-medium text-black mb-6">
             Additional GEO Factors Analyzed
           </h3>
@@ -222,7 +225,7 @@ export default function GEOAuditPage() {
         <div className="absolute inset-0 bg-gradient-to-br from-white via-gray-50 to-gray-100"></div>
         <div className="absolute inset-0 bg-gradient-to-r from-blue-50/30 to-purple-50/30"></div>
         
-        <div className="relative text-center max-w-md bg-white rounded-2xl p-8 shadow-xl border border-gray-200">
+        <div className="relative text-center max-w-md bg-white rounded-2xl p-6 shadow-xl border border-gray-200">
           <div className="mb-6">
             <Brain className="w-12 h-12 text-gray-600 mx-auto mb-4" />
             <div className="w-8 h-8 border-2 border-purple-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
@@ -247,7 +250,7 @@ export default function GEOAuditPage() {
         <div className="absolute inset-0 bg-gradient-to-br from-white via-gray-50 to-gray-100"></div>
         <div className="absolute inset-0 bg-gradient-to-r from-blue-50/30 to-purple-50/30"></div>
         
-        <div className="relative text-center max-w-md bg-white border border-red-200 p-8 rounded-2xl shadow-xl">
+        <div className="relative text-center max-w-md bg-white border border-red-200 p-6 rounded-2xl shadow-xl">
           <AlertTriangle className="w-8 h-8 text-red-600 mx-auto mb-4" />
           <h2 className="text-lg font-semibold text-[#171919] mb-2">GEO Analysis Failed</h2>
           <p className="text-gray-600 text-sm mb-6">{error}</p>

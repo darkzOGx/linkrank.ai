@@ -42,7 +42,7 @@ export default function SEOAuditPage() {
         <div className="absolute inset-0 bg-gradient-to-br from-white via-gray-50 to-gray-100"></div>
         <div className="absolute inset-0 bg-gradient-to-r from-blue-50/30 to-purple-50/30"></div>
         
-        <div className="relative text-center max-w-md bg-white rounded-2xl p-8 shadow-xl border border-gray-200">
+        <div className="relative text-center max-w-md bg-white rounded-2xl p-6 shadow-xl border border-gray-200">
           <div className="mb-6">
             <Server className="w-12 h-12 text-gray-600 mx-auto mb-4" />
             <div className="w-8 h-8 border-2 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
@@ -67,7 +67,7 @@ export default function SEOAuditPage() {
         <div className="absolute inset-0 bg-gradient-to-br from-white via-gray-50 to-gray-100"></div>
         <div className="absolute inset-0 bg-gradient-to-r from-blue-50/30 to-purple-50/30"></div>
         
-        <div className="relative text-center max-w-md bg-white border border-red-200 p-8 rounded-2xl shadow-xl">
+        <div className="relative text-center max-w-md bg-white border border-red-200 p-6 rounded-2xl shadow-xl">
           <AlertTriangle className="w-8 h-8 text-red-600 mx-auto mb-4" />
           <h2 className="text-lg font-semibold text-[#171919] mb-2">Analysis Failed</h2>
           <p className="text-gray-600 text-sm mb-6">{error}</p>
