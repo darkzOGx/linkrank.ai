@@ -14,21 +14,27 @@ if (typeof window !== 'undefined' && !window.gtag) {
 
 const rootElement = document.getElementById('root');
 
-// Remove fallback content and add loaded class when React is ready
-const observer = new MutationObserver(() => {
-  if (rootElement.children.length > 0) {
-    rootElement.classList.add('loaded');
-    observer.disconnect();
-  }
-});
-
-observer.observe(rootElement, { childList: true });
-
-ReactDOM.createRoot(rootElement).render(
-    <App />
-)
-
-// Fallback in case MutationObserver doesn't work
-setTimeout(() => {
+// Function to show React content and hide loading screen
+function showReactContent() {
+  // Add classes to show React content
   rootElement.classList.add('loaded');
-}, 100); 
+  document.body.classList.add('react-loaded');
+  
+  // Remove loading screen after transition
+  setTimeout(() => {
+    const loadingScreen = document.querySelector('.initial-loading');
+    if (loadingScreen) {
+      loadingScreen.remove();
+    }
+  }, 350);
+}
+
+// Create React root and render
+const root = ReactDOM.createRoot(rootElement);
+root.render(<App />);
+
+// Show content after React renders
+setTimeout(showReactContent, 50);
+
+// Fallback to ensure content shows
+setTimeout(showReactContent, 200); 
