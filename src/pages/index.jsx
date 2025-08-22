@@ -7,6 +7,7 @@ import GEOAudit from "./GEOAudit";
 import SEOTools from "./SEOTools";
 import GEOTools from "./GEOTools";
 import ToolPage from "./ToolPage";
+import Resources from "./Resources";
 import About from "./About";
 import PrivacyPolicy from "./PrivacyPolicy";
 import CookiePolicy from "./CookiePolicy";
@@ -38,6 +39,7 @@ const PAGES = {
     GEOAudit: GEOAudit,
     SEOTools: SEOTools,
     GEOTools: GEOTools,
+    Resources: Resources,
     
 }
 
@@ -79,6 +81,7 @@ function PagesContent() {
                 <Route path="/seo-tools/:toolId" element={<ToolPage />} />
                 <Route path="/geo-tools" element={<GEOTools />} />
                 <Route path="/geo-tools/:toolId" element={<ToolPage />} />
+                <Route path="/resources" element={<Resources />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                 <Route path="/cookie-policy" element={<CookiePolicy />} />

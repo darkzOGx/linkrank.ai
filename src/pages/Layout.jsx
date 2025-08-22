@@ -42,6 +42,9 @@ export default function Layout({ children }) {
               <a href="/geo-tools" className="text-[#171919] hover:text-blue-600 transition-colors font-medium">
                 GEO Tools
               </a>
+              <a href="/resources" className="text-[#171919] hover:text-blue-600 transition-colors font-medium">
+                Resources
+              </a>
               <a href="/about" className="text-[#171919] hover:text-blue-600 transition-colors font-medium">
                 About
               </a>
@@ -75,6 +78,9 @@ export default function Layout({ children }) {
                 </a>
                 <a href="/geo-tools" className="text-[#171919] hover:text-blue-600 transition-colors font-medium whitespace-nowrap">
                   GEO Tools
+                </a>
+                <a href="/resources" className="text-[#171919] hover:text-blue-600 transition-colors font-medium whitespace-nowrap">
+                  Resources
                 </a>
                 <a href="/about" className="text-[#171919] hover:text-blue-600 transition-colors font-medium whitespace-nowrap">
                   About
