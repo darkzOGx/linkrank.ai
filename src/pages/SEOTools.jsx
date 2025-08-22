@@ -4,6 +4,14 @@ import CredibilityLogos from '../components/CredibilityLogos';
 
 const seoTools = [
   {
+    title: "Backlink Audit Tool",
+    description: "Analyze your website's backlink profile to identify high-quality links, toxic links, and opportunities for improvement. Get detailed insights on domain authority, anchor text distribution, and actionable recommendations.",
+    price: "FREE",
+    buttonText: "Analyze Backlinks",
+    icon: Link,
+    id: "backlink-audit"
+  },
+  {
     title: "Robots.txt Tester",
     description: "The robots.txt tester tool is a utility used to check and verify the contents of a website's robots.txt file, which instructs search engine crawlers on which pages or sections of a site should not be indexed.",
     price: "FREE",
@@ -154,14 +162,6 @@ const seoTools = [
     buttonText: "Generate LLMs.txt",
     icon: Cpu,
     id: "llms-generator"
-  },
-  {
-    title: "Backlink Audit Tool",
-    description: "Analyze your website's backlink profile to identify high-quality links, toxic links, and opportunities for improvement. Get detailed insights on domain authority, anchor text distribution, and actionable recommendations.",
-    price: "FREE",
-    buttonText: "Analyze Backlinks",
-    icon: Link,
-    id: "backlink-audit"
   }
 ];
 

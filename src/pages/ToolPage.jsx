@@ -4,6 +4,10 @@ import { ArrowLeft } from 'lucide-react';
 import * as Tools from '../components/tools/AllTools';
 
 const seoTools = {
+  'backlink-audit': {
+    component: Tools.BacklinkAudit,
+    title: 'Backlink Audit Tool'
+  },
   'robots-tester': {
     component: Tools.RobotsTester,
     title: 'Robots.txt Tester'
@@ -79,10 +83,6 @@ const seoTools = {
   'llms-generator': {
     component: Tools.LLMsGenerator,
     title: 'Free LLMs.txt Generator'
-  },
-  'backlink-audit': {
-    component: Tools.BacklinkAudit,
-    title: 'Backlink Audit Tool'
   }
 };
 
