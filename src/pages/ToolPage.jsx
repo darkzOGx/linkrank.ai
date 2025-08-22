@@ -79,6 +79,10 @@ const seoTools = {
   'llms-generator': {
     component: Tools.LLMsGenerator,
     title: 'Free LLMs.txt Generator'
+  },
+  'backlink-audit': {
+    component: Tools.BacklinkAudit,
+    title: 'Backlink Audit Tool'
   }
 };
 

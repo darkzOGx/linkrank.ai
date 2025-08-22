@@ -18,6 +18,7 @@ export { default as OrganicTrafficChecker } from './OrganicTrafficChecker';
 export { default as MetaGenerator } from './MetaGenerator';
 export { default as CacheChecker } from './CacheChecker';
 export { default as LLMsGenerator } from './LLMsGenerator';
+export { default as BacklinkAudit } from './BacklinkAudit';
 
 // Export GEO tool components
 export { default as StructuredDataValidator } from './StructuredDataValidator';

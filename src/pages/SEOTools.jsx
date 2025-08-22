@@ -1,5 +1,5 @@
 import React from 'react';
-import { Terminal, Search, Link, Smartphone, Gauge, FileText, Globe, Code, Target, CheckCircle, Shield, Settings, ExternalLink, Anchor, Bot, TrendingUp, Edit, Calendar, Cpu } from 'lucide-react';
+import { Terminal, Search, Link, Smartphone, Gauge, FileText, Globe, Code, Target, CheckCircle, Shield, Settings, ExternalLink, Anchor, Bot, TrendingUp, Edit, Calendar, Cpu, LinkIcon } from 'lucide-react';
 import CredibilityLogos from '../components/CredibilityLogos';
 
 const seoTools = [
@@ -154,6 +154,14 @@ const seoTools = [
     buttonText: "Generate LLMs.txt",
     icon: Cpu,
     id: "llms-generator"
+  },
+  {
+    title: "Backlink Audit Tool",
+    description: "Analyze your website's backlink profile to identify high-quality links, toxic links, and opportunities for improvement. Get detailed insights on domain authority, anchor text distribution, and actionable recommendations.",
+    price: "FREE",
+    buttonText: "Analyze Backlinks",
+    icon: Link,
+    id: "backlink-audit"
   }
 ];
 
