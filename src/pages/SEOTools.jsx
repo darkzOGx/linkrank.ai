@@ -165,8 +165,11 @@ export default function SEOTools() {
 
   return (
     <div className="bg-white min-h-screen container-mobile">
-      <section className="bg-white border-b border-black">
-        <div className="max-w-7xl mx-auto mobile-padding py-16 sm:py-20">
+      <section className="relative overflow-hidden border-b border-black">
+        {/* Gradient Background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-white via-gray-50 to-gray-100"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-50/30 to-purple-50/30"></div>
+        <div className="relative max-w-7xl mx-auto mobile-padding py-16 sm:py-20">
           <div className="text-center">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-medium text-black mb-6">
               Free SEO Tools

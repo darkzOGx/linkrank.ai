@@ -1,5 +1,4 @@
 import React from 'react';
-import { ArrowRight } from 'lucide-react';
 import CredibilityLogos from './CredibilityLogos';
 
 export default function HeroSection({ onStartAudit, isLoading }) {
@@ -54,7 +53,6 @@ export default function HeroSection({ onStartAudit, isLoading }) {
                 className="w-full px-6 py-3 bg-gray-900 text-white font-medium rounded-lg hover:bg-gray-800 disabled:bg-gray-400 transition-colors flex items-center justify-center gap-2"
               >
                 {isLoading ? 'Analyzing...' : 'Start SEO Analysis'}
-                {!isLoading && <ArrowRight className="w-5 h-5" />}
               </button>
             </form>
             

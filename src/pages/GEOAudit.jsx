@@ -15,8 +15,11 @@ const GEOHeroSection = ({ onStartAudit, isLoading }) => {
   };
 
   return (
-    <section className="bg-gray-50 py-20">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="relative overflow-hidden py-20">
+      {/* Gradient Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-white via-gray-50 to-gray-100"></div>
+      <div className="absolute inset-0 bg-gradient-to-r from-blue-50/30 to-purple-50/30"></div>
+      <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center">
           <h1 className="text-5xl sm:text-6xl font-bold text-gray-900 mb-6 leading-tight">
             AI-powered GEO audit that works

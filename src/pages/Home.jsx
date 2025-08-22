@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowRight, Search, CheckCircle, Zap, FileText, Shield, BarChart3, Users, Code, Star, Globe, Play, Target, Database, Brain } from 'lucide-react';
+import { Search, CheckCircle, Zap, FileText, Shield, BarChart3, Users, Code, Star, Globe, Target, Database, Brain } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import CredibilityLogos from '../components/CredibilityLogos';
 
@@ -44,17 +44,15 @@ export default function Home() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
               <button 
                 onClick={() => navigate('/SEOAudit')}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-lg font-semibold transition-all duration-200 shadow-lg hover:shadow-xl flex items-center gap-2 justify-center group"
+                className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-lg font-semibold transition-all duration-200 shadow-lg hover:shadow-xl flex items-center gap-2 justify-center"
               >
-                Start Free Analysis
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                Start SEO Analysis
               </button>
               <button 
                 onClick={() => navigate('/GEOAudit')}
-                className="bg-white hover:bg-gray-50 text-[#171919] px-8 py-4 rounded-lg font-semibold border border-gray-300 transition-all duration-200 shadow-md hover:shadow-lg flex items-center gap-2"
+                className="bg-white hover:bg-gray-50 text-[#171919] px-8 py-4 rounded-lg font-semibold border border-gray-300 transition-all duration-200 shadow-md hover:shadow-lg flex items-center gap-2 justify-center"
               >
-                <Play className="w-5 h-5" />
-                Watch Demo
+                Start GEO Analysis
               </button>
             </div>
 
@@ -329,16 +327,15 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button 
               onClick={() => navigate('/SEOAudit')}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-lg font-semibold transition-all duration-200 shadow-lg hover:shadow-xl inline-flex items-center gap-2 group"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-lg font-semibold transition-all duration-200 shadow-lg hover:shadow-xl inline-flex items-center gap-2 justify-center"
             >
-              Start Free Analysis
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              Start SEO Analysis
             </button>
             <button 
               onClick={() => navigate('/GEOAudit')}
               className="bg-white hover:bg-gray-50 text-[#171919] px-8 py-4 rounded-lg font-semibold border border-gray-300 transition-all duration-200 shadow-md hover:shadow-lg"
             >
-              Try GEO Analysis
+              Start GEO Analysis
             </button>
           </div>
 
