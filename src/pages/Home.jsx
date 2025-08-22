@@ -225,13 +225,16 @@ export default function Home() {
               </div>
 
               {/* Powered by LinkRank.ai */}
-              <div className="flex items-center justify-center gap-3 pt-8 mt-8 border-t border-gray-200">
-                <span className="text-sm text-gray-500 font-medium tracking-wider">POWERED BY</span>
-                <div className="flex items-center gap-2 bg-white px-3 py-1 rounded-lg shadow-sm border">
-                  <div className="w-5 h-5 bg-gradient-to-br from-blue-500 to-purple-600 rounded flex items-center justify-center">
-                    <div className="w-2 h-2 bg-white rounded"></div>
-                  </div>
-                  <span className="text-base font-bold text-gray-800">LinkRank.ai</span>
+              <div className="flex flex-col items-center justify-center gap-3 pt-8 mt-8 border-t border-gray-200">
+                <span className="text-xs text-gray-400 font-medium tracking-wider uppercase">POWERED BY</span>
+                <div className="flex items-center gap-2">
+                  <svg width="24" height="24" viewBox="0 0 24 24" className="text-blue-600">
+                    <circle cx="6" cy="18" r="2" fill="currentColor"/>
+                    <circle cx="12" cy="12" r="2" fill="currentColor"/>
+                    <circle cx="18" cy="6" r="2" fill="currentColor"/>
+                    <path d="M8 16.5l4-4 4-4" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round"/>
+                  </svg>
+                  <span className="text-2xl font-normal text-gray-600">linkrank</span>
                 </div>
               </div>
             </div>
