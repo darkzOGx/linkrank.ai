@@ -18,6 +18,10 @@ export default function Layout({ children }) {
                 Home
               </a>
               <span className="text-gray-400 mx-2">|</span>
+              <a href="/SEOAudit" className="text-sm font-medium hover:text-gray-600 transition-colors">
+                Free SEO Audit
+              </a>
+              <span className="text-gray-400 mx-2">|</span>
               <a href="/GEOAudit" className="text-sm font-medium hover:text-gray-600 transition-colors">
                 Free GEO Audit
               </a>
