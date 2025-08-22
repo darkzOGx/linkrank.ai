@@ -1,0 +1,20 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://linkrank.ai/sitemap.xml
+
+# Allow search engines to crawl all pages
+Allow: /
+Allow: /SEOAudit
+Allow: /GEOAudit
+Allow: /tools
+Allow: /geo-tools
+
+# Security - disallow access to admin areas (if any)
+Disallow: /admin/
+Disallow: /.env
+Disallow: /api/private/
+
+# Crawl-delay for respectful crawling
+Crawl-delay: 1
