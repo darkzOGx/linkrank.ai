@@ -1,5 +1,6 @@
 import React from 'react';
 import { Terminal, Search, Link, Smartphone, Gauge, FileText, Globe, Code, Target, CheckCircle, Shield, Settings, ExternalLink, Anchor, Bot, TrendingUp, Edit, Calendar, Cpu } from 'lucide-react';
+import CredibilityLogos from '../components/CredibilityLogos';
 
 const seoTools = [
   {
@@ -178,6 +179,11 @@ export default function SEOTools() {
               <p className="text-blue-800 text-sm leading-relaxed">
                 SEO focuses on optimizing content and websites to rank higher in traditional search engine results pages (SERPs), prioritizing keywords, backlinks, and user experience signals to drive organic traffic clicks to your website. The primary goal is to increase visibility in search results and attract visitors who will click through to your site.
               </p>
+            </div>
+
+            {/* Powered by LinkRank.ai */}
+            <div className="mt-16">
+              <CredibilityLogos />
             </div>
           </div>
         </div>

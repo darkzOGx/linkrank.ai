@@ -1,5 +1,6 @@
 import React from 'react';
 import { Brain, Database, Quote, FileCheck, Award, Search, Zap, Target, BookOpen, CheckSquare, Shield, Cpu, Layers, TrendingUp, FileText, Globe, Bookmark, ExternalLink, Settings } from 'lucide-react';
+import CredibilityLogos from '../components/CredibilityLogos';
 
 const geoTools = [
   {
@@ -178,6 +179,11 @@ export default function GEOTools() {
               <p className="text-blue-800 text-sm leading-relaxed">
                 GEO focuses on optimizing content for inclusion within AI-generated answers, prioritizing factual authority, structured data, and citations to be quoted or referenced by large language models. Unlike SEO which aims for clicks, GEO aims to be cited as a source within AI responses.
               </p>
+            </div>
+
+            {/* Powered by LinkRank.ai */}
+            <div className="mt-16">
+              <CredibilityLogos />
             </div>
           </div>
         </div>
