@@ -8,7 +8,7 @@ const articles = [
     id: 1,
     title: "The Complete Guide to Generative Engine Optimization (GEO): Beyond Traditional SEO in 2025",
     excerpt: "Discover how GEO is revolutionizing search optimization for AI-powered engines like ChatGPT, Claude, and Bard. Learn advanced strategies for optimizing content for generative AI responses.",
-    date: "2025-01-15",
+    date: "2025-08-22",
     author: "Sarah Chen",
     category: "GEO",
     readTime: "12 min read",
@@ -58,7 +58,7 @@ Track your generative engine performance with our [GEO Performance Tracker](/geo
     id: 2,
     title: "AI-Optimized Content Strategy: How to Create Content That AI Systems Love and Cite",
     excerpt: "Master the art of creating content that gets featured in AI responses. Learn about citation optimization, fact density, and content structuring for maximum AI visibility.",
-    date: "2024-12-20",
+    date: "2025-08-15",
     author: "Michael Rodriguez",
     category: "AIO",
     readTime: "10 min read",
@@ -110,7 +110,7 @@ Test how your content performs in AI responses with our [LLM Response Simulator]
     id: 3,
     title: "Technical SEO Mastery: Advanced Crawling, Indexing, and Core Web Vitals Optimization",
     excerpt: "Deep dive into technical SEO fundamentals including crawl budget optimization, JavaScript SEO, Core Web Vitals, and advanced schema implementation for 2025.",
-    date: "2024-11-28",
+    date: "2025-08-08",
     author: "Alex Thompson",
     category: "SEO",
     readTime: "15 min read",
@@ -180,7 +180,7 @@ Maintain technical health with:
     id: 4,
     title: "Link Building in the AI Era: Quality Over Quantity and Authority Signal Development",
     excerpt: "Explore modern link building strategies focusing on domain authority, topical relevance, and building links that AI systems recognize as quality signals.",
-    date: "2024-10-15",
+    date: "2025-07-25",
     author: "Jennifer Park",
     category: "SEO",
     readTime: "11 min read",
@@ -257,7 +257,7 @@ Track link building success:
     id: 5,
     title: "Keyword Research Revolution: Long-tail Keywords, Semantic Search, and AI Query Optimization",
     excerpt: "Master advanced keyword research techniques including semantic clustering, user intent analysis, and optimization for voice search and AI queries.",
-    date: "2024-09-22",
+    date: "2025-07-12",
     author: "David Kim",
     category: "SEO",
     readTime: "13 min read",
@@ -342,7 +342,7 @@ Monitor keyword performance:
     id: 6,
     title: "Local SEO and Geographic Optimization: Dominating Local Search Results",
     excerpt: "Complete guide to local SEO including Google Business Profile optimization, local citation building, and geographic keyword targeting strategies.",
-    date: "2024-08-18",
+    date: "2025-06-30",
     author: "Maria Gonzalez",
     category: "SEO",
     readTime: "9 min read",
@@ -433,7 +433,7 @@ Track local SEO performance:
     id: 7,
     title: "Content Marketing for SEO: Creating High-Converting, Search-Optimized Content",
     excerpt: "Learn how to create content that ranks well in search engines while converting visitors into customers. Covers content strategy, optimization, and performance measurement.",
-    date: "2024-07-25",
+    date: "2025-06-15",
     author: "Robert Chen",
     category: "SEO",
     readTime: "14 min read",
@@ -531,7 +531,7 @@ Maximize content reach:
     id: 8,
     title: "E-commerce SEO: Product Page Optimization and Category Structure Best Practices",
     excerpt: "Comprehensive guide to e-commerce SEO including product page optimization, category architecture, technical considerations, and conversion-focused strategies.",
-    date: "2024-06-30",
+    date: "2025-05-28",
     author: "Lisa Wang",
     category: "SEO",
     readTime: "16 min read",
@@ -629,7 +629,7 @@ Track e-commerce SEO metrics:
     id: 9,
     title: "Voice Search and Conversational AI: Optimizing for the Future of Search",
     excerpt: "Prepare for voice search dominance with optimization strategies for Alexa, Google Assistant, Siri, and conversational AI interfaces.",
-    date: "2024-05-12",
+    date: "2025-05-10",
     author: "James Mitchell",
     category: "AIO",
     readTime: "10 min read",
@@ -733,7 +733,7 @@ Prepare for voice shopping:
     id: 10,
     title: "International SEO and Multilingual Website Optimization: Global Search Strategies",
     excerpt: "Master international SEO with hreflang implementation, multilingual content strategies, and global search optimization techniques for worldwide reach.",
-    date: "2024-04-08",
+    date: "2025-04-23",
     author: "Elena Petrov",
     category: "SEO",
     readTime: "12 min read",
@@ -1056,9 +1056,6 @@ export default function Resources() {
             <a href="#tools" className="py-4 px-1 border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 font-medium whitespace-nowrap">
               SEO Tools
             </a>
-            <a href="#calendar" className="py-4 px-1 border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 font-medium whitespace-nowrap">
-              Industry Calendar
-            </a>
           </nav>
         </div>
       </section>
@@ -1306,113 +1303,6 @@ export default function Resources() {
         </div>
       </section>
 
-      {/* Industry Calendar Section */}
-      <section id="calendar" className="py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-black mb-4">SEO Industry Calendar</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              Stay ahead with important SEO events, algorithm updates, and industry milestones.
-            </p>
-          </div>
-
-          <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-gray-200">
-              <div className="p-6">
-                <h3 className="font-semibold text-black mb-4 flex items-center gap-2">
-                  <Calendar className="w-5 h-5 text-blue-600" />
-                  April 2025
-                </h3>
-                <ul className="space-y-2 text-sm">
-                  <li className="flex items-start gap-2">
-                    <div className="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
-                    <div>
-                      <div className="font-medium">SMX Advanced</div>
-                      <div className="text-gray-500">Apr 15-17, Seattle</div>
-                    </div>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <div className="w-2 h-2 bg-green-500 rounded-full mt-2"></div>
-                    <div>
-                      <div className="font-medium">Core Web Vitals Update</div>
-                      <div className="text-gray-500">Expected rollout</div>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-
-              <div className="p-6">
-                <h3 className="font-semibold text-black mb-4 flex items-center gap-2">
-                  <Calendar className="w-5 h-5 text-green-600" />
-                  May 2025
-                </h3>
-                <ul className="space-y-2 text-sm">
-                  <li className="flex items-start gap-2">
-                    <div className="w-2 h-2 bg-purple-500 rounded-full mt-2"></div>
-                    <div>
-                      <div className="font-medium">Google I/O</div>
-                      <div className="text-gray-500">May 14-16, Mountain View</div>
-                    </div>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <div className="w-2 h-2 bg-yellow-500 rounded-full mt-2"></div>
-                    <div>
-                      <div className="font-medium">AI Search Features</div>
-                      <div className="text-gray-500">New announcements expected</div>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-
-              <div className="p-6">
-                <h3 className="font-semibold text-black mb-4 flex items-center gap-2">
-                  <Calendar className="w-5 h-5 text-purple-600" />
-                  June 2025
-                </h3>
-                <ul className="space-y-2 text-sm">
-                  <li className="flex items-start gap-2">
-                    <div className="w-2 h-2 bg-red-500 rounded-full mt-2"></div>
-                    <div>
-                      <div className="font-medium">BrightonSEO</div>
-                      <div className="text-gray-500">Jun 12-13, Brighton</div>
-                    </div>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <div className="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
-                    <div>
-                      <div className="font-medium">Mobile-First Indexing</div>
-                      <div className="text-gray-500">Complete migration deadline</div>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-
-              <div className="p-6">
-                <h3 className="font-semibold text-black mb-4 flex items-center gap-2">
-                  <Calendar className="w-5 h-5 text-orange-600" />
-                  Ongoing
-                </h3>
-                <ul className="space-y-2 text-sm">
-                  <li className="flex items-start gap-2">
-                    <div className="w-2 h-2 bg-green-500 rounded-full mt-2"></div>
-                    <div>
-                      <div className="font-medium">Algorithm Updates</div>
-                      <div className="text-gray-500">Monthly monitoring</div>
-                    </div>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <div className="w-2 h-2 bg-purple-500 rounded-full mt-2"></div>
-                    <div>
-                      <div className="font-medium">GEO Evolution</div>
-                      <div className="text-gray-500">Continuous development</div>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* CTA Section */}
       <section className="py-16 bg-black text-white">
