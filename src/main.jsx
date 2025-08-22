@@ -12,6 +12,23 @@ if (typeof window !== 'undefined' && !window.gtag) {
   gtag('config', 'G-PK6TWS0XDD');
 }
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+const rootElement = document.getElementById('root');
+
+// Remove fallback content and add loaded class when React is ready
+const observer = new MutationObserver(() => {
+  if (rootElement.children.length > 0) {
+    rootElement.classList.add('loaded');
+    observer.disconnect();
+  }
+});
+
+observer.observe(rootElement, { childList: true });
+
+ReactDOM.createRoot(rootElement).render(
     <App />
-) 
+)
+
+// Fallback in case MutationObserver doesn't work
+setTimeout(() => {
+  rootElement.classList.add('loaded');
+}, 100); 

@@ -37,18 +37,22 @@ export default function SEOAuditPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-[50vh] flex items-center justify-center px-4">
-        <div className="text-center">
+      <div className="min-h-screen relative overflow-hidden flex items-center justify-center px-4">
+        {/* Gradient Background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-white via-gray-50 to-gray-100"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-50/30 to-purple-50/30"></div>
+        
+        <div className="relative text-center max-w-md bg-white rounded-2xl p-8 shadow-xl border border-gray-200">
           <div className="mb-6">
-            <Server className="w-12 h-12 text-blue-600 mx-auto mb-4" />
+            <Server className="w-12 h-12 text-gray-600 mx-auto mb-4" />
             <div className="w-8 h-8 border-2 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
           </div>
-          <h2 className="text-xl font-semibold text-gray-900 mb-2">Server-Side Analysis in Progress</h2>
-          <p className="text-gray-600 mb-4">Our advanced SEO crawler is analyzing your website...</p>
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 max-w-md mx-auto">
-            <div className="flex items-center gap-2 text-sm text-blue-800">
+          <h2 className="text-xl font-semibold text-[#171919] mb-2">Analysis in Progress</h2>
+          <p className="text-gray-600 mb-4">Our advanced SEO analyzer is examining your website...</p>
+          <div className="bg-gradient-to-r from-gray-50 to-gray-100 border border-gray-200 rounded-lg p-4">
+            <div className="flex items-center gap-2 text-sm text-gray-700">
               <Zap className="w-4 h-4" />
-              <span>No CORS restrictions • Full website access • Comprehensive analysis</span>
+              <span>Comprehensive analysis • Real-time results</span>
             </div>
           </div>
         </div>
@@ -58,14 +62,18 @@ export default function SEOAuditPage() {
 
   if (error) {
     return (
-      <div className="min-h-[50vh] flex items-center justify-center px-4">
-        <div className="text-center max-w-md border border-red-500 p-8 rounded-lg">
+      <div className="min-h-screen relative overflow-hidden flex items-center justify-center px-4">
+        {/* Gradient Background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-white via-gray-50 to-gray-100"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-50/30 to-purple-50/30"></div>
+        
+        <div className="relative text-center max-w-md bg-white border border-red-200 p-8 rounded-2xl shadow-xl">
           <AlertTriangle className="w-8 h-8 text-red-600 mx-auto mb-4" />
-          <h2 className="text-lg font-medium text-black mb-2">Analysis Failed</h2>
+          <h2 className="text-lg font-semibold text-[#171919] mb-2">Analysis Failed</h2>
           <p className="text-gray-600 text-sm mb-6">{error}</p>
           <button
             onClick={handleNewAudit}
-            className="px-6 py-2 bg-black text-white text-sm font-medium hover:bg-gray-800 transition-colors rounded"
+            className="px-6 py-3 bg-blue-600 text-white font-medium hover:bg-blue-700 transition-all duration-200 shadow-lg hover:shadow-xl rounded-lg"
           >
             Try Again
           </button>

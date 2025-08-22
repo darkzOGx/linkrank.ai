@@ -11,6 +11,22 @@ import About from "./About";
 import PrivacyPolicy from "./PrivacyPolicy";
 import CookiePolicy from "./CookiePolicy";
 import TermsOfService from "./TermsOfService";
+import DesignTemplates from "./DesignTemplates";
+
+// Template imports
+import ModernGradient from "./templates/ModernGradient";
+import MinimalistClean from "./templates/MinimalistClean";
+import DarkModeElite from "./templates/DarkModeElite";
+import WarmFriendly from "./templates/WarmFriendly";
+import CorporateBlue from "./templates/CorporateBlue";
+import NeonCyberpunk from "./templates/NeonCyberpunk";
+import NatureGreen from "./templates/NatureGreen";
+import LuxuryGold from "./templates/LuxuryGold";
+import Retro80s from "./templates/Retro80s";
+import MonochromePro from "./templates/MonochromePro";
+import PerplexityClone from "./templates/PerplexityClone";
+import ClerkClone from "./templates/ClerkClone";
+import BindplaneClone from "./templates/BindplaneClone";
 
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
@@ -65,6 +81,22 @@ function PagesContent() {
                 <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                 <Route path="/cookie-policy" element={<CookiePolicy />} />
                 <Route path="/terms-of-service" element={<TermsOfService />} />
+                <Route path="/design-templates" element={<DesignTemplates />} />
+                
+                {/* Template Routes */}
+                <Route path="/templates/modern-gradient" element={<ModernGradient />} />
+                <Route path="/templates/minimalist-clean" element={<MinimalistClean />} />
+                <Route path="/templates/dark-mode-elite" element={<DarkModeElite />} />
+                <Route path="/templates/warm-friendly" element={<WarmFriendly />} />
+                <Route path="/templates/corporate-blue" element={<CorporateBlue />} />
+                <Route path="/templates/neon-cyberpunk" element={<NeonCyberpunk />} />
+                <Route path="/templates/nature-green" element={<NatureGreen />} />
+                <Route path="/templates/luxury-gold" element={<LuxuryGold />} />
+                <Route path="/templates/retro-80s" element={<Retro80s />} />
+                <Route path="/templates/monochrome-pro" element={<MonochromePro />} />
+                <Route path="/templates/perplexity-clone" element={<PerplexityClone />} />
+                <Route path="/templates/clerk-clone" element={<ClerkClone />} />
+                <Route path="/templates/bindplane-clone" element={<BindplaneClone />} />
                 
             </Routes>
         </Layout>

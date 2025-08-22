@@ -15,15 +15,15 @@ const GEOHeroSection = ({ onStartAudit, isLoading }) => {
   };
 
   return (
-    <section className="bg-white border-b border-black">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-32">
+    <section className="bg-gray-50 py-20">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center">
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-medium text-black mb-6">
-            <span className="block sm:inline">AI Visibility</span>{' '}
-            <span className="block sm:inline">& <span className="text-[#fcd63a]">GEO Audit</span></span>
+          <h1 className="text-5xl sm:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+            AI-powered GEO audit that works
           </h1>
-          <p className="text-lg text-gray-700 mb-10 max-w-3xl mx-auto">
-            A comprehensive analysis protocol for evaluating Generative Engine Optimization and AI citation potential. Enter a URL to assess your website's visibility across AI platforms and language models.
+          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+            Optimize for AI search engines and increase your content's citation potential. 
+            Advanced GEO analysis with 340% higher AI visibility rates.
           </p>
 
           {/* What is GEO explanation */}
@@ -39,28 +39,37 @@ const GEOHeroSection = ({ onStartAudit, isLoading }) => {
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="max-w-3xl mx-auto mb-20">
-            <div className="flex flex-col sm:flex-row gap-0">
-              <label htmlFor="geo-url-input" className="sr-only">Website URL</label>
-              <input
-                id="geo-url-input"
-                type="url"
-                value={url}
-                onChange={(e) => setUrl(e.target.value)}
-                placeholder="https://example.com"
-                className="flex-1 px-4 py-3 text-base bg-white border border-black rounded-none focus:ring-1 focus:ring-black focus:outline-none placeholder-gray-500"
-                required
-              />
+          <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-200 max-w-2xl mx-auto mb-12">
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label htmlFor="geo-url-input" className="block text-sm font-medium text-gray-700 mb-2">
+                  Website URL
+                </label>
+                <input
+                  id="geo-url-input"
+                  type="url"
+                  value={url}
+                  onChange={(e) => setUrl(e.target.value)}
+                  placeholder="https://example.com"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent outline-none transition-colors"
+                  required
+                />
+              </div>
+              
               <button
                 type="submit"
                 disabled={isLoading}
-                className="px-6 py-3 bg-[#fcd63a] text-black font-medium flex items-center justify-center gap-2 hover:bg-[#e6c133] disabled:bg-gray-400 transition-colors"
+                className="w-full px-6 py-3 bg-gray-900 text-white font-medium rounded-lg hover:bg-gray-800 disabled:bg-gray-400 transition-colors flex items-center justify-center gap-2"
               >
-                {isLoading ? 'Analyzing...' : 'Generate Report'}
-                {!isLoading && <ArrowRight className="w-4 h-4" />}
+                {isLoading ? 'Analyzing...' : 'Start GEO Analysis'}
+                {!isLoading && <ArrowRight className="w-5 h-5" />}
               </button>
+            </form>
+            
+            <div className="mt-4 text-center text-sm text-gray-500">
+              ✓ AI optimization analysis • ✓ Citation potential • ✓ 100% free
             </div>
-          </form>
+          </div>
 
           <CredibilityLogos />
         </div>
@@ -81,7 +90,7 @@ const geoAnalysisPoints = [
 
 const GEOFeaturesSection = () => {
   return (
-    <section className="bg-white py-20 sm:py-24">
+    <section className="py-20 sm:py-24" style={{ backgroundColor: '#E8E8E8' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16 max-w-3xl mx-auto">
           <h2 className="text-3xl sm:text-4xl font-medium text-black mb-4">
@@ -206,18 +215,22 @@ export default function GEOAuditPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-[50vh] flex items-center justify-center px-4">
-        <div className="text-center">
+      <div className="min-h-screen relative overflow-hidden flex items-center justify-center px-4">
+        {/* Gradient Background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-white via-gray-50 to-gray-100"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-50/30 to-purple-50/30"></div>
+        
+        <div className="relative text-center max-w-md bg-white rounded-2xl p-8 shadow-xl border border-gray-200">
           <div className="mb-6">
-            <Server className="w-12 h-12 text-blue-600 mx-auto mb-4" />
-            <div className="w-8 h-8 border-2 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
+            <Brain className="w-12 h-12 text-gray-600 mx-auto mb-4" />
+            <div className="w-8 h-8 border-2 border-purple-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
           </div>
-          <h2 className="text-xl font-semibold text-gray-900 mb-2">Server-Side GEO Analysis in Progress</h2>
-          <p className="text-gray-600 mb-4">Our advanced GEO crawler is analyzing your website...</p>
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 max-w-md mx-auto">
-            <div className="flex items-center gap-2 text-sm text-blue-800">
+          <h2 className="text-xl font-semibold text-[#171919] mb-2">GEO Analysis in Progress</h2>
+          <p className="text-gray-600 mb-4">Our AI-powered analyzer is examining your website...</p>
+          <div className="bg-gradient-to-r from-gray-50 to-gray-100 border border-gray-200 rounded-lg p-4">
+            <div className="flex items-center gap-2 text-sm text-gray-700">
               <Zap className="w-4 h-4" />
-              <span>AI citation analysis • Structured data validation • Authority assessment</span>
+              <span>AI citation analysis • Authority assessment</span>
             </div>
           </div>
         </div>
@@ -227,14 +240,18 @@ export default function GEOAuditPage() {
 
   if (error) {
     return (
-      <div className="min-h-[50vh] flex items-center justify-center px-4">
-        <div className="text-center max-w-md border border-red-500 p-8 rounded-lg">
+      <div className="min-h-screen relative overflow-hidden flex items-center justify-center px-4">
+        {/* Gradient Background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-white via-gray-50 to-gray-100"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-50/30 to-purple-50/30"></div>
+        
+        <div className="relative text-center max-w-md bg-white border border-red-200 p-8 rounded-2xl shadow-xl">
           <AlertTriangle className="w-8 h-8 text-red-600 mx-auto mb-4" />
-          <h2 className="text-lg font-medium text-black mb-2">GEO Analysis Failed</h2>
+          <h2 className="text-lg font-semibold text-[#171919] mb-2">GEO Analysis Failed</h2>
           <p className="text-gray-600 text-sm mb-6">{error}</p>
           <button
             onClick={handleNewAudit}
-            className="px-6 py-2 bg-black text-white text-sm font-medium hover:bg-gray-800 transition-colors rounded"
+            className="px-6 py-3 bg-blue-600 text-white font-medium hover:bg-blue-700 transition-all duration-200 shadow-lg hover:shadow-xl rounded-lg"
           >
             Try Again
           </button>
