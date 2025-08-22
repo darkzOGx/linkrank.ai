@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight, Search } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import CredibilityLogos from './CredibilityLogos';
 
 export default function HeroSection({ onStartAudit, isLoading }) {
@@ -17,22 +17,11 @@ export default function HeroSection({ onStartAudit, isLoading }) {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-32">
         <div className="text-center">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-medium text-black mb-6">
-            Website Performance LinkRank.ai - Professional <span className="text-[#fcd63a]">SEO & GEO Audit</span> Tool <span className="text-[#fcd63a]">SEO Audit</span>
+            Website Performance & <span className="text-[#fcd63a]">SEO Audit</span>
           </h1>
           <p className="text-lg text-gray-700 mb-10 max-w-3xl mx-auto">
             An independent analysis protocol for evaluating on-page search engine optimization and technical performance metrics. Enter a URL to begin the automated assessment.
           </p>
-
-            </h2>
-            <p className="text-gray-800 text-sm leading-relaxed mb-4">
-              <strong>GEO (Generative Engine Optimization)</strong> is the emerging practice of optimizing content for AI systems and large language models like ChatGPT, Claude, and Google's AI Overview. 
-              As AI-powered search becomes more prevalent, GEO ensures your content is easily understood, extracted, and cited by these systems.
-            </p>
-            <p className="text-gray-800 text-sm leading-relaxed">
-              LinkRank.ai's GEO audit evaluates structured data implementation, fact density, citation potential, authority signals, and content extractability. 
-              We help you optimize for AI systems by improving schema markup, enhancing factual content, and implementing proper attribution to increase your visibility in AI-generated responses.
-            </p>
-          </div>
 
           <form onSubmit={handleSubmit} className="max-w-3xl mx-auto mb-20">
             <div className="flex flex-col sm:flex-row gap-0">
