@@ -75,6 +75,8 @@ function PagesContent() {
                 <Route path="/GEOAudit" element={<GEOAudit />} />
                 <Route path="/tools" element={<SEOTools />} />
                 <Route path="/tools/:toolId" element={<ToolPage />} />
+                <Route path="/seo-tools" element={<SEOTools />} />
+                <Route path="/seo-tools/:toolId" element={<ToolPage />} />
                 <Route path="/geo-tools" element={<GEOTools />} />
                 <Route path="/geo-tools/:toolId" element={<ToolPage />} />
                 <Route path="/about" element={<About />} />
