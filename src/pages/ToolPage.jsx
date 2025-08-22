@@ -2,6 +2,7 @@ import React from 'react';
 import { useParams, Navigate, useLocation } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import * as Tools from '../components/tools/AllTools';
+import CredibilityLogos from '../components/CredibilityLogos';
 
 const seoTools = {
   'backlink-audit': {
@@ -209,6 +210,13 @@ export default function ToolPage() {
           </div>
         </section>
 
+        {/* Powered by LinkRank.ai section */}
+        <section className="py-8 bg-gray-50 border-b border-gray-200">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <CredibilityLogos />
+          </div>
+        </section>
+
         <section className="py-12">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h1 className="text-3xl font-medium text-black mb-4">{tool.title}</h1>
@@ -238,6 +246,13 @@ export default function ToolPage() {
             <ArrowLeft className="w-4 h-4" />
             {backText}
           </a>
+        </div>
+      </section>
+
+      {/* Powered by LinkRank.ai section */}
+      <section className="py-8 bg-gray-50 border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <CredibilityLogos />
         </div>
       </section>
 
