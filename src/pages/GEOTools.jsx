@@ -164,22 +164,25 @@ export default function GEOTools() {
   };
 
   return (
-    <div className="bg-white min-h-screen container-mobile">
-      <section className="relative overflow-hidden border-b border-black">
+    <div className="bg-white min-h-screen">
+      <section className="relative overflow-hidden">
         {/* Gradient Background */}
         <div className="absolute inset-0 bg-gradient-to-br from-white via-gray-50 to-gray-100"></div>
         <div className="absolute inset-0 bg-gradient-to-r from-blue-50/30 to-purple-50/30"></div>
-        <div className="relative max-w-7xl mx-auto mobile-padding py-16 sm:py-20">
-          <div className="text-center">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-medium text-black mb-6">
-              Free GEO Tools
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
+          <div className="text-center max-w-4xl mx-auto">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#171919] mb-6 leading-tight tracking-tight">
+              Free{' '}
+              <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                GEO Tools
+              </span>
             </h1>
-            <p className="text-lg text-gray-700 mb-10 max-w-3xl mx-auto">
-              Comprehensive Generative Engine Optimization tools to help you optimize your content for AI citations, enhance factual authority, and improve visibility in AI-powered search results and chatbot responses.
+            <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto leading-relaxed">
+              Comprehensive Generative Engine Optimization tools to help you optimize your content for AI citations, enhance factual authority, and improve visibility in AI-powered search results.
             </p>
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 max-w-4xl mx-auto">
-              <h2 className="text-xl font-medium text-blue-900 mb-3">What is GEO (Generative Engine Optimization)?</h2>
-              <p className="text-blue-800 text-sm leading-relaxed">
+            <div className="bg-white rounded-2xl p-8 shadow-xl border border-gray-200 max-w-2xl mx-auto mb-12">
+              <h2 className="text-xl font-semibold text-[#171919] mb-3">What is GEO (Generative Engine Optimization)?</h2>
+              <p className="text-gray-600 leading-relaxed">
                 GEO focuses on optimizing content for inclusion within AI-generated answers, prioritizing factual authority, structured data, and citations to be quoted or referenced by large language models. Unlike SEO which aims for clicks, GEO aims to be cited as a source within AI responses.
               </p>
             </div>
@@ -192,35 +195,38 @@ export default function GEOTools() {
         </div>
       </section>
 
-      <section className="bg-white py-12 sm:py-16">
-        <div className="max-w-7xl mx-auto mobile-padding">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl lg:text-4xl font-bold text-[#171919] mb-4 tracking-tight">
+              Everything you need for AI optimization
+            </h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              From citation analysis to factual authority, 
+              we provide the complete toolkit for modern GEO professionals.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {geoTools.map((tool) => (
-              <div key={tool.id} className="border border-black bg-white hover:shadow-lg transition-shadow">
-                <div className="p-6">
-                  <div className="flex items-start gap-4 mb-4">
-                    <tool.icon className="w-8 h-8 text-black mt-1 flex-shrink-0" />
-                    <div className="flex-1">
-                      <h3 className="text-xl font-medium text-black mb-2">
-                        {tool.title}
-                      </h3>
-                      <span className="inline-block bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded mb-3">
-                        {tool.price}
-                      </span>
-                    </div>
-                  </div>
-                  
-                  <p className="text-gray-700 text-lg mb-6 leading-relaxed">
-                    {tool.description}
-                  </p>
-                  
-                  <button 
-                    onClick={() => handleToolClick(tool.id)}
-                    className="w-full min-h-[56px] bg-black text-white py-4 px-4 hover:bg-gray-800 transition-colors font-medium text-lg mobile-optimized"
-                  >
-                    {tool.buttonText}
-                  </button>
+              <div key={tool.id} className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 group">
+                <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-purple-600 rounded-lg flex items-center justify-center mb-6 shadow-md group-hover:shadow-lg transition-shadow">
+                  <tool.icon className="w-6 h-6 text-white" />
                 </div>
+                <h3 className="text-xl font-semibold text-[#171919] mb-3">{tool.title}</h3>
+                <span className="inline-block bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded mb-4">
+                  {tool.price}
+                </span>
+                <p className="text-gray-600 mb-6 leading-relaxed">
+                  {tool.description}
+                </p>
+                
+                <button 
+                  onClick={() => handleToolClick(tool.id)}
+                  className="w-full bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-200 shadow-lg hover:shadow-xl"
+                >
+                  {tool.buttonText}
+                </button>
               </div>
             ))}
           </div>

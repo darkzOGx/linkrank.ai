@@ -164,22 +164,25 @@ export default function SEOTools() {
   };
 
   return (
-    <div className="bg-white min-h-screen container-mobile">
-      <section className="relative overflow-hidden border-b border-black">
+    <div className="bg-white min-h-screen">
+      <section className="relative overflow-hidden">
         {/* Gradient Background */}
         <div className="absolute inset-0 bg-gradient-to-br from-white via-gray-50 to-gray-100"></div>
         <div className="absolute inset-0 bg-gradient-to-r from-blue-50/30 to-purple-50/30"></div>
-        <div className="relative max-w-7xl mx-auto mobile-padding py-16 sm:py-20">
-          <div className="text-center">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-medium text-black mb-6">
-              Free SEO Tools
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
+          <div className="text-center max-w-4xl mx-auto">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#171919] mb-6 leading-tight tracking-tight">
+              Free{' '}
+              <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                SEO Tools
+              </span>
             </h1>
-            <p className="text-lg text-gray-700 mb-10 max-w-3xl mx-auto">
+            <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto leading-relaxed">
               A comprehensive collection of free SEO analysis tools to help you optimize your website's performance, rankings, and technical implementation.
             </p>
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 max-w-4xl mx-auto">
-              <h2 className="text-xl font-medium text-blue-900 mb-3">What is SEO (Search Engine Optimization)?</h2>
-              <p className="text-blue-800 text-sm leading-relaxed">
+            <div className="bg-white rounded-2xl p-8 shadow-xl border border-gray-200 max-w-2xl mx-auto mb-12">
+              <h2 className="text-xl font-semibold text-[#171919] mb-3">What is SEO (Search Engine Optimization)?</h2>
+              <p className="text-gray-600 leading-relaxed">
                 SEO focuses on optimizing content and websites to rank higher in traditional search engine results pages (SERPs), prioritizing keywords, backlinks, and user experience signals to drive organic traffic clicks to your website. The primary goal is to increase visibility in search results and attract visitors who will click through to your site.
               </p>
             </div>
@@ -192,35 +195,38 @@ export default function SEOTools() {
         </div>
       </section>
 
-      <section className="bg-white py-12 sm:py-16">
-        <div className="max-w-7xl mx-auto mobile-padding">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl lg:text-4xl font-bold text-[#171919] mb-4 tracking-tight">
+              Everything you need for SEO success
+            </h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              From comprehensive audits to detailed analysis, 
+              we provide the complete toolkit for modern SEO professionals.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {seoTools.map((tool) => (
-              <div key={tool.id} className="border border-black bg-white hover:shadow-lg transition-shadow">
-                <div className="p-6">
-                  <div className="flex items-start gap-4 mb-4">
-                    <tool.icon className="w-8 h-8 text-black mt-1 flex-shrink-0" />
-                    <div className="flex-1">
-                      <h3 className="text-xl font-medium text-black mb-2">
-                        {tool.title}
-                      </h3>
-                      <span className="inline-block bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded mb-3">
-                        {tool.price}
-                      </span>
-                    </div>
-                  </div>
-                  
-                  <p className="text-gray-700 text-lg mb-6 leading-relaxed">
-                    {tool.description}
-                  </p>
-                  
-                  <button 
-                    onClick={() => handleToolClick(tool.id)}
-                    className="w-full min-h-[56px] bg-black text-white py-4 px-4 hover:bg-gray-800 transition-colors font-medium text-lg mobile-optimized"
-                  >
-                    {tool.buttonText}
-                  </button>
+              <div key={tool.id} className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 group">
+                <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg flex items-center justify-center mb-6 shadow-md group-hover:shadow-lg transition-shadow">
+                  <tool.icon className="w-6 h-6 text-white" />
                 </div>
+                <h3 className="text-xl font-semibold text-[#171919] mb-3">{tool.title}</h3>
+                <span className="inline-block bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded mb-4">
+                  {tool.price}
+                </span>
+                <p className="text-gray-600 mb-6 leading-relaxed">
+                  {tool.description}
+                </p>
+                
+                <button 
+                  onClick={() => handleToolClick(tool.id)}
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-200 shadow-lg hover:shadow-xl"
+                >
+                  {tool.buttonText}
+                </button>
               </div>
             ))}
           </div>

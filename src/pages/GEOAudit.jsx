@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import GEOAuditResults from '../components/GEOAuditResults';
 import CredibilityLogos from '../components/CredibilityLogos';
-import { AlertTriangle, Brain, Zap, Database, ArrowRight, Server, Search, Target, Shield } from 'lucide-react';
+import { AlertTriangle, Brain, Zap, Database, Server, Search, Target, Shield } from 'lucide-react';
 
 // GEO Hero Section matching SEO audit theme
 const GEOHeroSection = ({ onStartAudit, isLoading }) => {
@@ -65,7 +65,6 @@ const GEOHeroSection = ({ onStartAudit, isLoading }) => {
                 className="w-full px-6 py-3 bg-gray-900 text-white font-medium rounded-lg hover:bg-gray-800 disabled:bg-gray-400 transition-colors flex items-center justify-center gap-2"
               >
                 {isLoading ? 'Analyzing...' : 'Start GEO Analysis'}
-                {!isLoading && <ArrowRight className="w-5 h-5" />}
               </button>
             </form>
             
