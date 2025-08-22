@@ -164,9 +164,9 @@ export default function SEOTools() {
   };
 
   return (
-    <div className="bg-white min-h-screen">
+    <div className="bg-white min-h-screen container-mobile">
       <section className="bg-white border-b border-black">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-32">
+        <div className="max-w-7xl mx-auto mobile-padding py-16 sm:py-20">
           <div className="text-center">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-medium text-black mb-6">
               Free SEO Tools
@@ -182,15 +182,15 @@ export default function SEOTools() {
             </div>
 
             {/* Powered by LinkRank.ai */}
-            <div className="mt-16">
+            <div className="mt-10">
               <CredibilityLogos />
             </div>
           </div>
         </div>
       </section>
 
-      <section className="bg-white py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-white py-12 sm:py-16">
+        <div className="max-w-7xl mx-auto mobile-padding">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {seoTools.map((tool) => (
               <div key={tool.id} className="border border-black bg-white hover:shadow-lg transition-shadow">
@@ -207,13 +207,13 @@ export default function SEOTools() {
                     </div>
                   </div>
                   
-                  <p className="text-gray-700 text-sm mb-6 leading-relaxed">
+                  <p className="text-gray-700 text-lg mb-6 leading-relaxed">
                     {tool.description}
                   </p>
                   
                   <button 
                     onClick={() => handleToolClick(tool.id)}
-                    className="w-full bg-black text-white py-3 px-4 hover:bg-gray-800 transition-colors font-medium text-sm"
+                    className="w-full min-h-[56px] bg-black text-white py-4 px-4 hover:bg-gray-800 transition-colors font-medium text-lg mobile-optimized"
                   >
                     {tool.buttonText}
                   </button>

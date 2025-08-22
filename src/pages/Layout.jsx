@@ -13,25 +13,24 @@ export default function Layout({ children }) {
             </a>
           </div>
           <div className="border-t border-gray-200 pt-3">
-            <nav className="flex items-center justify-center">
+            <nav className="flex items-center justify-center gap-6">
               <a href="/" className="text-sm font-medium hover:text-gray-600 transition-colors">
                 Home
               </a>
-              <span className="text-gray-400 mx-2">|</span>
               <a href="/SEOAudit" className="text-sm font-medium hover:text-gray-600 transition-colors">
-                Free SEO Audit
+                SEO Audit
               </a>
-              <span className="text-gray-400 mx-2">|</span>
               <a href="/GEOAudit" className="text-sm font-medium hover:text-gray-600 transition-colors">
-                Free GEO Audit
+                GEO Audit
               </a>
-              <span className="text-gray-400 mx-2">|</span>
               <a href="/tools" className="text-sm font-medium hover:text-gray-600 transition-colors">
-                Free SEO Tools
+                SEO Tools
               </a>
-              <span className="text-gray-400 mx-2">|</span>
               <a href="/geo-tools" className="text-sm font-medium hover:text-gray-600 transition-colors">
-                Free GEO Tools
+                GEO Tools
+              </a>
+              <a href="/about" className="text-sm font-medium hover:text-gray-600 transition-colors">
+                About
               </a>
             </nav>
           </div>
@@ -43,7 +42,7 @@ export default function Layout({ children }) {
       <footer className="border-t border-black mt-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           {/* Main Footer Content */}
-          <div className="grid md:grid-cols-4 gap-8 mb-8">
+          <div className="grid md:grid-cols-5 gap-8 mb-8">
             {/* About Section */}
             <div className="md:col-span-2">
               <h3 className="text-lg font-medium text-black mb-3">About LinkRank.ai</h3>
@@ -82,6 +81,56 @@ export default function Layout({ children }) {
               </address>
             </div>
             
+            {/* SEO Tools */}
+            <div>
+              <h3 className="text-lg font-medium text-black mb-3">SEO Tools</h3>
+              <ul className="text-sm text-gray-600 space-y-2">
+                <li>
+                  <a href="/tools#robots-tester" className="hover:text-black transition-colors">Robots.txt Tester</a>
+                </li>
+                <li>
+                  <a href="/tools#keyword-research" className="hover:text-black transition-colors">Keyword Research</a>
+                </li>
+                <li>
+                  <a href="/tools#crawl-test" className="hover:text-black transition-colors">Page Crawl Test</a>
+                </li>
+                <li>
+                  <a href="/tools#mobile-test" className="hover:text-black transition-colors">Mobile Support Test</a>
+                </li>
+                <li>
+                  <a href="/tools#header-test" className="hover:text-black transition-colors">HTTP Header Test</a>
+                </li>
+                <li>
+                  <a href="/tools#speed-test" className="hover:text-black transition-colors">Website Speed Test</a>
+                </li>
+              </ul>
+            </div>
+            
+            {/* GEO Tools */}
+            <div>
+              <h3 className="text-lg font-medium text-black mb-3">GEO Tools</h3>
+              <ul className="text-sm text-gray-600 space-y-2">
+                <li>
+                  <a href="/geo-tools#structured-data-validator" className="hover:text-black transition-colors">Structured Data Validator</a>
+                </li>
+                <li>
+                  <a href="/geo-tools#ai-citation-analyzer" className="hover:text-black transition-colors">AI Citation Analyzer</a>
+                </li>
+                <li>
+                  <a href="/geo-tools#fact-density-checker" className="hover:text-black transition-colors">Fact Density Checker</a>
+                </li>
+                <li>
+                  <a href="/geo-tools#authority-signal-detector" className="hover:text-black transition-colors">Authority Signal Detector</a>
+                </li>
+                <li>
+                  <a href="/geo-tools#ai-content-extractor" className="hover:text-black transition-colors">AI Content Extractor</a>
+                </li>
+                <li>
+                  <a href="/geo-tools#citation-format-optimizer" className="hover:text-black transition-colors">Citation Format Optimizer</a>
+                </li>
+              </ul>
+            </div>
+            
             {/* Quick Links */}
             <div>
               <h3 className="text-lg font-medium text-black mb-3">Quick Links</h3>
@@ -93,13 +142,13 @@ export default function Layout({ children }) {
                   <a href="/GEOAudit" className="hover:text-black transition-colors">GEO Audit Tool</a>
                 </li>
                 <li>
-                  <a href="/tools" className="hover:text-black transition-colors">SEO Tools</a>
-                </li>
-                <li>
-                  <a href="/geo-tools" className="hover:text-black transition-colors">GEO Tools</a>
+                  <a href="/about" className="hover:text-black transition-colors">About Us</a>
                 </li>
                 <li>
                   <a href="/privacy-policy" className="hover:text-black transition-colors">Privacy Policy</a>
+                </li>
+                <li>
+                  <a href="/cookie-policy" className="hover:text-black transition-colors">Cookie Policy</a>
                 </li>
                 <li>
                   <a href="/terms-of-service" className="hover:text-black transition-colors">Terms of Service</a>

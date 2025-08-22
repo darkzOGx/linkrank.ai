@@ -1,4 +1,5 @@
 import React from 'react';
+import { Shield, Lock, Eye, Users, Globe, Mail } from 'lucide-react';
 
 export default function PrivacyPolicy() {
   return (
