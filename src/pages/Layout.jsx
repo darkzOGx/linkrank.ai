@@ -47,12 +47,6 @@ export default function Layout({ children }) {
               </a>
             </nav>
 
-            {/* CTA Buttons */}
-            <div className="hidden lg:flex items-center gap-3">
-              <a href="/SEOAudit" className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-lg font-medium transition-all duration-200 shadow-lg hover:shadow-xl">
-                Start Free Analysis
-              </a>
-            </div>
 
             {/* Mobile Menu Button */}
             <button 
