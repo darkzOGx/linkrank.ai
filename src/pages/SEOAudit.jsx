@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { performServerSideAnalysis } from '../services/serverSeoAnalyzer';
 import HeroSection from '../components/HeroSection';
 import FeaturesSection from '../components/FeaturesSection';
 import SEOAuditResults from '../components/SEOAuditResults';
+import { trackToolUsage, trackPageView } from '../services/analytics';
 import { AlertTriangle, Server, Zap } from 'lucide-react';
 
 export default function SEOAuditPage() {
@@ -10,17 +11,43 @@ export default function SEOAuditPage() {
   const [currentResult, setCurrentResult] = useState(null);
   const [error, setError] = useState(null);
 
+  // Track page view
+  useEffect(() => {
+    trackPageView('SEO Audit');
+  }, []);
+
   const performAnalysis = async (url) => {
     setIsLoading(true);
     setError(null);
     setCurrentResult(null);
 
+    const startTime = Date.now();
+
     try {
       const result = await performServerSideAnalysis(url);
       setCurrentResult(result);
+      
+      // Track successful SEO audit usage
+      trackToolUsage('SEO Audit', {
+        url: url,
+        execution_time: Date.now() - startTime,
+        success: true,
+        overall_score: result.overall_score,
+        onpage_score: result.onpage_score,
+        technical_score: result.technical_score,
+        content_score: result.content_score
+      });
     } catch (err) {
       console.error('SEO analysis error:', err);
       setError(err.message || 'Failed to analyze website. Please check the URL and try again.');
+      
+      // Track failed SEO audit usage
+      trackToolUsage('SEO Audit', {
+        url: url,
+        execution_time: Date.now() - startTime,
+        success: false,
+        error: err.message || 'Analysis failed'
+      });
     } finally {
       setIsLoading(false);
     }

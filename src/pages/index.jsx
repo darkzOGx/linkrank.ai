@@ -16,6 +16,7 @@ import PrivacyPolicy from "./PrivacyPolicy";
 import CookiePolicy from "./CookiePolicy";
 import TermsOfService from "./TermsOfService";
 import DesignTemplates from "./DesignTemplates";
+import AdminDashboard from "./AdminDashboard";
 
 // Template imports
 import ModernGradient from "./templates/ModernGradient";
@@ -95,6 +96,7 @@ function PagesContent() {
                 <Route path="/cookie-policy" element={<CookiePolicy />} />
                 <Route path="/terms-of-service" element={<TermsOfService />} />
                 <Route path="/design-templates" element={<DesignTemplates />} />
+                <Route path="/admin" element={<AdminDashboard />} />
                 
                 {/* Template Routes */}
                 <Route path="/templates/modern-gradient" element={<ModernGradient />} />

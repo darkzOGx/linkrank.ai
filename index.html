@@ -9,11 +9,11 @@
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-    <title>AI SEO Audit Tool Free - Professional SEO Report Generator | LinkRank.ai</title>
+    <title>Free AI SEO Audit Tool - LinkRank.ai</title>
     <!-- GA4 Updated 2024-08-22 -->
     
     <!-- Meta Description for SEO -->
-    <meta name="description" content="Free AI SEO audit tool and SEO report generator. Get instant SEO analysis, SEO audit free with our advanced SEO analyzer. Professional AI SEO audit software trusted by Reddit users.">
+    <meta name="description" content="Free AI SEO audit tool with instant PDF reports. Get professional SEO analysis, crawlability checks, and optimization tips. No signup required.">
     
     <!-- Meta Keywords -->
     <meta name="keywords" content="AI SEO audit reddit, AI SEO audit free, AI SEO audit tool free, AI SEO audit software, SEO audit free, SEO report generator, SEO audit tool, SEO analyzer, free SEO audit report generator, free seo audit report pdf reddit, free seo audit report pdf free download, best free seo audit report pdf, free seo audit report pdf download, best free website audit tools, SEO audit checklist, crawlability, indexability, mobile-friendliness, page speed, SEO marketing, SEO tools, what is SEO and how it works, SEO Google, SEO optimizer, Google search console, Google analytics, Google ranking, show up on google search, semrush, SE Ranking, monday.com, SEO Powersuite, ahrefs, LinkRank.ai">
@@ -28,8 +28,8 @@
     <link rel="sitemap" type="application/xml" href="/sitemap.xml">
     
     <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="AI SEO Audit Tool Free - Professional SEO Report Generator">
-    <meta property="og:description" content="Free AI SEO audit tool recommended on Reddit. Get instant SEO audit free with our AI-powered SEO analyzer and SEO report generator. Professional SEO audit software.">
+    <meta property="og:title" content="Free AI SEO Audit Tool - LinkRank.ai">
+    <meta property="og:description" content="Free AI SEO audit tool with instant PDF reports. Get professional SEO analysis, crawlability checks, and optimization tips. No signup required.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://linkrank.ai">
     <meta property="og:image" content="https://linkrank.ai/og-image.png">
@@ -37,8 +37,8 @@
     
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="AI SEO Audit Tool Free - SEO Report Generator">
-    <meta name="twitter:description" content="Free AI SEO audit software and SEO analyzer. Get instant SEO audit free with detailed SEO reports. Trusted AI SEO audit tool recommended on Reddit.">
+    <meta name="twitter:title" content="Free AI SEO Audit Tool - LinkRank.ai">
+    <meta name="twitter:description" content="Free AI SEO audit tool with instant PDF reports. Professional SEO analysis, crawlability checks, and optimization tips. No signup required.">
     <meta name="twitter:image" content="https://linkrank.ai/twitter-card.png">
     <meta name="twitter:site" content="@linkrankai">
     
@@ -57,7 +57,8 @@
     
     <!-- Preload Critical Resources -->
     <link rel="preload" href="/linkrank-simple-logo.png" as="image" type="image/png">
-    <link rel="preload" href="/headericon.png" as="image" type="image/png">
+    <link rel="preload" href="/src/main.jsx" as="script" crossorigin>
+    <link rel="preload" href="/src/index.css" as="style">
     <link rel="prefetch" href="/SEOAudit">
     <link rel="prefetch" href="/GEOAudit">
     
@@ -223,14 +224,21 @@
     }
     </script>
     
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-PK6TWS0XDD"></script>
+    <!-- Google tag (gtag.js) - Optimized Loading -->
     <script>
+      // Load Google Analytics asynchronously
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'G-PK6TWS0XDD');
+      
+      // Load GA script after page loads
+      window.addEventListener('load', function() {
+        const script = document.createElement('script');
+        script.async = true;
+        script.src = 'https://www.googletagmanager.com/gtag/js?id=G-PK6TWS0XDD';
+        document.head.appendChild(script);
+      });
     </script>
     
     <!-- Critical CSS to prevent FOUC -->
@@ -365,6 +373,6 @@
         <p><strong>JavaScript is required for the full LinkRank.ai experience.</strong> Please enable JavaScript in your browser to access our interactive SEO and GEO audit tools.</p>
       </noscript>
     </div>
-    <script type="module" src="/src/main.jsx"></script>
+    <script type="module" src="/src/main.jsx" defer></script>
   </body>
 </html>

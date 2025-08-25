@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import GEOAuditResults from '../components/GEOAuditResults';
 import CredibilityLogos from '../components/CredibilityLogos';
+import { trackToolUsage, trackPageView } from '../services/analytics';
 import { AlertTriangle, Brain, Zap, Database, Server, Search, Target, Shield } from 'lucide-react';
 
 // GEO Hero Section matching SEO audit theme
@@ -193,17 +194,43 @@ export default function GEOAuditPage() {
   const [currentResult, setCurrentResult] = useState(null);
   const [error, setError] = useState(null);
 
+  // Track page view
+  useEffect(() => {
+    trackPageView('GEO Audit');
+  }, []);
+
   const performAnalysis = async (url) => {
     setIsLoading(true);
     setError(null);
     setCurrentResult(null);
 
+    const startTime = Date.now();
+
     try {
       const result = await performGEOAudit(url);
       setCurrentResult(result);
+      
+      // Track successful GEO audit usage
+      trackToolUsage('GEO Audit', {
+        url: url,
+        execution_time: Date.now() - startTime,
+        success: true,
+        overall_score: result.overall_geo_score,
+        structured_data_score: result.analysis?.structured_data?.score,
+        citation_potential_score: result.analysis?.citation_potential?.score,
+        authority_signals_score: result.analysis?.authority_signals?.score
+      });
     } catch (err) {
       console.error('GEO analysis error:', err);
       setError(err.message || 'Failed to analyze website. Please check the URL and try again.');
+      
+      // Track failed GEO audit usage
+      trackToolUsage('GEO Audit', {
+        url: url,
+        execution_time: Date.now() - startTime,
+        success: false,
+        error: err.message || 'Analysis failed'
+      });
     } finally {
       setIsLoading(false);
     }

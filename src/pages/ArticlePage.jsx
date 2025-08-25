@@ -254,13 +254,13 @@ export default function ArticlePage() {
                 Try Free SEO Audit
               </Link>
             </div>
-            <a 
-              href="/seo-guide.pdf"
+            <Link 
+              to="/GEOAudit"
               className="inline-flex items-center gap-2 px-4 py-2 text-blue-600 hover:text-blue-800 transition-colors"
             >
               <Download className="w-4 h-4" />
-              Download SEO Guide PDF
-            </a>
+              Try GEO Audit Tool
+            </Link>
           </div>
         </div>
 
