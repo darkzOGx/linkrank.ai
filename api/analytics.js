@@ -238,16 +238,26 @@ export default async function handler(req, res) {
       const validAdminKey = process.env.ADMIN_KEY || 'admin_linkrank_2024';
       
       console.log('Admin auth attempt:', { 
+        receivedKey: adminKey,
+        validKey: validAdminKey,
+        keysMatch: adminKey === validAdminKey,
         hasAdminKey: !!adminKey, 
         hasAuth: !!authorization,
-        envKey: !!process.env.ADMIN_KEY 
+        envKey: !!process.env.ADMIN_KEY,
+        envKeyLength: process.env.ADMIN_KEY ? process.env.ADMIN_KEY.length : 0,
+        receivedKeyLength: adminKey ? adminKey.length : 0
       });
       
       if (adminKey !== validAdminKey && authorization !== `Bearer ${validAdminKey}`) {
-        console.log('Authentication failed');
+        console.log('Authentication failed - key mismatch');
         return res.status(401).json({ 
           error: 'Unauthorized access',
-          message: 'Invalid admin key'
+          message: 'Invalid admin key',
+          debug: {
+            receivedLength: adminKey ? adminKey.length : 0,
+            expectedLength: validAdminKey ? validAdminKey.length : 0,
+            hasEnvKey: !!process.env.ADMIN_KEY
+          }
         });
       }
 
