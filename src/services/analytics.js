@@ -36,6 +36,13 @@ class AnalyticsService {
 
   async initializeSession() {
     try {
+      // Don't track admin pages
+      if (window.location.pathname.startsWith('/admin')) {
+        console.log('Skipping analytics tracking for admin page');
+        this.isTracking = false;
+        return;
+      }
+
       // Get user's country/location
       const locationData = await this.getLocationData();
       
@@ -139,6 +146,11 @@ class AnalyticsService {
 
   trackEvent(eventType, eventData = {}) {
     if (!this.isTracking) return;
+    
+    // Don't track events on admin pages
+    if (window.location.pathname.startsWith('/admin')) {
+      return;
+    }
 
     const event = {
       event_type: eventType,

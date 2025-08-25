@@ -135,6 +135,14 @@ export default function AdminDashboard() {
     }
   }, []);
 
+  // Disable analytics tracking on admin pages
+  useEffect(() => {
+    // Stop analytics tracking for admin pages
+    if (window.analytics) {
+      window.analytics.isTracking = false;
+    }
+  }, []);
+
   // Reload data when filters change
   useEffect(() => {
     if (isAuthenticated) {
