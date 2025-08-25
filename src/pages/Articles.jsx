@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Calendar, Clock, User, ArrowRight, Search, Filter, TrendingUp, FileText, Bot, Shield, Target, Zap, Globe, Download, ChevronRight, Star, BookOpen } from 'lucide-react';
+import { Calendar, Clock, User, ArrowRight, Search, Filter, TrendingUp, FileText, Bot, Shield, Target, Zap, Globe, Download, ChevronRight, Star, BookOpen, Settings, Users } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import CredibilityLogos from '../components/CredibilityLogos';
 
