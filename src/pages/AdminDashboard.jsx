@@ -31,17 +31,24 @@ export default function AdminDashboard() {
     setError('');
 
     try {
-      const response = await fetch(`/api/analytics?adminKey=${encodeURIComponent(adminKey)}`);
+      const testUrl = `/api/analytics?adminKey=${encodeURIComponent(adminKey)}`;
+      console.log('Testing admin authentication with URL:', testUrl);
+      
+      const response = await fetch(testUrl);
       
       if (response.ok) {
         setIsAuthenticated(true);
         localStorage.setItem('admin_key', adminKey);
+        console.log('Authentication successful');
         await loadAnalyticsData();
       } else {
-        setError('Invalid admin key');
+        const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+        console.error('Authentication failed:', response.status, errorData);
+        setError(`Authentication failed: ${errorData.message || 'Invalid admin key'}`);
       }
     } catch (err) {
-      setError('Failed to authenticate');
+      console.error('Authentication error:', err);
+      setError('Failed to authenticate: ' + err.message);
     } finally {
       setLoading(false);
     }
@@ -53,35 +60,42 @@ export default function AdminDashboard() {
     setError('');
 
     try {
-      const params = new URLSearchParams({
-        adminKey: adminKey || localStorage.getItem('admin_key') || ''
-      });
+      const currentAdminKey = adminKey || localStorage.getItem('admin_key') || '';
+      
+      // Build URL manually to avoid encoding issues with special characters
+      let url = `/api/analytics?adminKey=${encodeURIComponent(currentAdminKey)}`;
 
       if (filters.dateRange !== 'all_time') {
         const dateRange = getDateRange(filters.dateRange);
         if (dateRange) {
-          params.append('dateRange', dateRange);
+          url += `&dateRange=${encodeURIComponent(dateRange)}`;
         }
       }
 
       if (filters.toolName) {
-        params.append('toolName', filters.toolName);
+        url += `&toolName=${encodeURIComponent(filters.toolName)}`;
       }
 
       if (filters.country) {
-        params.append('country', filters.country);
+        url += `&country=${encodeURIComponent(filters.country)}`;
       }
 
-      const response = await fetch(`/api/analytics?${params.toString()}`);
+      console.log('Fetching analytics data from:', url);
+
+      const response = await fetch(url);
       
       if (response.ok) {
         const result = await response.json();
         setData(result);
+        console.log('Analytics data loaded successfully:', result.summary);
       } else {
-        setError('Failed to load analytics data');
+        const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+        setError(`Failed to load analytics data: ${errorData.message || response.statusText}`);
+        console.error('API Error:', response.status, errorData);
       }
     } catch (err) {
       setError('Error loading data: ' + err.message);
+      console.error('Fetch error:', err);
     } finally {
       setLoading(false);
     }
