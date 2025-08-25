@@ -1,5 +1,6 @@
-import React from 'react';
-import { ArrowLeft, CheckCircle, AlertTriangle, AlertCircle, Info, Clock, Globe, Smartphone, Target, FileText, Search, Zap } from 'lucide-react';
+import React, { useState } from 'react';
+import { ArrowLeft, CheckCircle, AlertTriangle, AlertCircle, Info, Clock, Globe, Smartphone, Target, FileText, Search, Zap, Download, FileDown } from 'lucide-react';
+import { generateSEOAuditPDF } from '../utils/pdfExport';
 
 // Score indicator component
 const ScoreIndicator = ({ score, size = 'large' }) => {
@@ -170,6 +171,18 @@ const CategoryResults = ({ title, score, items, description, icon: Icon }) => (
 
 // Main audit results component
 export default function SEOAuditResults({ result, onNewAudit }) {
+  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
+
+  const handleDownloadPDF = async () => {
+    setIsGeneratingPDF(true);
+    try {
+      await generateSEOAuditPDF(result);
+    } catch (error) {
+      console.error('Failed to generate PDF:', error);
+    } finally {
+      setIsGeneratingPDF(false);
+    }
+  };
   // Handle error cases where analysis failed
   if (!result || result.error) {
     return (
@@ -279,6 +292,26 @@ export default function SEOAuditResults({ result, onNewAudit }) {
                 <ScoreIndicator score={result.overall_score || 0} />
                 <p className="text-lg font-semibold text-gray-900 mt-3">Overall Score</p>
                 <p className="text-sm text-gray-600">SEO Performance Rating</p>
+                
+                {/* PDF Download Button */}
+                <button
+                  onClick={handleDownloadPDF}
+                  disabled={isGeneratingPDF}
+                  className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 disabled:bg-gray-400 transition-colors"
+                >
+                  {isGeneratingPDF ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                      Generating PDF...
+                    </>
+                  ) : (
+                    <>
+                      <FileDown className="w-4 h-4" />
+                      Download Free SEO Audit Report PDF
+                    </>
+                  )}
+                </button>
+                <p className="text-xs text-gray-500 mt-2">Best free SEO audit tool PDF download</p>
               </div>
             </div>
           </div>

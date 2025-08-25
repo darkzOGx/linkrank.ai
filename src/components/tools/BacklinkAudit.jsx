@@ -1,36 +1,113 @@
-import React, { useState } from 'react';
-import { Link, TrendingUp, AlertCircle, CheckCircle, X, Download, ExternalLink, Shield, AlertTriangle } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Link, TrendingUp, AlertCircle, CheckCircle, X, Download, ExternalLink, Shield, AlertTriangle, Loader2 } from 'lucide-react';
 
 export default function BacklinkAudit() {
   const [url, setUrl] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState(null);
+  const [progress, setProgress] = useState('');
+  const [abortController, setAbortController] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!url.trim()) return;
+    const trimmedUrl = url.trim();
+    if (!trimmedUrl) {
+      alert('Please enter a domain or URL');
+      return;
+    }
+    
+    if (!validateUrl(trimmedUrl)) {
+      alert('Please enter a valid domain (e.g., example.com)');
+      return;
+    }
 
     setIsLoading(true);
     setResult(null);
+    setProgress('Initializing backlink analysis...');
 
+    const controller = new AbortController();
+    setAbortController(controller);
+    
     try {
-      let cleanUrl = url.trim();
+      let cleanUrl = trimmedUrl;
       if (!cleanUrl.startsWith('http://') && !cleanUrl.startsWith('https://')) {
         cleanUrl = 'https://' + cleanUrl;
       }
 
-      const response = await fetch(`/api/backlink-audit?url=${encodeURIComponent(cleanUrl)}`);
-      const data = await response.json();
-      setResult(data);
-    } catch (error) {
-      setResult({
-        success: false,
-        error: 'Network error occurred while auditing backlinks'
+      setProgress('Connecting to analysis service...');
+      
+      const response = await fetch(`/api/backlink-audit?url=${encodeURIComponent(cleanUrl)}`, {
+        signal: controller.signal,
+        headers: {
+          'Content-Type': 'application/json'
+        }
       });
+      
+      setProgress('Processing backlink data...');
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      
+      if (!data.success) {
+        setResult({
+          success: false,
+          error: data.error || 'Analysis failed'
+        });
+        return;
+      }
+      
+      // Transform data to match expected format
+      const transformedData = {
+        ...data,
+        totalBacklinks: data.backlinks?.length || 0,
+        uniqueDomains: data.uniqueDomains || new Set(data.backlinks?.map(b => b.domain) || []).size,
+        averageAuthority: data.averageAuthority || Math.round(
+          (data.backlinks?.reduce((sum, b) => sum + (b.authorityScore || 0), 0) || 0) / 
+          (data.backlinks?.length || 1)
+        ),
+        followRatio: data.followRatio || Math.round(
+          ((data.backlinks?.filter(b => b.isFollow).length || 0) / (data.backlinks?.length || 1)) * 100
+        )
+      };
+      
+      setResult(transformedData);
+    } catch (error) {
+      if (error.name === 'AbortError') {
+        console.log('Request aborted');
+      } else {
+        console.error('Backlink analysis error:', error);
+        setResult({
+          success: false,
+          error: error.message || 'Network error occurred while auditing backlinks'
+        });
+      }
     } finally {
       setIsLoading(false);
+      setProgress('');
+      setAbortController(null);
     }
   };
+  
+  const handleCancel = () => {
+    if (abortController) {
+      abortController.abort();
+      setAbortController(null);
+      setIsLoading(false);
+      setProgress('');
+    }
+  };
+  
+  // Cleanup on component unmount
+  useEffect(() => {
+    return () => {
+      if (abortController) {
+        abortController.abort();
+      }
+    };
+  }, [abortController]);
 
   const getAuthorityColor = (score) => {
     if (score >= 80) return 'text-green-600 bg-green-50';
@@ -58,8 +135,27 @@ export default function BacklinkAudit() {
     );
   };
 
+  const validateUrl = (url) => {
+    try {
+      // Remove protocol if present
+      const cleanUrl = url.replace(/^https?:\/\//, '').trim();
+      
+      // Basic domain validation
+      const domainPattern = /^[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?\.[a-zA-Z]{2,}$/;
+      const parts = cleanUrl.split('/');
+      const domain = parts[0];
+      
+      return domainPattern.test(domain);
+    } catch {
+      return false;
+    }
+  };
+
   const exportToCSV = () => {
-    if (!result || !result.backlinks) return;
+    if (!result || !result.backlinks || result.backlinks.length === 0) {
+      alert('No backlink data available to export');
+      return;
+    }
     
     const headers = ['Domain', 'Authority Score', 'Quality', 'Anchor Text', 'Type', 'Follow Status'];
     const rows = result.backlinks.map(link => [
@@ -109,11 +205,46 @@ export default function BacklinkAudit() {
             disabled={isLoading}
             className="px-6 py-3 bg-black text-white font-medium flex items-center justify-center gap-2 hover:bg-gray-800 disabled:bg-gray-400 transition-colors"
           >
-            {isLoading ? 'Analyzing...' : 'Analyze Backlinks'}
-            {!isLoading && <Link className="w-4 h-4" />}
+            {isLoading ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                Analyzing...
+              </>
+            ) : (
+              <>
+                Analyze Backlinks
+                <Link className="w-4 h-4" />
+              </>
+            )}
           </button>
         </div>
       </form>
+      
+      {/* Progress Indicator */}
+      {isLoading && (
+        <div className="mb-6 max-w-2xl mx-auto">
+          <div className="bg-blue-50 border border-blue-200 rounded p-4">
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-2">
+                <Loader2 className="w-4 h-4 animate-spin text-blue-600" />
+                <span className="text-sm font-medium text-blue-800">{progress}</span>
+              </div>
+              <button
+                onClick={handleCancel}
+                className="text-sm text-blue-600 hover:text-blue-800 transition-colors"
+              >
+                Cancel
+              </button>
+            </div>
+            <div className="w-full bg-blue-200 rounded-full h-2">
+              <div className="bg-blue-600 h-2 rounded-full animate-pulse" style={{width: '40%'}}></div>
+            </div>
+            <p className="text-xs text-blue-600 mt-2">
+              This may take 30-60 seconds depending on the website size and backlink profile.
+            </p>
+          </div>
+        </div>
+      )}
 
       {result && (
         <div className="border border-black">
@@ -154,6 +285,18 @@ export default function BacklinkAudit() {
                   <div className="text-sm text-gray-600 mt-1">Follow Ratio</div>
                 </div>
               </div>
+              
+              {/* Analysis Info */}
+              {result.analysisInfo && (
+                <div className="mb-6 p-4 bg-gray-50 border border-gray-200">
+                  <h3 className="font-medium mb-2">Analysis Details</h3>
+                  <div className="text-sm text-gray-600 space-y-1">
+                    <p><strong>Analysis Time:</strong> {result.analysisInfo.analysisTime || 'N/A'}</p>
+                    <p><strong>Methods Used:</strong> {result.analysisInfo.methodsUsed?.join(', ') || 'Multiple sources'}</p>
+                    <p><strong>Last Updated:</strong> {new Date().toLocaleString()}</p>
+                  </div>
+                </div>
+              )}
 
               {/* Quality Distribution */}
               {result.qualityDistribution && (
@@ -198,34 +341,38 @@ export default function BacklinkAudit() {
                       </thead>
                       <tbody>
                         {result.backlinks.slice(0, 20).map((link, index) => (
-                          <tr key={index} className="border-b border-gray-200 hover:bg-gray-50">
+                          <tr key={`${link.domain}-${index}`} className="border-b border-gray-200 hover:bg-gray-50">
                             <td className="p-3">
                               <div className="flex items-center gap-2">
-                                <span className="text-sm font-medium">{link.domain}</span>
-                                <ExternalLink className="w-3 h-3 text-gray-400" />
+                                <span className="text-sm font-medium" title={link.sourceUrl}>{link.domain}</span>
+                                {link.sourceUrl && (
+                                  <a href={link.sourceUrl} target="_blank" rel="noopener noreferrer">
+                                    <ExternalLink className="w-3 h-3 text-gray-400 hover:text-blue-600" />
+                                  </a>
+                                )}
                               </div>
                             </td>
                             <td className="p-3 text-center">
-                              <span className={`inline-block px-2 py-1 rounded text-sm font-medium ${getAuthorityColor(link.authorityScore)}`}>
-                                {link.authorityScore}
+                              <span className={`inline-block px-2 py-1 rounded text-sm font-medium ${getAuthorityColor(link.authorityScore || 0)}`}>
+                                {link.authorityScore || 0}
                               </span>
                             </td>
                             <td className="p-3 text-center">
-                              {getQualityBadge(link.quality)}
+                              {getQualityBadge(link.quality || 'Medium')}
                             </td>
-                            <td className="p-3 text-sm text-gray-700">
+                            <td className="p-3 text-sm text-gray-700" title={link.anchorText}>
                               {link.anchorText || 'N/A'}
                             </td>
                             <td className="p-3 text-center">
                               <span className="text-xs px-2 py-1 bg-gray-100 rounded">
-                                {link.type}
+                                {link.type || 'Unknown'}
                               </span>
                             </td>
                             <td className="p-3 text-center">
-                              {link.isFollow ? (
-                                <CheckCircle className="w-4 h-4 text-green-600 mx-auto" />
+                              {link.isFollow !== false ? (
+                                <CheckCircle className="w-4 h-4 text-green-600 mx-auto" title="Follow link" />
                               ) : (
-                                <X className="w-4 h-4 text-gray-400 mx-auto" />
+                                <X className="w-4 h-4 text-gray-400 mx-auto" title="NoFollow link" />
                               )}
                             </td>
                           </tr>
@@ -304,18 +451,35 @@ export default function BacklinkAudit() {
             </div>
           ) : (
             <div className="p-6">
-              <div className="text-red-600 mb-4">
-                <span className="font-medium">Error:</span> {result.error || 'An unknown error occurred'}
+              <div className="text-red-600 mb-4 p-4 bg-red-50 border border-red-200 rounded">
+                <div className="flex items-center gap-2 mb-2">
+                  <AlertTriangle className="w-5 h-5" />
+                  <span className="font-medium">Analysis Error</span>
+                </div>
+                <p className="text-sm">{result.error || 'An unknown error occurred during backlink analysis'}</p>
               </div>
               
-              <div className="mt-6 p-4 bg-blue-50 border border-blue-200">
-                <h3 className="font-medium text-blue-800 mb-3">Troubleshooting Tips</h3>
+              <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded">
+                <h3 className="font-medium text-blue-800 mb-3 flex items-center gap-2">
+                  <Shield className="w-5 h-5" />
+                  Troubleshooting Tips
+                </h3>
                 <ul className="text-sm text-blue-700 space-y-2">
-                  <li>• Ensure the domain is valid and accessible</li>
-                  <li>• Check if the website is online</li>
-                  <li>• Try entering just the domain name without http://</li>
-                  <li>• Some websites may block automated analysis</li>
+                  <li>• Ensure the domain is valid and accessible (e.g., example.com)</li>
+                  <li>• Check if the website is online and not blocking automated requests</li>
+                  <li>• Try entering just the domain name without http:// or https://</li>
+                  <li>• Some websites have strict anti-bot protection that may prevent analysis</li>
+                  <li>• Very new domains may have limited backlink data available</li>
+                  <li>• If the issue persists, try again in a few minutes</li>
                 </ul>
+              </div>
+              
+              <div className="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded">
+                <h3 className="font-medium text-yellow-800 mb-2">Note about Backlink Analysis</h3>
+                <p className="text-sm text-yellow-700">
+                  Backlink analysis requires checking multiple external sources and may take time to complete. 
+                  The accuracy and completeness of results depend on publicly available data and may vary by domain.
+                </p>
               </div>
             </div>
           )}

@@ -181,14 +181,14 @@ export default function Home() {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20">
           <div className="text-center max-w-4xl mx-auto">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#171919] mb-6 leading-tight tracking-tight">
-              The Complete Platform for{' '}
+              Free AI{' '}
               <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                SEO & AI Optimization
+                SEO Audit Tool & SEO Analyzer
               </span>
             </h1>
             <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto leading-relaxed">
-              Comprehensive website analysis, AI-powered optimization, and actionable insights 
-              that drive real results. Trusted by enterprise teams worldwide.
+              Professional AI SEO audit software and SEO report generator. Get instant SEO audit free 
+              with our advanced SEO analyzer - recommended by Reddit users worldwide.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-10">
@@ -196,7 +196,7 @@ export default function Home() {
                 onClick={() => navigate('/SEOAudit')}
                 className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-lg font-semibold transition-all duration-200 shadow-lg hover:shadow-xl flex items-center gap-2 justify-center"
               >
-                Start SEO Analysis
+                Start Free AI SEO Audit
               </button>
               <button 
                 onClick={() => navigate('/GEOAudit')}
@@ -248,11 +248,11 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl lg:text-4xl font-bold text-[#171919] mb-4 tracking-tight">
-              Everything you need for optimization success
+              Complete AI SEO Audit Tool Free - SEO Report Generator
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              From comprehensive audits to AI-powered recommendations, 
-              we provide the complete toolkit for modern SEO professionals.
+              Get SEO audit free with our AI SEO audit software and professional SEO analyzer. 
+              Trusted SEO report generator recommended on Reddit for instant website analysis.
             </p>
           </div>
 

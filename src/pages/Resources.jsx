@@ -1207,7 +1207,7 @@ export default function Resources() {
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-black mb-4">Success Case Studies</h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              Real results from businesses that transformed their online presence with our SEO and GEO strategies.
+              Real results from businesses using our AI SEO audit tool free. See how our SEO analyzer and SEO report generator drive success.
             </p>
           </div>
 
@@ -1254,9 +1254,9 @@ export default function Resources() {
       <section id="tools" className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-black mb-4">Professional SEO Tools</h2>
+            <h2 className="text-3xl font-bold text-black mb-4">Free AI SEO Audit Tools & SEO Report Generator</h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              Comprehensive suite of tools for SEO analysis, GEO optimization, and AIO strategies.
+              Professional AI SEO audit tool free suite including SEO analyzer and SEO report generator. Get instant SEO audit free - recommended by Reddit users.
             </p>
           </div>
 
@@ -1273,8 +1273,8 @@ export default function Resources() {
               <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-green-200 transition-colors">
                 <Search className="w-6 h-6 text-green-600" />
               </div>
-              <h3 className="font-semibold text-black mb-2">Keyword Research</h3>
-              <p className="text-sm text-gray-600">Discover high-value keywords and search opportunities.</p>
+              <h3 className="font-semibold text-black mb-2">AI Keyword Research</h3>
+              <p className="text-sm text-gray-600">AI SEO audit software for discovering high-value keywords with our SEO analyzer.</p>
             </a>
 
             <a href="/geo-tools/ai-citation-analyzer" className="bg-white p-6 rounded-lg border border-gray-200 hover:shadow-lg transition-shadow group">
@@ -1307,14 +1307,14 @@ export default function Resources() {
       {/* CTA Section */}
       <section className="py-16 bg-black text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold mb-4">Ready to Dominate Search Results?</h2>
+          <h2 className="text-3xl font-bold mb-4">Start Your Free AI SEO Audit Today</h2>
           <p className="text-gray-300 mb-8 max-w-2xl mx-auto">
-            Put these strategies into action with our comprehensive SEO and GEO audit tools.
+            Get instant SEO audit free with our AI SEO audit tool and professional SEO report generator - trusted by Reddit community.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <a href="/SEOAudit" className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">
               <Target className="w-5 h-5" />
-              Start SEO Audit
+              Start Free AI SEO Audit
             </a>
             <a href="/GEOAudit" className="inline-flex items-center gap-2 px-6 py-3 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 transition-colors">
               <Brain className="w-5 h-5" />

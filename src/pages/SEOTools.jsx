@@ -4,14 +4,6 @@ import CredibilityLogos from '../components/CredibilityLogos';
 
 const seoTools = [
   {
-    title: "Backlink Audit Tool",
-    description: "Analyze your website's backlink profile to identify high-quality links, toxic links, and opportunities for improvement. Get detailed insights on domain authority, anchor text distribution, and actionable recommendations.",
-    price: "FREE",
-    buttonText: "Analyze Backlinks",
-    icon: Link,
-    id: "backlink-audit"
-  },
-  {
     title: "Robots.txt Tester",
     description: "The robots.txt tester tool is a utility used to check and verify the contents of a website's robots.txt file, which instructs search engine crawlers on which pages or sections of a site should not be indexed.",
     price: "FREE",
@@ -21,7 +13,7 @@ const seoTools = [
   },
   {
     title: "Free Keyword Research",
-    description: "The free SEO keyword research tools are like a compass for your website's content strategy, guiding you to the keywords and phrases that will help you navigate the search engine landscape and reach your target audience.",
+    description: "Our free AI SEO audit tool includes powerful keyword research features. This SEO analyzer helps you discover high-value keywords that rank. Get instant SEO audit free with our AI-powered SEO report generator.",
     price: "FREE",
     buttonText: "Find Keywords That Ranks",
     icon: Target,
@@ -69,7 +61,7 @@ const seoTools = [
   },
   {
     title: "Keyword Density",
-    description: "The free keyword density tool for SEO is like a microscope for your website's content, providing insights on the frequency of keywords and phrases used, allowing you to optimize your content for both users and search engines.",
+    description: "Part of our free AI SEO audit software, this keyword density checker is an essential SEO analyzer tool. Get SEO audit free insights on keyword optimization with our professional SEO report generator recommended on Reddit.",
     price: "FREE",
     buttonText: "Check My Page's Keyword Density",
     icon: Target,
@@ -180,18 +172,18 @@ export default function SEOTools() {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20">
           <div className="text-center max-w-4xl mx-auto">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#171919] mb-6 leading-tight tracking-tight">
-              Linkrank{' '}
+              Free AI{' '}
               <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                SEO Tools
+                SEO Audit Tools
               </span>
             </h1>
             <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto leading-relaxed">
-              A comprehensive collection of free SEO analysis tools to help you optimize your website's performance, rankings, and technical implementation.
+              Professional AI SEO audit tool free collection including SEO report generator, SEO analyzer, and comprehensive SEO audit software. Get instant SEO audit free - recommended by Reddit users.
             </p>
             <div className="bg-white rounded-2xl p-6 shadow-xl border border-gray-200 max-w-2xl mx-auto mb-10">
               <h2 className="text-xl font-semibold text-[#171919] mb-3">What is SEO (Search Engine Optimization)?</h2>
               <p className="text-gray-600 leading-relaxed">
-                SEO focuses on optimizing content and websites to rank higher in traditional search engine results pages (SERPs), prioritizing keywords, backlinks, and user experience signals to drive organic traffic clicks to your website. The primary goal is to increase visibility in search results and attract visitors who will click through to your site.
+                Our AI SEO audit software provides instant SEO audit free analysis. This professional SEO analyzer and SEO report generator helps optimize your site for better rankings. Join thousands who discovered our AI SEO audit tool free through Reddit recommendations.
               </p>
             </div>
 
@@ -207,11 +199,11 @@ export default function SEOTools() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl lg:text-4xl font-bold text-[#171919] mb-4 tracking-tight">
-              Everything you need for SEO success
+              Complete AI SEO Audit Tool Free Suite
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              From comprehensive audits to detailed analysis, 
-              we provide the complete toolkit for modern SEO professionals.
+              Get SEO audit free with our AI-powered SEO report generator and SEO analyzer. 
+              Professional AI SEO audit software trusted by the Reddit community.
             </p>
           </div>
 

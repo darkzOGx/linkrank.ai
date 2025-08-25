@@ -5,10 +5,6 @@ import * as Tools from '../components/tools/AllTools';
 import CredibilityLogos from '../components/CredibilityLogos';
 
 const seoTools = {
-  'backlink-audit': {
-    component: Tools.BacklinkAudit,
-    title: 'Backlink Audit Tool'
-  },
   'robots-tester': {
     component: Tools.RobotsTester,
     title: 'Robots.txt Tester'

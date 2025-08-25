@@ -72,10 +72,10 @@ export default function AISEOAssistant() {
       <div className="text-center mb-8">
         <h1 className="text-3xl font-medium text-black mb-4 flex items-center justify-center gap-3">
           <Bot className="w-8 h-8" />
-          AI SEO Assistant
+          AI SEO Audit Tool Free - SEO Report Generator
         </h1>
         <p className="text-gray-700">
-          Get intelligent SEO recommendations, content analysis, and optimization strategies powered by AI.
+          Professional AI SEO audit software and SEO analyzer. Get instant SEO audit free with our AI-powered SEO report generator - recommended on Reddit.
         </p>
       </div>
 

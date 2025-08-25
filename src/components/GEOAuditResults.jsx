@@ -1,5 +1,6 @@
-import React from 'react';
-import { ArrowLeft, CheckCircle, AlertTriangle, AlertCircle, Info, Brain, Database, Quote, Award, Shield, Target, Cpu, BookOpen, Zap, Settings, TrendingUp, Users, Globe } from 'lucide-react';
+import React, { useState } from 'react';
+import { ArrowLeft, CheckCircle, AlertTriangle, AlertCircle, Info, Brain, Database, Quote, Award, Shield, Target, Cpu, BookOpen, Zap, Settings, TrendingUp, Users, Globe, FileDown } from 'lucide-react';
+import { generateGEOAuditPDF } from '../utils/pdfExport';
 
 // Score indicator component
 const ScoreIndicator = ({ score, size = 'large' }) => {
@@ -129,6 +130,18 @@ const CategorySection = ({ title, description, results, icon: Icon, iconColor })
 };
 
 export default function GEOAuditResults({ result, onNewAudit }) {
+  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
+
+  const handleDownloadPDF = async () => {
+    setIsGeneratingPDF(true);
+    try {
+      await generateGEOAuditPDF(result);
+    } catch (error) {
+      console.error('Failed to generate PDF:', error);
+    } finally {
+      setIsGeneratingPDF(false);
+    }
+  };
   if (!result || !result.analysis) {
     return (
       <div className="min-h-screen bg-gray-50 p-6">
@@ -169,6 +182,26 @@ export default function GEOAuditResults({ result, onNewAudit }) {
             <div className="text-center">
               <div className="text-sm text-gray-500 mb-1">Overall GEO Score</div>
               <ScoreIndicator score={overall_geo_score} />
+              
+              {/* PDF Download Button */}
+              <button
+                onClick={handleDownloadPDF}
+                disabled={isGeneratingPDF}
+                className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-purple-600 text-white font-medium rounded-lg hover:bg-purple-700 disabled:bg-gray-400 transition-colors"
+              >
+                {isGeneratingPDF ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    Generating PDF...
+                  </>
+                ) : (
+                  <>
+                    <FileDown className="w-4 h-4" />
+                    Download GEO Audit Report PDF
+                  </>
+                )}
+              </button>
+              <p className="text-xs text-gray-500 mt-2">Free AI SEO audit report PDF download</p>
             </div>
           </div>
         </div>

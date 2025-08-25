@@ -45,6 +45,12 @@ export default function Layout({ children }) {
               <a href="/resources" className="text-[#171919] hover:text-blue-600 transition-colors font-medium">
                 Resources
               </a>
+              <a href="/faq" className="text-[#171919] hover:text-blue-600 transition-colors font-medium">
+                FAQ
+              </a>
+              <a href="/articles" className="text-[#171919] hover:text-blue-600 transition-colors font-medium">
+                Articles
+              </a>
               <a href="/about" className="text-[#171919] hover:text-blue-600 transition-colors font-medium">
                 About
               </a>
@@ -82,6 +88,12 @@ export default function Layout({ children }) {
                 <a href="/resources" className="text-[#171919] hover:text-blue-600 transition-colors font-medium whitespace-nowrap">
                   Resources
                 </a>
+                <a href="/faq" className="text-[#171919] hover:text-blue-600 transition-colors font-medium whitespace-nowrap">
+                  FAQ
+                </a>
+                <a href="/articles" className="text-[#171919] hover:text-blue-600 transition-colors font-medium whitespace-nowrap">
+                  Articles
+                </a>
                 <a href="/about" className="text-[#171919] hover:text-blue-600 transition-colors font-medium whitespace-nowrap">
                   About
                 </a>
@@ -101,7 +113,7 @@ export default function Layout({ children }) {
             <div className="md:col-span-2">
               <h3 className="text-lg font-medium text-white mb-3">About LinkRank.ai</h3>
               <p className="text-sm text-gray-300 mb-4">
-                LinkRank.ai is a comprehensive SEO and GEO audit tool designed to help websites improve their search engine rankings and AI system visibility. Our advanced analysis provides actionable insights for better online performance.
+                LinkRank.ai is the best free SEO audit report generator and AI SEO audit tool. Our SEO analyzer provides crawlability, indexability, mobile-friendliness, and page speed analysis. Free white label SEO audit tool alternative to expensive platforms like Ahrefs, SEMrush, and SE Ranking. Integrates with Google Search Console and Google Analytics to help you show up on Google search and improve your Google ranking.
               </p>
               <div className="text-sm text-gray-300">
                 <p className="mb-2"><strong>Founded:</strong> 2024</p>
@@ -135,13 +147,10 @@ export default function Layout({ children }) {
               </address>
             </div>
             
-            {/* SEO Tools */}
+            {/* Free SEO Tools */}
             <div>
-              <h3 className="text-lg font-medium text-white mb-3">SEO Tools</h3>
+              <h3 className="text-lg font-medium text-white mb-3">Best Free Website Audit Tools</h3>
               <ul className="text-sm text-gray-300 space-y-2">
-                <li>
-                  <a href="/tools/backlink-audit" className="hover:text-[#fcd63a] transition-colors">Backlink Audit Tool</a>
-                </li>
                 <li>
                   <a href="/tools/robots-tester" className="hover:text-[#fcd63a] transition-colors">Robots.txt Tester</a>
                 </li>
@@ -313,7 +322,7 @@ export default function Layout({ children }) {
               
               {/* Copyright */}
               <div className="text-center text-xs text-gray-400">
-                <p>&copy; {new Date().getFullYear()} LinkRank.ai - All Rights Reserved | Professional SEO & GEO Audit Tools</p>
+                <p>&copy; {new Date().getFullYear()} LinkRank.ai - All Rights Reserved | Best Free SEO Audit Report Generator | AI SEO Audit Tool Free | SEO Analyzer with Crawlability, Indexability, Mobile-Friendliness & Page Speed Analysis | Alternative to Ahrefs, SEMrush, SE Ranking | Free White Label SEO Audit Tool | SEO Marketing & Google Ranking Optimization</p>
               </div>
             </div>
           </div>

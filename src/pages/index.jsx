@@ -9,6 +9,9 @@ import GEOTools from "./GEOTools";
 import ToolPage from "./ToolPage";
 import Resources from "./Resources";
 import About from "./About";
+import FAQ from "./FAQ";
+import Articles from "./Articles";
+import ArticlePage from "./ArticlePage";
 import PrivacyPolicy from "./PrivacyPolicy";
 import CookiePolicy from "./CookiePolicy";
 import TermsOfService from "./TermsOfService";
@@ -40,6 +43,8 @@ const PAGES = {
     SEOTools: SEOTools,
     GEOTools: GEOTools,
     Resources: Resources,
+    FAQ: FAQ,
+    Articles: Articles,
     
 }
 
@@ -82,6 +87,9 @@ function PagesContent() {
                 <Route path="/geo-tools" element={<GEOTools />} />
                 <Route path="/geo-tools/:toolId" element={<ToolPage />} />
                 <Route path="/resources" element={<Resources />} />
+                <Route path="/faq" element={<FAQ />} />
+                <Route path="/articles" element={<Articles />} />
+                <Route path="/articles/:articleId" element={<ArticlePage />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                 <Route path="/cookie-policy" element={<CookiePolicy />} />
