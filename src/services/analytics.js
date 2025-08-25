@@ -60,9 +60,9 @@ class AnalyticsService {
 
   async getLocationData() {
     try {
-      // Use a free IP geolocation service
-      const response = await fetch('https://ipapi.co/json/', {
-        timeout: 5000
+      // Try primary geolocation service
+      let response = await fetch('https://ipapi.co/json/', {
+        timeout: 3000
       });
       
       if (response.ok) {
@@ -77,10 +77,30 @@ class AnalyticsService {
         };
       }
     } catch (error) {
-      console.warn('Could not fetch location data:', error);
+      console.warn('Primary location service failed, trying fallback:', error);
+      
+      // Try fallback service
+      try {
+        const response = await fetch('https://api.ipify.org?format=json', {
+          timeout: 2000
+        });
+        if (response.ok) {
+          const data = await response.json();
+          return {
+            country: 'Unknown',
+            country_code: 'XX', 
+            region: 'Unknown',
+            city: 'Unknown',
+            ip: data.ip || 'Unknown',
+            timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
+          };
+        }
+      } catch (fallbackError) {
+        console.warn('Fallback location service failed:', fallbackError);
+      }
     }
     
-    // Fallback location data
+    // Final fallback location data
     return {
       country: 'Unknown',
       country_code: 'XX',

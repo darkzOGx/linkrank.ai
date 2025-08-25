@@ -3,42 +3,19 @@
  * Handles analytics data collection and storage
  */
 
-import { readFileSync, writeFileSync, existsSync } from 'fs';
-import { join } from 'path';
-
-const ANALYTICS_FILE = join(process.cwd(), 'data', 'analytics.json');
-const DAILY_STATS_FILE = join(process.cwd(), 'data', 'daily_stats.json');
-
-// Ensure data directory exists
-function ensureDataDirectory() {
-  const dataDir = join(process.cwd(), 'data');
-  if (!existsSync(dataDir)) {
-    try {
-      require('fs').mkdirSync(dataDir, { recursive: true });
-    } catch (error) {
-      console.error('Failed to create data directory:', error);
-    }
-  }
-}
+// In-memory storage for serverless environment
+// Note: Data will reset on each deployment - consider using a database for persistence
+let analyticsData = { events: [], sessions: {}, tools: {}, countries: {}, daily_stats: {} };
 
 // Read existing analytics data
 function readAnalyticsData() {
-  try {
-    if (existsSync(ANALYTICS_FILE)) {
-      const data = readFileSync(ANALYTICS_FILE, 'utf8');
-      return JSON.parse(data);
-    }
-  } catch (error) {
-    console.error('Error reading analytics data:', error);
-  }
-  return { events: [], sessions: {}, tools: {}, countries: {}, daily_stats: {} };
+  return analyticsData;
 }
 
 // Save analytics data
 function saveAnalyticsData(data) {
   try {
-    ensureDataDirectory();
-    writeFileSync(ANALYTICS_FILE, JSON.stringify(data, null, 2));
+    analyticsData = data;
     return true;
   } catch (error) {
     console.error('Error saving analytics data:', error);
