@@ -234,8 +234,8 @@ export default async function handler(req, res) {
       const { authorization } = req.headers;
       const { adminKey } = req.query;
       
-      // Get admin key from environment or use default
-      const validAdminKey = process.env.ADMIN_KEY || 'admin_linkrank_2024';
+      // Get admin key from environment or use default (trim any whitespace)
+      const validAdminKey = (process.env.ADMIN_KEY || 'admin_linkrank_2024').trim();
       
       console.log('Admin auth attempt:', { 
         receivedKey: adminKey,

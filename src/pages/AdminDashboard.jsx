@@ -246,6 +246,16 @@ export default function AdminDashboard() {
           </div>
 
           <form onSubmit={handleLogin} className="space-y-6">
+            {/* Hidden username field for accessibility */}
+            <input
+              type="text"
+              name="username"
+              value="admin"
+              autoComplete="username"
+              style={{ display: 'none' }}
+              readOnly
+            />
+            
             <div>
               <label htmlFor="adminKey" className="block text-sm font-medium text-gray-700 mb-2">
                 Admin Key
@@ -253,11 +263,12 @@ export default function AdminDashboard() {
               <input
                 type="password"
                 id="adminKey"
+                name="password"
                 value={adminKey}
                 onChange={(e) => setAdminKey(e.target.value)}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 placeholder="Enter admin key..."
-                autocomplete="new-password"
+                autoComplete="current-password"
                 required
               />
             </div>
